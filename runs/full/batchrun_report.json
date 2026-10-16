@@ -1,6 +1,6 @@
 {
   "run_id": "full",
-  "started_at": "2026-10-16T22:41:18.008695Z",
+  "started_at": "2026-10-16T23:15:23.860464Z",
   "tier": "batch",
   "model": "claude-haiku-5-5",
   "label_config": "labels-v1|claude-haiku-5-5|e4a34e06e1be",
@@ -10,9 +10,9 @@
   "batch_requests": 5000,
   "status": "ok",
   "counts": {
-    "pending": 8079,
+    "pending": 9365,
     "completed": 650147,
-    "quarantined": 2396
+    "quarantined": 1110
   },
   "run_spent_usd": 8.276554,
   "ledger": {
@@ -22,39 +22,6 @@
     "remaining_usd": 11.208491,
     "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
   },
-  "events": [
-    "2026-10-16T22:41:41.472108Z submitted batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB (job local-5a238096aafe489080d656ba36f6fece): 5000 requests, 250000 texts, reserved worst case $6.4189",
-    "2026-10-16T22:41:41.668103Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:42:41.880045Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:43:42.236338Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:44:42.532135Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:45:42.749702Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:46:43.021760Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:47:43.256264Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:48:43.883094Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:49:44.069542Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:50:44.331450Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:51:44.549014Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:52:44.778260Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:53:45.006215Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:54:45.219137Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:55:45.478322Z batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:58:18.255076Z collected batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB: 5000 ok, 0 failed requests; 399742 completed, 101 quarantined, 9243 to retry; $4.1608",
-    "2026-10-16T22:58:36.381560Z submitted batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS (job local-dbcaed9db32c426eb63f072b3155b319): 4861 requests, 243035 texts, reserved worst case $6.2915",
-    "2026-10-16T22:58:36.566508Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T22:59:37.012025Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:00:37.224473Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:01:37.508744Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:02:37.720786Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:03:38.585640Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:04:38.851625Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:05:39.097877Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:06:39.348581Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:07:39.595386Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:08:39.801676Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:09:40.021536Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:10:40.258655Z batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
-    "2026-10-16T23:13:23.203418Z collected batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS: 4861 ok, 0 failed requests; 250405 completed, 2282 quarantined, 8079 to retry; $4.1158"
-  ],
-  "finished_at": "2026-10-16T23:13:25.789774Z"
+  "events": [],
+  "finished_at": "2026-10-16T23:15:27.239843Z"
 }
