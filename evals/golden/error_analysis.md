@@ -4,11 +4,11 @@
 > proposals. Matt labelled the 50 reviews by hand (`human_codes.csv`) and decides which of these calls stand.
 > Delete this note once reviewed.
 
-Scores (`results.md`): topic agreement 0.66, intent 0.85 (46 resolved rows), severity 0.76, joint 0.54; severity
-MAE 0.30 and 94% of severities within one level. The model never abstained. The numbers look worse than the
-10,000-review blind verification (topic 0.86, intent 0.92, severity 0.89) because the golden disagreements are
-mostly *definition* disagreements between how I labelled and how `labels/definitions.md` reads, not random
-model errors. Three patterns explain 17 of the 23 disagreements.
+Scores (`results.md`, after the four re-entered rows below): topic agreement 0.72, intent 0.86, severity 0.82,
+joint 0.62; severity MAE 0.22 and 96% of severities within one level. The model never abstained. The numbers
+look worse than the 10,000-review blind verification (topic 0.86, intent 0.92, severity 0.89) because the golden
+disagreements are mostly *definition* disagreements between how I labelled and how `labels/definitions.md`
+reads, not random model errors. Three patterns explain most of the 19 remaining disagreements.
 
 ## Pattern 1: general praise vs. "first specific praised feature" (7 rows)
 
@@ -64,11 +64,11 @@ the definition instead, that issue would move into `usability` and the recommend
 - **Row 48**: "This update very bad for everyone.old Spotify. we all want." I inferred a redesign complaint
   (usability / 2); the model refused to infer a defect (other / general_negative / 2, `needs_review`). The
   contract's "worst update ever" rule supports the model.
-- **Rows 38, 41, 43, 45**: I typed `cp2`/`cp3` (catalog / praise / 2-3), which contradicts the rule that praise
-  is severity 1. The scorer keeps my topic and severity and leaves intent unresolved for these four. Reading
-  them again: 38 and 43 are complaints (lyrics not loading; cannot play or rewind songs), 41 is a feature request
-  (organise saved albums into collections), 45 is a complaint (paid but cannot play offline). I will re-enter
-  them as `cc3`, `ur1`, `cc3`/`pc3`, `dc4` once I have decided, and re-run `python -m pipeline.evals golden`.
+- **Rows 38, 41, 43, 45**: I had typed `cp2`/`cp3` (catalog / praise / 2-3), which contradicts the rule that
+  praise is severity 1. Reading them again they are complaints (lyrics not loading; cannot play or rewind songs;
+  paid but cannot play offline) and one feature request (organise saved albums into collections). They are now
+  entered as `cc3`, `ur1`, `pc3`, `dc4`, with the original entries kept in `human_codes.csv`; the model agreed
+  with three of the four re-entered rows on topic and all four on intent.
 
 ## What I take from this
 

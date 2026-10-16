@@ -1,21 +1,21 @@
 # Golden 50: model vs human labels
 
-Scored 2026-10-16T21:19:54.709967Z from run `runs/golden50`. 50 of 50 golden reviews have a model prediction (0 abstentions count as disagreements). Intent denominator 46 (rows [38, 41, 43, 45] unresolved).
+Scored 2026-10-16T22:40:08.553233Z from run `runs/golden50`. 50 of 50 golden reviews have a model prediction (0 abstentions count as disagreements). Intent denominator 50 (rows [] unresolved).
 
 | field | agreement | macro F1 |
 |---|---|---|
-| topic | 0.66 | 0.3938 |
-| intent | 0.8478 | 0.8098 |
-| severity | 0.76 | 0.687 |
-| joint (topic, severity, resolved intent) | 0.54 | |
+| topic | 0.72 | 0.5317 |
+| intent | 0.86 | 0.7368 |
+| severity | 0.82 | 0.6741 |
+| joint (topic, severity, resolved intent) | 0.62 | |
 
-Severity MAE 0.3; within one level 0.94.
+Severity MAE 0.22; within one level 0.96.
 
 ## Confusions (human -> model)
 
-- **topic**: other->usability (4), other->catalog (3), playback->billing (2), support->other (1), support->playback (1), other->billing (1), catalog->usability (1), catalog->playback (1), billing->catalog (1), catalog->downloads (1), usability->other (1)
+- **topic**: other->usability (4), other->catalog (3), playback->billing (2), support->other (1), support->playback (1), other->billing (1), billing->catalog (1), usability->other (1)
 - **intent**: unclear->complaint (3), unclear->request (2), unclear->praise (1), complaint->cancellation (1)
-- **severity**: 2->3 (3), 3->4 (3), 1->2 (3), 2->4 (1), 1->3 (1), 3->1 (1)
+- **severity**: 1->2 (3), 2->3 (2), 3->4 (2), 2->4 (1), 1->3 (1)
 
 ## Disagreements (for the human error analysis)
 
@@ -37,11 +37,7 @@ Severity MAE 0.3; within one level 0.94.
 | 33 | `46c0b49f-83a1-427e-8f0b-cef62e3c94b5` | other/unclear/1 | usability/complaint/3 (ads_interruptions) | False | Are you out of your mind? This is dangerous! Listening to music in a normal volume and suddenly an add starts and my ears feel like they explode!! Stop this BS, |
 | 34 | `283b5843-a992-464f-b1dc-9dc7281ff390` | other/unclear/1 | billing/request/1 (price) | True | Beth, we all got to give me a free dollar to go with 3 months, bro I can't be like |
 | 37 | `2aa566c6-b98d-4513-b900-83702a8db8eb` | other/praise/1 | usability/praise/1 (ads_interruptions) | False | Nice app, very less advertising |
-| 38 | `8c0546b0-ce43-4a36-9d33-9f979e98d522` | catalog/?/2 | catalog/complaint/3 (lyrics) | False | 1-Lyrics not getting loaded, 2-can't go back to or start song where to wanted. Pathetic update |
-| 41 | `b58dd6f0-ad88-4319-b6db-58afb60c37c1` | catalog/?/3 | usability/request/1 (queue_playlist_mgmt) | False | The only thing Spotify lacks is the ability to organize saved  albums/artists into collections. Would definitely deserve 5 stars if it  included this feature. |
-| 43 | `dceb14e7-2df0-422f-bb2b-73d7c373159a` | catalog/?/3 | playback/complaint/3 (stops_skips_glitches) | False | I gave one star because I can't give any less than that. the new update is sooooooo annoying like I can't even play the songs that I like and I can't rewind son |
 | 44 | `5fba12ea-4980-4f25-a129-f830a3974fd2` | billing/praise/1 | catalog/praise/1 (recommendations) | False | I find Spotify very good, it finds and play whatever music you want and also adds songs that you might like, judging from your playlist if you choose to arrange |
-| 45 | `ac4e860a-c042-49cc-90f3-189591c336ac` | catalog/?/3 | downloads/complaint/4 (offline_needs_internet) | False | paying for subscribing but unable to play in offline mode really? |
 | 47 | `d2f3874f-d15d-4a2f-bb97-4f1213defa46` | usability/complaint/2 | usability/complaint/3 (ads_interruptions) | False | Too expensive and the free version is pretty much unusable with constant ads... Every two or three songs.. Forget it |
 | 48 | `99b93e31-9f15-4daa-88ac-349ab0419c48` | usability/complaint/2 | other/complaint/2 (general_negative) | True | This update very bad for everyone.old Spotify. we all want. |
 
@@ -52,25 +48,28 @@ Severity MAE 0.3; within one level 0.94.
 | class | support | predicted | precision | recall | F1 |
 |---|---|---|---|---|---|
 | billing | 1 | 3 | 0.0 | 0.0 | 0.0 |
-| catalog | 5 | 6 | 0.3333 | 0.4 | 0.3636 |
+| catalog | 2 | 6 | 0.3333 | 1.0 | 0.5 |
+| downloads | 1 | 1 | 1.0 | 1.0 | 1.0 |
 | other | 32 | 26 | 0.9231 | 0.75 | 0.8276 |
-| playback | 5 | 5 | 0.6 | 0.6 | 0.6 |
+| playback | 6 | 5 | 0.8 | 0.6667 | 0.7273 |
 | support | 2 | 0 | None | 0.0 | 0.0 |
-| usability | 5 | 9 | 0.4444 | 0.8 | 0.5714 |
+| usability | 6 | 9 | 0.5556 | 0.8333 | 0.6667 |
 
 ### intent
 
 | class | support | predicted | precision | recall | F1 |
 |---|---|---|---|---|---|
-| complaint | 16 | 18 | 0.8333 | 0.9375 | 0.8824 |
+| complaint | 19 | 21 | 0.8571 | 0.9474 | 0.9 |
 | praise | 20 | 21 | 0.9524 | 1.0 | 0.9756 |
+| request | 1 | 3 | 0.3333 | 1.0 | 0.5 |
 | unclear | 10 | 4 | 1.0 | 0.4 | 0.5714 |
 
 ### severity
 
 | class | support | predicted | precision | recall | F1 |
 |---|---|---|---|---|---|
-| 1 | 30 | 27 | 0.963 | 0.8667 | 0.9123 |
-| 2 | 13 | 12 | 0.75 | 0.6923 | 0.72 |
-| 3 | 7 | 7 | 0.4286 | 0.4286 | 0.4286 |
+| 1 | 31 | 27 | 1.0 | 0.871 | 0.931 |
+| 2 | 12 | 12 | 0.75 | 0.75 | 0.75 |
+| 3 | 6 | 7 | 0.5714 | 0.6667 | 0.6154 |
+| 4 | 1 | 4 | 0.25 | 1.0 | 0.4 |
 

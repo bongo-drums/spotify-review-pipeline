@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/user/spotify-review-pipeline/pipeline/batchrun.py", line 382, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/user/spotify-review-pipeline/pipeline/batchrun.py", line 352, in main
+    report["enrich"] = runner.run()
+                       ~~~~~~~~~~^^
+  File "/home/user/spotify-review-pipeline/pipeline/batchrun.py", line 303, in run
+    summary["reconciled"] = self.reconcile()
+                            ~~~~~~~~~~~~~~^^
+  File "/home/user/spotify-review-pipeline/pipeline/batchrun.py", line 283, in reconcile
+    open_jobs = [(r[0], r[1]) for r in self.state.conn.execute(
+                                       ~~~~~~~~~~~~~~~~~~~~~~~^
+        "SELECT batch_id, api_batch_id FROM batch_jobs WHERE status IN ('in_progress','submitting') ORDER BY submitted_at")]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: api_batch_id
+exit 1

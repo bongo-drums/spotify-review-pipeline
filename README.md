@@ -129,8 +129,7 @@ Note on prompt versions: the checkpoints above ran with sentence format `v2`. Th
 ("app.I am ...": a period glued to the next sentence) exposed a splitter gap, fixed in `pipeline/enricher.py`
 (`v3`, new `label_config`). The full run uses v3; the checkpoint evidence is kept as measured.
 
-Golden 50 (`evals/golden/results.md`): topic 0.66, intent 0.85 (n=46), severity 0.76, joint 0.54; severity MAE
-0.30. Most topic disagreements are praise that the human coded as general (`other`) and the model tied to a
+Golden 50 (`evals/golden/results.md`): topic 0.72, intent 0.86, severity 0.82, joint 0.62; severity MAE 0.22. Most topic disagreements are praise that the human coded as general (`other`) and the model tied to a
 specific praised feature, and non-English text the human coded `unclear` and the model classified. These are
 the cases for the written error analysis.
 
@@ -210,4 +209,3 @@ checkpoint evidence is kept as measured and the full run uses the new version.
    rewritten in Matt's voice once the full run's memo exists.
 4. **Dashboard deploy**: the app in `web/` is built; loading Supabase (`pipeline.publish --db`) and deploying to
    Vercel need `SUPABASE_DB_URL` and `VERCEL_TOKEN` in the environment, then the live URL goes here.
-5. Decide the four golden rows (38, 41, 43, 45) recorded with an unresolved intent.

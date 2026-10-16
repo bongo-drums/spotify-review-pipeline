@@ -1,25 +1,20 @@
 {
-  "generated_at": "2026-10-16T21:19:54.709967Z",
+  "generated_at": "2026-10-16T22:40:08.553233Z",
   "run": "runs/golden50",
   "human_codes": "evals/golden/human_codes.csv",
   "cases_total": 50,
-  "intent_denominator": 46,
-  "intent_unresolved_rows": [
-    38,
-    41,
-    43,
-    45
-  ],
+  "intent_denominator": 50,
+  "intent_unresolved_rows": [],
   "model_predictions": 50,
   "abstentions": 0,
   "agreement": {
-    "topic": 0.66,
-    "intent": 0.8478,
-    "severity": 0.76,
-    "joint": 0.54
+    "topic": 0.72,
+    "intent": 0.86,
+    "severity": 0.82,
+    "joint": 0.62
   },
-  "severity_mae": 0.3,
-  "severity_within_1": 0.94,
+  "severity_mae": 0.22,
+  "severity_within_1": 0.96,
   "metrics": {
     "topic": {
       "per_class": {
@@ -31,11 +26,18 @@
           "f1": 0.0
         },
         "catalog": {
-          "support": 5,
+          "support": 2,
           "predicted": 6,
           "precision": 0.3333,
-          "recall": 0.4,
-          "f1": 0.3636
+          "recall": 1.0,
+          "f1": 0.5
+        },
+        "downloads": {
+          "support": 1,
+          "predicted": 1,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
         },
         "other": {
           "support": 32,
@@ -45,11 +47,11 @@
           "f1": 0.8276
         },
         "playback": {
-          "support": 5,
+          "support": 6,
           "predicted": 5,
-          "precision": 0.6,
-          "recall": 0.6,
-          "f1": 0.6
+          "precision": 0.8,
+          "recall": 0.6667,
+          "f1": 0.7273
         },
         "support": {
           "support": 2,
@@ -59,23 +61,23 @@
           "f1": 0.0
         },
         "usability": {
-          "support": 5,
+          "support": 6,
           "predicted": 9,
-          "precision": 0.4444,
-          "recall": 0.8,
-          "f1": 0.5714
+          "precision": 0.5556,
+          "recall": 0.8333,
+          "f1": 0.6667
         }
       },
-      "macro_f1": 0.3938
+      "macro_f1": 0.5317
     },
     "intent": {
       "per_class": {
         "complaint": {
-          "support": 16,
-          "predicted": 18,
-          "precision": 0.8333,
-          "recall": 0.9375,
-          "f1": 0.8824
+          "support": 19,
+          "predicted": 21,
+          "precision": 0.8571,
+          "recall": 0.9474,
+          "f1": 0.9
         },
         "praise": {
           "support": 20,
@@ -83,6 +85,13 @@
           "precision": 0.9524,
           "recall": 1.0,
           "f1": 0.9756
+        },
+        "request": {
+          "support": 1,
+          "predicted": 3,
+          "precision": 0.3333,
+          "recall": 1.0,
+          "f1": 0.5
         },
         "unclear": {
           "support": 10,
@@ -92,33 +101,40 @@
           "f1": 0.5714
         }
       },
-      "macro_f1": 0.8098
+      "macro_f1": 0.7368
     },
     "severity": {
       "per_class": {
         "1": {
-          "support": 30,
+          "support": 31,
           "predicted": 27,
-          "precision": 0.963,
-          "recall": 0.8667,
-          "f1": 0.9123
+          "precision": 1.0,
+          "recall": 0.871,
+          "f1": 0.931
         },
         "2": {
-          "support": 13,
+          "support": 12,
           "predicted": 12,
           "precision": 0.75,
-          "recall": 0.6923,
-          "f1": 0.72
+          "recall": 0.75,
+          "f1": 0.75
         },
         "3": {
-          "support": 7,
+          "support": 6,
           "predicted": 7,
-          "precision": 0.4286,
-          "recall": 0.4286,
-          "f1": 0.4286
+          "precision": 0.5714,
+          "recall": 0.6667,
+          "f1": 0.6154
+        },
+        "4": {
+          "support": 1,
+          "predicted": 4,
+          "precision": 0.25,
+          "recall": 1.0,
+          "f1": 0.4
         }
       },
-      "macro_f1": 0.687
+      "macro_f1": 0.6741
     }
   },
   "confusion": {
@@ -129,10 +145,7 @@
       "support->other": 1,
       "support->playback": 1,
       "other->billing": 1,
-      "catalog->usability": 1,
-      "catalog->playback": 1,
       "billing->catalog": 1,
-      "catalog->downloads": 1,
       "usability->other": 1
     },
     "intent": {
@@ -142,12 +155,11 @@
       "complaint->cancellation": 1
     },
     "severity": {
-      "2->3": 3,
-      "3->4": 3,
       "1->2": 3,
+      "2->3": 2,
+      "3->4": 2,
       "2->4": 1,
-      "1->3": 1,
-      "3->1": 1
+      "1->3": 1
     }
   },
   "disagreements": [
@@ -552,81 +564,6 @@
       }
     },
     {
-      "n": 38,
-      "review_id": "8c0546b0-ce43-4a36-9d33-9f979e98d522",
-      "text": "1-Lyrics not getting loaded, 2-can't go back to or start song where to wanted. Pathetic update",
-      "human": {
-        "topic": "catalog",
-        "intent": null,
-        "severity": 2
-      },
-      "human_code": "cp2",
-      "model": {
-        "topic": "catalog",
-        "subtopic": "lyrics",
-        "intent": "complaint",
-        "severity": 3,
-        "needs_review": false,
-        "evidence_quote": "1-Lyrics not getting loaded, 2-can't go back to or start song where to wanted."
-      },
-      "status": "completed",
-      "agree": {
-        "topic": true,
-        "intent": null,
-        "severity": false
-      }
-    },
-    {
-      "n": 41,
-      "review_id": "b58dd6f0-ad88-4319-b6db-58afb60c37c1",
-      "text": "The only thing Spotify lacks is the ability to organize saved \nalbums/artists into collections. Would definitely deserve 5 stars if it \nincluded this feature.",
-      "human": {
-        "topic": "catalog",
-        "intent": null,
-        "severity": 3
-      },
-      "human_code": "cp3",
-      "model": {
-        "topic": "usability",
-        "subtopic": "queue_playlist_mgmt",
-        "intent": "request",
-        "severity": 1,
-        "needs_review": false,
-        "evidence_quote": "The only thing Spotify lacks is the ability to organize saved"
-      },
-      "status": "completed",
-      "agree": {
-        "topic": false,
-        "intent": null,
-        "severity": false
-      }
-    },
-    {
-      "n": 43,
-      "review_id": "dceb14e7-2df0-422f-bb2b-73d7c373159a",
-      "text": "I gave one star because I can't give any less than that. the new update is sooooooo annoying like I can't even play the songs that I like and I can't rewind songs what the heck",
-      "human": {
-        "topic": "catalog",
-        "intent": null,
-        "severity": 3
-      },
-      "human_code": "cp3",
-      "model": {
-        "topic": "playback",
-        "subtopic": "stops_skips_glitches",
-        "intent": "complaint",
-        "severity": 3,
-        "needs_review": false,
-        "evidence_quote": "I gave one star because I can't give any less than that."
-      },
-      "status": "completed",
-      "agree": {
-        "topic": false,
-        "intent": null,
-        "severity": true
-      }
-    },
-    {
       "n": 44,
       "review_id": "5fba12ea-4980-4f25-a129-f830a3974fd2",
       "text": "I find Spotify very good, it finds and play whatever music you want and also adds songs that you might like, judging from your playlist if you choose to arrange one. 😊💃🎸🎶",
@@ -649,31 +586,6 @@
         "topic": false,
         "intent": true,
         "severity": true
-      }
-    },
-    {
-      "n": 45,
-      "review_id": "ac4e860a-c042-49cc-90f3-189591c336ac",
-      "text": "paying for subscribing but unable to play in offline mode really?",
-      "human": {
-        "topic": "catalog",
-        "intent": null,
-        "severity": 3
-      },
-      "human_code": "cp3",
-      "model": {
-        "topic": "downloads",
-        "subtopic": "offline_needs_internet",
-        "intent": "complaint",
-        "severity": 4,
-        "needs_review": false,
-        "evidence_quote": "paying for subscribing but unable to play in offline mode really?"
-      },
-      "status": "completed",
-      "agree": {
-        "topic": false,
-        "intent": null,
-        "severity": false
       }
     },
     {
@@ -1659,10 +1571,10 @@
       "text": "1-Lyrics not getting loaded, 2-can't go back to or start song where to wanted. Pathetic update",
       "human": {
         "topic": "catalog",
-        "intent": null,
-        "severity": 2
+        "intent": "complaint",
+        "severity": 3
       },
-      "human_code": "cp2",
+      "human_code": "cc3",
       "model": {
         "topic": "catalog",
         "subtopic": "lyrics",
@@ -1674,8 +1586,8 @@
       "status": "completed",
       "agree": {
         "topic": true,
-        "intent": null,
-        "severity": false
+        "intent": true,
+        "severity": true
       }
     },
     {
@@ -1733,11 +1645,11 @@
       "review_id": "b58dd6f0-ad88-4319-b6db-58afb60c37c1",
       "text": "The only thing Spotify lacks is the ability to organize saved \nalbums/artists into collections. Would definitely deserve 5 stars if it \nincluded this feature.",
       "human": {
-        "topic": "catalog",
-        "intent": null,
-        "severity": 3
+        "topic": "usability",
+        "intent": "request",
+        "severity": 1
       },
-      "human_code": "cp3",
+      "human_code": "ur1",
       "model": {
         "topic": "usability",
         "subtopic": "queue_playlist_mgmt",
@@ -1748,9 +1660,9 @@
       },
       "status": "completed",
       "agree": {
-        "topic": false,
-        "intent": null,
-        "severity": false
+        "topic": true,
+        "intent": true,
+        "severity": true
       }
     },
     {
@@ -1783,11 +1695,11 @@
       "review_id": "dceb14e7-2df0-422f-bb2b-73d7c373159a",
       "text": "I gave one star because I can't give any less than that. the new update is sooooooo annoying like I can't even play the songs that I like and I can't rewind songs what the heck",
       "human": {
-        "topic": "catalog",
-        "intent": null,
+        "topic": "playback",
+        "intent": "complaint",
         "severity": 3
       },
-      "human_code": "cp3",
+      "human_code": "pc3",
       "model": {
         "topic": "playback",
         "subtopic": "stops_skips_glitches",
@@ -1798,8 +1710,8 @@
       },
       "status": "completed",
       "agree": {
-        "topic": false,
-        "intent": null,
+        "topic": true,
+        "intent": true,
         "severity": true
       }
     },
@@ -1833,11 +1745,11 @@
       "review_id": "ac4e860a-c042-49cc-90f3-189591c336ac",
       "text": "paying for subscribing but unable to play in offline mode really?",
       "human": {
-        "topic": "catalog",
-        "intent": null,
-        "severity": 3
+        "topic": "downloads",
+        "intent": "complaint",
+        "severity": 4
       },
-      "human_code": "cp3",
+      "human_code": "dc4",
       "model": {
         "topic": "downloads",
         "subtopic": "offline_needs_internet",
@@ -1848,9 +1760,9 @@
       },
       "status": "completed",
       "agree": {
-        "topic": false,
-        "intent": null,
-        "severity": false
+        "topic": true,
+        "intent": true,
+        "severity": true
       }
     },
     {
@@ -1979,5 +1891,5 @@
       }
     }
   ],
-  "note": "Human labels were read only by this scorer, after classification; they are never model inputs. Intent agreement excludes the four rows recorded as unresolved in evals/golden/README.md."
+  "note": "Human labels were read only by this scorer, after classification; they are never model inputs. Rows listed in UNRESOLVED_INTENT_ROWS (currently none) would be excluded from intent agreement."
 }
