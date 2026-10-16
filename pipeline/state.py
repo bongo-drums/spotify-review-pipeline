@@ -79,7 +79,9 @@ CREATE TABLE IF NOT EXISTS calls (
     started_at                  TEXT,
     ended_at                    TEXT,
     duration_s                  REAL,
-    cost_usd_estimate           REAL
+    cost_usd_estimate           REAL,
+    request_id                  TEXT,
+    stop_reason                 TEXT
 );
 
 CREATE TABLE IF NOT EXISTS label_cache (
@@ -101,8 +103,11 @@ CALL_COLUMNS = (
     "call_id", "run_id", "stage", "phase", "model", "label_config", "request_review_ids",
     "attempt", "status", "error", "input_tokens", "cache_creation_input_tokens",
     "cache_read_input_tokens", "output_tokens", "service_tier", "started_at", "ended_at",
-    "duration_s", "cost_usd_estimate",
+    "duration_s", "cost_usd_estimate", "request_id", "stop_reason",
 )
+
+# Columns added after the first schema; older run DBs get them via ALTER TABLE.
+_ADDED_CALL_COLUMNS = {"request_id": "TEXT", "stop_reason": "TEXT"}
 
 
 def utc_now() -> str:
@@ -124,6 +129,11 @@ def connect(path, schema: str = SCHEMA) -> sqlite3.Connection:
     conn.execute("PRAGMA synchronous=NORMAL")
     conn.execute("PRAGMA foreign_keys=ON")
     conn.executescript(schema)
+    if schema is SCHEMA:
+        have = {r[1] for r in conn.execute("PRAGMA table_info(calls)")}
+        for col, typ in _ADDED_CALL_COLUMNS.items():
+            if col not in have:
+                conn.execute(f"ALTER TABLE calls ADD COLUMN {col} {typ}")
     return conn
 
 
@@ -295,8 +305,9 @@ class RunState:
     def pending_text_groups(self, limit: int) -> list[dict]:
         """Up to `limit` distinct pending texts (in source order), each with all pending review_ids.
 
-        Returns [{"cache_source_id", "text_sha256", "review_text", "review_ids"}]. Send one
-        text per group to the model, then commit the label for every id in the group.
+        Returns [{"cache_source_id", "text_sha256", "review_text", "review_ids", "attempts"}],
+        where `attempts` is the highest attempt count among the group's pending ids (0 = never
+        tried). Send one text per group to the model, then commit the label for every id.
         """
         with self.lock:
             heads = self.conn.execute(
@@ -313,12 +324,14 @@ class RunState:
             ).fetchall()
             groups = []
             for head_id, tsha, text in heads:
-                ids = [r[0] for r in self.conn.execute(
-                    "SELECT review_id FROM records WHERE cache_source_id=? AND status='pending' ORDER BY row_index",
+                rows = self.conn.execute(
+                    "SELECT review_id, attempts FROM records WHERE cache_source_id=? AND status='pending' "
+                    "ORDER BY row_index",
                     (head_id,),
-                )]
-                groups.append({"cache_source_id": head_id, "text_sha256": tsha,
-                               "review_text": text, "review_ids": ids})
+                ).fetchall()
+                groups.append({"cache_source_id": head_id, "text_sha256": tsha, "review_text": text,
+                               "review_ids": [r[0] for r in rows],
+                               "attempts": max(r[1] for r in rows)})
             return groups
 
     def apply_cache_hits(self, label_config: str) -> int:

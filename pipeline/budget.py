@@ -61,6 +61,20 @@ class SpendLedger:
         ).fetchone()[0]
         return float(spent), float(outstanding)
 
+    def run_totals(self, run_id: str) -> tuple[float, float]:
+        """(committed, outstanding) for one run_id, for per-run sub-caps such as a pilot budget."""
+        with self.lock:
+            spent = self.conn.execute(
+                "SELECT COALESCE(SUM(amount_usd),0) FROM spend_ledger WHERE kind='commit' AND run_id=?",
+                (run_id,)).fetchone()[0]
+            outstanding = self.conn.execute(
+                """SELECT COALESCE(SUM(r.amount_usd),0) FROM spend_ledger r
+                   WHERE r.kind='reserve' AND r.run_id=? AND NOT EXISTS (
+                       SELECT 1 FROM spend_ledger x
+                       WHERE x.reservation_id=r.reservation_id AND x.kind IN ('commit','release'))""",
+                (run_id,)).fetchone()[0]
+        return float(spent), float(outstanding)
+
     def summary(self) -> dict:
         with self.lock:
             spent, outstanding = self._totals()
