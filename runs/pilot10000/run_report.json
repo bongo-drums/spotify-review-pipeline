@@ -1,0 +1,198 @@
+{
+  "run_id": "pilot10000",
+  "started_at": "2026-10-16T21:28:01.449522Z",
+  "status": "stopped_at_limit",
+  "resumed": false,
+  "phase": "initial",
+  "stages": [
+    "enrich",
+    "verify",
+    "group",
+    "rank",
+    "recommend"
+  ],
+  "input": {
+    "path": "data/raw/extracted/analysis_10000.csv",
+    "manifest_path": "data/raw/extracted/manifest.json",
+    "found_entry": true,
+    "sha256_matches": true,
+    "input_sha256": "eaa62ca6d44d717302904a9c922e99b0b4584d174309cb45295ecbc2ba2a91b5",
+    "manifest_sha256": "07afdd96dd7f97ff5fbf967961e14d6d9f48170ba3f417399e20d5b620291011",
+    "manifest_sha256_for_input": "eaa62ca6d44d717302904a9c922e99b0b4584d174309cb45295ecbc2ba2a91b5",
+    "rows": 10000,
+    "distinct_texts": 8437,
+    "distinct_text_chars": 739394
+  },
+  "counts_before": {
+    "pending": 10000,
+    "completed": 0,
+    "quarantined": 0
+  },
+  "max_usd": 1.5,
+  "limit": 2500,
+  "enrich": {
+    "calls": 50,
+    "texts_sent": 2500,
+    "wall_s": 451.671,
+    "dry_run": []
+  },
+  "checkpoint_before": {
+    "created_at": "2026-10-16T21:35:34.295091Z",
+    "run_id": "pilot10000",
+    "completed_count": 3805,
+    "counts": {
+      "pending": 6184,
+      "completed": 3805,
+      "quarantined": 11
+    }
+  },
+  "counts_after": {
+    "pending": 6184,
+    "completed": 3805,
+    "quarantined": 11
+  },
+  "checkpoint": {
+    "created_at": "2026-10-16T21:35:34.311711Z",
+    "run_id": "pilot10000",
+    "db_path": "runs/pilot10000/state.sqlite",
+    "counts": {
+      "pending": 6184,
+      "completed": 3805,
+      "quarantined": 11
+    },
+    "completed_ids_count": 3805,
+    "completed_ids_sha256": "9aae654f12e16a28dba9d9f878833aef022f9869bed6f1834da49ac2ba0c8950",
+    "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+    "label_cache_entries": 2405,
+    "calls": 50
+  },
+  "labels_csv_rows": 10000,
+  "cost_by_stage": {
+    "enrich": 0.082173
+  },
+  "stage_calls": {
+    "enrich": {
+      "calls": 50,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 94557,
+        "cache_creation_input_tokens": 2813,
+        "cache_read_input_tokens": 137837,
+        "output_tokens": 141974
+      },
+      "texts": 2500,
+      "cost_usd": 0.082173,
+      "wall_s_sum_of_calls": 450.865,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "verify": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    },
+    "group": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    },
+    "memo": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    }
+  },
+  "model": "claude-haiku-5-5",
+  "label_config": "labels-v1|claude-haiku-5-5|68d569ab095d",
+  "tier": "standard",
+  "run_spent_usd": 0.082173,
+  "ledger": {
+    "cap_usd": 20.0,
+    "committed_usd": 0.171204,
+    "outstanding_reservations_usd": 0.0,
+    "remaining_usd": 19.828796,
+    "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
+  },
+  "events": [
+    "2026-10-16T21:28:11.780537Z cold: 50 texts, 9.2s, in=1859 cache_w=2813 cache_r=0 out=2806 $0.00194 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:28:20.629060Z cold: 50 texts, 8.8s, in=2012 cache_w=0 cache_r=2813 out=2831 $0.00164 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:28:29.014217Z cold: 50 texts, 8.4s, in=1708 cache_w=0 cache_r=2813 out=2793 $0.00160 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:28:37.814465Z cold: 50 texts, 8.8s, in=1753 cache_w=0 cache_r=2813 out=2838 $0.00162 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:28:47.368064Z cold: 50 texts, 9.5s, in=2245 cache_w=0 cache_r=2813 out=2844 $0.00167 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:28:56.731126Z cold: 50 texts, 9.4s, in=1916 cache_w=0 cache_r=2813 out=2835 $0.00164 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:29:06.624706Z cold: 50 texts, 9.9s, in=1821 cache_w=0 cache_r=2813 out=2890 $0.00166 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:29:16.010531Z cold: 50 texts, 9.3s, in=1837 cache_w=0 cache_r=2813 out=2866 $0.00164 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:29:24.966534Z cold: 50 texts, 8.9s, in=1948 cache_w=0 cache_r=2813 out=2771 $0.00161 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:29:34.287423Z cold: 50 texts, 9.3s, in=1894 cache_w=0 cache_r=2813 out=2860 $0.00165 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T21:29:43.828479Z cold: 50 texts, 9.5s, in=1928 cache_w=0 cache_r=2813 out=2898 $0.00167 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:29:53.136583Z cold: 50 texts, 9.3s, in=2226 cache_w=0 cache_r=2813 out=2894 $0.00170 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:30:01.662025Z cold: 50 texts, 8.5s, in=1560 cache_w=0 cache_r=2813 out=2758 $0.00156 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:30:11.419010Z cold: 50 texts, 9.7s, in=1965 cache_w=0 cache_r=2813 out=2798 $0.00162 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:30:20.871257Z cold: 50 texts, 9.4s, in=1575 cache_w=0 cache_r=2813 out=2773 $0.00157 | ok=46 invalid=4 stop=end_turn",
+    "2026-10-16T21:30:29.709569Z cold: 50 texts, 8.8s, in=1846 cache_w=0 cache_r=2813 out=2896 $0.00166 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:30:38.394765Z cold: 50 texts, 8.7s, in=1929 cache_w=0 cache_r=2813 out=2804 $0.00162 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:30:47.190972Z cold: 50 texts, 8.8s, in=1970 cache_w=0 cache_r=2813 out=2819 $0.00163 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:30:55.553190Z cold: 50 texts, 8.3s, in=1239 cache_w=0 cache_r=2813 out=2723 $0.00151 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:31:04.075200Z cold: 50 texts, 8.5s, in=2078 cache_w=0 cache_r=2813 out=2804 $0.00164 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:31:13.891880Z cold: 50 texts, 9.8s, in=1920 cache_w=0 cache_r=2813 out=2880 $0.00166 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:31:22.383585Z cold: 50 texts, 8.5s, in=2143 cache_w=0 cache_r=2813 out=2797 $0.00164 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T21:31:31.123506Z cold: 50 texts, 8.7s, in=1750 cache_w=0 cache_r=2813 out=2828 $0.00162 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:31:40.825449Z cold: 50 texts, 9.7s, in=1897 cache_w=0 cache_r=2813 out=2884 $0.00166 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T21:31:49.105214Z cold: 50 texts, 8.3s, in=1785 cache_w=0 cache_r=2813 out=2827 $0.00162 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:31:58.241497Z cold: 50 texts, 9.1s, in=2231 cache_w=0 cache_r=2813 out=2833 $0.00167 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T21:32:07.364982Z cold: 50 texts, 9.1s, in=1926 cache_w=0 cache_r=2813 out=2857 $0.00165 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:32:15.853329Z cold: 50 texts, 8.5s, in=1753 cache_w=0 cache_r=2813 out=2802 $0.00160 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:32:25.081232Z cold: 50 texts, 9.2s, in=1916 cache_w=0 cache_r=2813 out=2826 $0.00163 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:32:34.062466Z cold: 50 texts, 9.0s, in=2208 cache_w=0 cache_r=2813 out=2906 $0.00170 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T21:32:42.809392Z cold: 50 texts, 8.7s, in=2062 cache_w=0 cache_r=2813 out=2891 $0.00168 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:32:51.996067Z cold: 50 texts, 9.2s, in=1828 cache_w=0 cache_r=2813 out=2777 $0.00160 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:33:00.831580Z cold: 50 texts, 8.8s, in=1814 cache_w=0 cache_r=2813 out=2909 $0.00166 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:33:09.732813Z cold: 50 texts, 8.9s, in=1793 cache_w=0 cache_r=2813 out=2875 $0.00164 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:33:18.810446Z cold: 50 texts, 9.1s, in=1339 cache_w=0 cache_r=2813 out=2811 $0.00157 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:33:27.710083Z cold: 50 texts, 8.9s, in=1860 cache_w=0 cache_r=2813 out=2842 $0.00164 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:33:37.403214Z cold: 50 texts, 9.7s, in=2026 cache_w=0 cache_r=2813 out=2907 $0.00168 | ok=43 invalid=7 stop=end_turn",
+    "2026-10-16T21:33:46.466677Z cold: 50 texts, 9.1s, in=2212 cache_w=0 cache_r=2813 out=2893 $0.00170 | ok=45 invalid=5 stop=end_turn",
+    "2026-10-16T21:33:55.579279Z cold: 50 texts, 9.1s, in=2271 cache_w=0 cache_r=2813 out=2899 $0.00170 | ok=43 invalid=7 stop=end_turn",
+    "2026-10-16T21:34:04.573410Z cold: 50 texts, 9.0s, in=2164 cache_w=0 cache_r=2813 out=2859 $0.00167 | ok=45 invalid=5 stop=end_turn",
+    "2026-10-16T21:34:13.723451Z cold: 50 texts, 9.1s, in=1914 cache_w=0 cache_r=2813 out=2849 $0.00164 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:34:22.576064Z cold: 50 texts, 8.8s, in=1672 cache_w=0 cache_r=2813 out=2839 $0.00161 | ok=46 invalid=4 stop=end_turn",
+    "2026-10-16T21:34:32.092668Z cold: 50 texts, 9.5s, in=1620 cache_w=0 cache_r=2813 out=2849 $0.00161 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:34:40.759394Z cold: 50 texts, 8.7s, in=1865 cache_w=0 cache_r=2813 out=2797 $0.00161 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:34:50.185375Z cold: 50 texts, 9.4s, in=2208 cache_w=0 cache_r=2813 out=2875 $0.00169 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:34:59.713306Z cold: 50 texts, 9.5s, in=1860 cache_w=0 cache_r=2813 out=2889 $0.00166 | ok=45 invalid=5 stop=end_turn",
+    "2026-10-16T21:35:08.518035Z cold: 50 texts, 8.8s, in=1852 cache_w=0 cache_r=2813 out=2814 $0.00162 | ok=45 invalid=5 stop=end_turn",
+    "2026-10-16T21:35:17.253899Z cold: 50 texts, 8.7s, in=2000 cache_w=0 cache_r=2813 out=2852 $0.00165 | ok=42 invalid=8 stop=end_turn",
+    "2026-10-16T21:35:25.745482Z cold: 50 texts, 8.5s, in=1618 cache_w=0 cache_r=2813 out=2823 $0.00160 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:35:34.273814Z cold: 50 texts, 8.5s, in=1741 cache_w=0 cache_r=2813 out=2783 $0.00159 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:35:34.297725Z stopped at --limit with 3805 completed; pending work remains"
+  ],
+  "finished_at": "2026-10-16T21:35:34.402871Z"
+}
