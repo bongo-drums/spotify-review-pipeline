@@ -78,6 +78,9 @@ class BatchRunner:
         self.cfg = label_config(model)
         self.state = RunState(self.out_dir / "state.sqlite")
         self.state.conn.executescript(BATCH_DDL)
+        cols = {r[1] for r in self.state.conn.execute("PRAGMA table_info(batch_jobs)")}
+        if "api_batch_id" not in cols:   # DB created by an earlier version of this table
+            self.state.conn.execute("ALTER TABLE batch_jobs ADD COLUMN api_batch_id TEXT")
         self.ledger = SpendLedger(ledger_path, run_id=self.run_id)
         self._client = client
         self.phase = "resume" if resumed else "initial"
