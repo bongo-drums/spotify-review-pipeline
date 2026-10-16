@@ -118,7 +118,7 @@ def test_pilot_end_to_end_and_resume(cost_csv, tmp_path):
     client = _client()
     cost_dir = tmp_path / "cost"
     report = pl.run_pilot(path, out, manifest, max_usd=0.25, ledger_path=ledger, client=client,
-                          phases=("cold", "warm", "replay"), cost_dir=cost_dir)
+                          phases=("cold", "warm", "replay"), cost_dir=cost_dir, stages=())
 
     assert report["status"] == "ok" and report["manifest_check"]["sha256_matches"] is True
     assert report["system_prompt_tokens"] == SYS_TOKENS + 5
@@ -181,7 +181,7 @@ def test_pilot_end_to_end_and_resume(cost_csv, tmp_path):
 
     # resume: nothing pending, warm already recorded -> no new API calls, ledger unchanged
     n_calls = len(client.messages.calls)
-    again = pl.run_pilot(path, out, manifest, max_usd=0.25, ledger_path=ledger, client=client, cost_dir=cost_dir)
+    again = pl.run_pilot(path, out, manifest, max_usd=0.25, ledger_path=ledger, client=client, cost_dir=cost_dir, stages=())
     assert again["resumed"] and len(client.messages.calls) == n_calls
     assert again["phases"]["warm"]["enrichment_calls"] == 0 and again["phases"]["warm"]["rows_completed_from_cache"] == 98
     assert again["ledger"]["committed_usd"] == pytest.approx(report["ledger"]["committed_usd"])
@@ -191,7 +191,7 @@ def test_pilot_stops_at_run_cap_and_global_cap(cost_csv, tmp_path):
     path, manifest = cost_csv
     client = _client()
     report = pl.run_pilot(path, tmp_path / "capped", None, max_usd=0.00001, ledger_path=tmp_path / "l.sqlite", client=client,
-                          cost_dir=tmp_path / "c1")
+                          cost_dir=tmp_path / "c1", stages=())
     assert report["status"] == "stopped_run_cap" and client.messages.calls == []
     assert report["final_counts"]["pending"] == 99 and report["ledger"]["committed_usd"] == 0  # 99 nonblank rows
 
@@ -205,7 +205,7 @@ def test_pilot_stops_at_run_cap_and_global_cap(cost_csv, tmp_path):
     cfg.SPEND_CAP_USD = 1.0
     try:
         report = pl.run_pilot(path, tmp_path / "global", None, max_usd=0.25, ledger_path=ledger, client=client,
-                              cost_dir=tmp_path / "c2")
+                              cost_dir=tmp_path / "c2", stages=())
     finally:
         cfg.SPEND_CAP_USD = old
     assert report["status"] == "stopped_global_cap" and client.messages.calls == []
@@ -216,13 +216,13 @@ def test_pilot_dry_run_makes_no_calls(cost_csv, tmp_path):
     client = _client()
     out = tmp_path / "dry"
     report = pl.run_pilot(path, out, manifest, ledger_path=tmp_path / "l.sqlite", client=client, dry_run=True,
-                          cost_dir=tmp_path / "c")
+                          cost_dir=tmp_path / "c", stages=())
     assert client.messages.calls == [] and report["dry_run"]
     est = report["dry_run_estimate"]
     assert est["requests"] == 2 and est["texts"] == 97 and 0 < est["worst_case_usd_one_pass"] < 0.05
     assert report["final_counts"]["pending"] == 99 and report["ledger"]["committed_usd"] == 0
     # a real run afterwards starts from clean attempts
-    real = pl.run_pilot(path, out, manifest, ledger_path=tmp_path / "l.sqlite", client=client, cost_dir=tmp_path / "c")
+    real = pl.run_pilot(path, out, manifest, ledger_path=tmp_path / "l.sqlite", client=client, cost_dir=tmp_path / "c", stages=())
     assert real["status"] == "ok" and real["final_counts"]["completed"] == 98
 
 
@@ -234,7 +234,7 @@ def test_cli_missing_input_and_bad_phase(tmp_path, capsys):
 def test_calculator_offline_replay_and_rate_doubling(cost_csv, tmp_path, capsys):
     path, manifest = cost_csv
     out, cost_dir = tmp_path / "pilot100", tmp_path / "cost"
-    report = pl.run_pilot(path, out, manifest, ledger_path=tmp_path / "l.sqlite", client=_client(), cost_dir=cost_dir)
+    report = pl.run_pilot(path, out, manifest, ledger_path=tmp_path / "l.sqlite", client=_client(), cost_dir=cost_dir, stages=())
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "cost"))
     import calculator
     root = Path(__file__).resolve().parent.parent

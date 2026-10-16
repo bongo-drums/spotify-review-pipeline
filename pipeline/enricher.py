@@ -283,6 +283,11 @@ def _label_from_item(item: dict, text: str) -> dict:
     }
 
 
+def text_block_from(response) -> str | None:
+    """The first text block of a Messages response, or None."""
+    return next((b.text for b in getattr(response, "content", []) if getattr(b, "type", None) == "text"), None)
+
+
 def parse_response(response, texts: list[str]) -> ParsedBatch:
     """Validate a Messages response against the request's `texts` (same order as sent).
 

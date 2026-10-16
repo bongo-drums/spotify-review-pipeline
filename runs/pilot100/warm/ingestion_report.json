@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T20:48:15.675866Z",
+  "generated_at": "2026-10-16T21:36:37.766173Z",
   "source": {
     "path": "data/raw/extracted/cost_100.csv",
     "bytes": 15466,
@@ -144,5 +144,5 @@
   },
   "quarantine_reasons": {},
   "db_path": "runs/pilot100/warm/state.sqlite",
-  "elapsed_s": 0.02
+  "elapsed_s": 0.01
 }

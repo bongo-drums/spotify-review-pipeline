@@ -35,14 +35,21 @@ from . import config, pricing
 from .budget import BudgetExceeded, SpendLedger
 from .enricher import (EFFORT, MAX_ATTEMPTS, MAX_REVIEWS_PER_REQUEST, MODEL, PROMPT_SHA256, build_request,
                        estimate_prompt_tokens, label_config, parse_response)
+from .grouping import run_group
 from .hashing import file_sha256
 from .ingest import ingest
+from .llm import Caller, stage_summary
+from .memo import MODEL as MEMO_MODEL
+from .memo import run_memo
+from .ranking import run_rank
 from .state import RunState, utc_now
+from .verifier import DEFAULT_FRAC, DEFAULT_MIN_N, run_verify
 
 STAGE = "enrich"   # contract role name
 LABEL_FIELDS = ("topic", "subtopic", "intent", "severity", "sentiment", "needs_review")
 PHASE_NAMES = ("cold", "warm", "replay")
-CONTRACT_PHASE = {"cold": "initial", "replay": "replay"}
+CONTRACT_PHASE = {"cold": "initial", "cold_resume": "resume", "replay": "replay"}
+DOWNSTREAM = ("verify", "group", "rank", "recommend")
 BACKOFF_S = (2.0, 4.0, 8.0)   # bounded backoff after the SDK's own retries are exhausted
 
 
@@ -103,7 +110,9 @@ def check_manifest(manifest_path, input_path) -> dict:
 
 class Pilot:
     def __init__(self, out_dir, input_path=None, *, model=MODEL, tier="standard", batch_size=MAX_REVIEWS_PER_REQUEST,
-                 max_usd=0.25, ledger_path=None, client=None, limit=None, rates=None, dry_run=False):
+                 max_usd=0.25, ledger_path=None, client=None, limit=None, rates=None, dry_run=False,
+                 resumed=False, stages=DOWNSTREAM, memo_model=MEMO_MODEL, verify_frac=DEFAULT_FRAC,
+                 verify_min_n=DEFAULT_MIN_N):
         if not 1 <= batch_size <= MAX_REVIEWS_PER_REQUEST:
             raise ValueError(f"batch size must be 1..{MAX_REVIEWS_PER_REQUEST}")
         self.out_dir = Path(out_dir)
@@ -121,6 +130,11 @@ class Pilot:
             "SELECT COALESCE(SUM(cost_usd_estimate),0) FROM calls WHERE run_id=?", (self.run_id,)).fetchone()[0])
         self.replay_labels: dict[str, dict] = {}
         self.events: list[str] = []
+        self.resumed = resumed
+        self.enrich_phase = "cold_resume" if resumed else "cold"
+        self.contract_phase = "resume" if resumed else "initial"
+        self.stages = tuple(stages)
+        self.memo_model, self.verify_frac, self.verify_min_n = memo_model, verify_frac, verify_min_n
 
     # ---- infrastructure ------------------------------------------------
 
@@ -153,9 +167,11 @@ class Pilot:
         return self.system_tokens
 
     def _check_run_cap(self, est_max: float) -> None:
-        if self.run_spent + est_max > self.max_usd + 1e-9:
+        spent = float(self.state.conn.execute(  # every stage of this run, not just enrichment
+            "SELECT COALESCE(SUM(cost_usd_estimate),0) FROM calls WHERE run_id=?", (self.run_id,)).fetchone()[0])
+        if spent + est_max > self.max_usd + 1e-9:
             raise RunCapExceeded(
-                f"next request could cost ${est_max:.4f}; run has spent ${self.run_spent:.4f} of --max-usd {self.max_usd:.2f}")
+                f"next request could cost ${est_max:.4f}; run has spent ${spent:.4f} of --max-usd {self.max_usd:.2f}")
 
     def _call_with_backoff(self, request: dict, call_id: str, phase: str, ids: list[str]):
         import anthropic
@@ -222,7 +238,7 @@ class Pilot:
             "service_tier": self.tier, "started_at": started, "ended_at": utc_now(),
             "duration_s": round(duration, 3), "cost_usd_estimate": cost,
         }
-        if phase == "cold":
+        if phase in ("cold", "cold_resume"):
             heads = [g["review_ids"][0] for g in groups]
             attempts = {r[0]: r[1] for r in self.state.conn.execute(
                 f"SELECT review_id, attempts FROM records WHERE review_id IN ({','.join('?' * len(heads))})", heads)}
@@ -260,7 +276,7 @@ class Pilot:
             groups = self.state.pending_text_groups(want)
             if not groups:
                 break
-            info = self._send(groups, "cold")
+            info = self._send(groups, self.enrich_phase)
             calls += 1
             sent += len(groups)
             if self.dry_run:
@@ -268,6 +284,38 @@ class Pilot:
                 # park the groups so the loop advances; run_pilot() restores them to pending at the end
                 self.state.commit_batch([], quarantines=[{"review_ids": g["review_ids"], "reason": "dry_run"} for g in groups])
         return {"calls": calls, "texts_sent": sent, "wall_s": round(time.monotonic() - t0, 3), "dry_run": dry}
+
+    def run_downstream(self, state: RunState | None = None, run_dir: Path | None = None) -> dict:
+        """verify -> group -> rank -> recommend on `state` (default: this run), each timed; results cached by input."""
+        state = state or self.state
+        run_dir = run_dir or self.out_dir
+        caller = Caller(state, self.ledger, self.run_id, client=self._client if self._client is not None else None,
+                        rates=self.rates, tier=self.tier, max_usd=self.max_usd, log=self.log)
+        if self._client is None and not self.dry_run:
+            caller._client = self.client
+        before = state.conn.execute("SELECT COUNT(*) FROM calls WHERE run_id=?", (self.run_id,)).fetchone()[0]
+        out, t_all = {}, time.monotonic()
+        for stage in self.stages:
+            t0 = time.monotonic()
+            if stage == "verify":
+                rep = run_verify(state, caller, run_dir, frac=self.verify_frac, min_n=self.verify_min_n,
+                                 phase=self.contract_phase, log=self.log)
+                out[stage] = {k: rep[k] for k in ("verified", "agreement", "severity_mae", "new_calls_this_run",
+                                                  "reused_verifications")} | {"sample": rep["sample"]["sample_size"],
+                                                                              "planted_errors": {k: rep["planted_errors"][k] for k in ("planted", "detected", "detection_rate")},
+                                                                              "calls": rep["calls"]}
+            elif stage == "group":
+                out[stage] = run_group(state, caller, run_dir, phase=self.contract_phase, log=self.log)
+            elif stage == "rank":
+                out[stage] = run_rank(state, run_dir, self.run_id)
+            elif stage == "recommend":
+                m = run_memo(state, caller, run_dir, model=self.memo_model, phase=self.contract_phase, log=self.log)
+                out[stage] = {k: m[k] for k in m if k not in ("memo", "attempts")}
+            out[stage]["wall_s"] = round(time.monotonic() - t0, 3)
+        after = state.conn.execute("SELECT COUNT(*) FROM calls WHERE run_id=?", (self.run_id,)).fetchone()[0]
+        out["wall_s"] = round(time.monotonic() - t_all, 3)
+        out["model_calls"] = after - before
+        return out
 
     def run_warm(self) -> dict:
         """Warm run per COST_CALCULATOR.md: same input, saved result cache, zero enrichment calls.
@@ -283,22 +331,27 @@ class Pilot:
         ingest(self.input_path, warm_dir, force=True)
         warm = RunState(warm_dir / "state.sqlite")
         try:
-            rows = self.state.conn.execute(
-                "SELECT text_sha256, label_config, label, source_review_id, created_at FROM label_cache").fetchall()
-            with warm.transaction() as c:
-                c.executemany("INSERT OR IGNORE INTO label_cache VALUES (?,?,?,?,?)", [tuple(r) for r in rows])
+            copied = warm.copy_downstream_cache_from(self.state)
             hits = warm.apply_cache_hits(self.cfg)
+            enrich_wall = round(time.monotonic() - t0, 3)
             counts = warm.status_counts()
             pending = [g["cache_source_id"] for g in warm.pending_text_groups(MAX_REVIEWS_PER_REQUEST)]
             snap = warm.export_checkpoint(warm_dir / "checkpoint.json", run_id=f"{self.run_id}-warm")
+            downstream = self.run_downstream(warm, warm_dir) if self.stages else {"wall_s": 0.0, "model_calls": 0}
+            calls = [dict(r) for r in warm.conn.execute("SELECT stage, status, cost_usd_estimate FROM calls")]
         finally:
             warm.close()
         wall = round(time.monotonic() - t0, 3)
-        self.log(f"warm: {hits} rows completed from the saved result cache in {wall}s, 0 enrichment calls, "
+        enrich_calls = sum(1 for c in calls if c["stage"] == STAGE)
+        cost = round(sum(c["cost_usd_estimate"] or 0 for c in calls), 6)
+        self.log(f"warm: {hits} rows completed from the saved result cache in {enrich_wall}s, {enrich_calls} enrichment calls; "
+                 f"downstream stages {downstream['wall_s']}s with {downstream['model_calls']} model calls; total {wall}s; "
                  f"{len(pending)} text(s) still pending (not labelled in the cold run)")
-        return {"wall_s": wall, "enrichment_calls": 0, "cost_usd": 0.0, "result_cache_entries": len(rows),
+        return {"wall_s": wall, "enrich_wall_s": enrich_wall, "enrichment_calls": enrich_calls,
+                "downstream_calls": downstream["model_calls"], "cost_usd": cost, "result_cache_entries": copied["label_cache"],
+                "downstream_cache_entries": {k: v for k, v in copied.items() if k != "label_cache"},
                 "rows_completed_from_cache": hits, "counts": counts, "pending_text_ids": pending,
-                "checkpoint": snap, "db": str(warm_dir / "state.sqlite")}
+                "checkpoint": snap, "db": str(warm_dir / "state.sqlite"), "stages": downstream}
 
     def run_replay(self) -> dict:
         """Paid: re-send every cold request verbatim; compare labels; commit nothing."""
@@ -320,8 +373,10 @@ class Pilot:
     # ---- reporting ---------------------------------------------------------
 
     def _phase_stats(self, phase: str) -> dict:
+        phases = ("cold", "cold_resume") if phase == "cold" else (phase, phase)
         rows = [dict(r) for r in self.state.conn.execute(
-            "SELECT * FROM calls WHERE run_id=? AND phase=? ORDER BY started_at", (self.run_id, phase))]
+            "SELECT * FROM calls WHERE run_id=? AND stage=? AND phase IN (?,?) ORDER BY started_at",
+            (self.run_id, STAGE, *phases))]
         ok = [r for r in rows if r["status"] in ("success", "invalid")]
         durs = [r["duration_s"] for r in ok if r["duration_s"] is not None]
         usage = {k: sum(r[k] or 0 for r in ok) for k in
@@ -432,17 +487,18 @@ class Pilot:
             w.writerow(["request_id", "run_id", "phase", "role", "model", "service_tier", "unit", "billed_tokens",
                         "usd_per_mtok", "cost_usd", "price_source_url", "price_retrieved_on"])
             for r in self.state.conn.execute("SELECT * FROM calls WHERE run_id=? ORDER BY started_at", (self.run_id,)):
-                usage = {k: r[k] for k in ("input_tokens", "cache_creation_input_tokens",
-                                           "cache_read_input_tokens", "output_tokens")}
+                usage = {k: (r[k] or 0) for k in ("input_tokens", "cache_creation_input_tokens",
+                                                  "cache_read_input_tokens", "output_tokens")}
                 entry = {
                     "request_id": r["call_id"], "run_id": r["run_id"], "role": r["stage"],
                     "review_ids": json.loads(r["request_review_ids"] or "[]"), "model": r["model"],
                     "phase": CONTRACT_PHASE.get(r["phase"], r["phase"]), "pilot_phase": r["phase"],
                     "outcome": "failed" if r["status"] == "failed" else "succeeded",
                     "validation": r["status"], "error": r["error"], "attempt": r["attempt"],
-                    "label_config": r["label_config"], "prompt_sha256": PROMPT_SHA256, "effort": EFFORT,
+                    "label_config": r["label_config"], "prompt_sha256": PROMPT_SHA256 if r["stage"] == STAGE else None,
+                    "effort": EFFORT if r["stage"] == STAGE else None,
                     "thinking": "disabled", "service_tier": r["service_tier"], "workers": 1,
-                    "max_reviews_per_request": self.batch_size, **usage,
+                    "max_reviews_per_request": self.batch_size if r["stage"] == STAGE else None, **usage,
                     "started_at": r["started_at"], "ended_at": r["ended_at"], "duration_s": r["duration_s"],
                     "cost_usd": r["cost_usd_estimate"],
                 }
@@ -463,7 +519,8 @@ class Pilot:
 
 def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MODEL, tier="standard",
               batch_size=MAX_REVIEWS_PER_REQUEST, phases=("cold", "warm"), ledger_path=None, client=None,
-              limit=None, rates=None, dry_run=False, cost_dir=None) -> dict:
+              limit=None, rates=None, dry_run=False, cost_dir=None, stages=DOWNSTREAM, memo_model=MEMO_MODEL,
+              verify_frac=DEFAULT_FRAC, verify_min_n=DEFAULT_MIN_N) -> dict:
     input_path, out_dir = Path(input_path), Path(out_dir)
     if not input_path.exists():
         raise FileNotFoundError(f"input not found: {input_path}")
@@ -474,12 +531,14 @@ def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MO
     manifest_check = check_manifest(manifest_path, input_path)
 
     pilot = Pilot(out_dir, input_path, model=model, tier=tier, batch_size=batch_size, max_usd=max_usd,
-                  ledger_path=ledger_path, client=client, limit=limit, rates=rates, dry_run=dry_run)
+                  ledger_path=ledger_path, client=client, limit=limit, rates=rates, dry_run=dry_run, resumed=resumed,
+                  stages=stages, memo_model=memo_model, verify_frac=verify_frac, verify_min_n=verify_min_n)
     report = {
         "run_id": pilot.run_id, "created_at": utc_now(), "status": "ok", "resumed": resumed, "dry_run": dry_run,
         "model": model, "tier": tier, "effort": EFFORT, "thinking": "disabled", "workers": 1,
         "label_config": pilot.cfg, "prompt_sha256": PROMPT_SHA256,
-        "batch_size": batch_size, "max_usd": max_usd, "phases_requested": list(phases),
+        "batch_size": batch_size, "max_usd": max_usd, "phases_requested": list(phases), "stages": list(stages),
+        "memo_model": memo_model, "verify_sample": {"frac": verify_frac, "min_n": verify_min_n},
         "input": {"path": str(input_path), "sha256": manifest_check["input_sha256"],
                   "rows": pilot.state.record_count(), **pilot.state.status_counts()},
         "manifest_check": manifest_check,
@@ -500,6 +559,8 @@ def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MO
         report["input"]["avg_chars_per_distinct_text"] = round(heads[1] / heads[0], 2) if heads[0] else None
         if "cold" in phases:
             report["cold_loop"] = pilot.run_cold()
+            if stages and not dry_run:
+                report["stages_cold"] = pilot.run_downstream()
         if "replay" in phases and not dry_run:
             if pilot.state.conn.execute("SELECT 1 FROM calls WHERE run_id=? AND phase='replay' LIMIT 1",
                                         (pilot.run_id,)).fetchone():
@@ -535,7 +596,11 @@ def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MO
             report["labels_csv_rows"] = pilot.export_labels_csv(out_dir / "labels.csv")
             report["checkpoint"] = pilot.state.export_checkpoint(out_dir / "checkpoint.json", run_id=pilot.run_id)
             report["cost_evidence"] = pilot.export_cost_evidence(cost_dir or config.REPO_ROOT / "cost")
-        report["run_spent_usd"] = round(pilot.run_spent, 6)
+        report["run_spent_usd"] = round(float(pilot.state.conn.execute(
+            "SELECT COALESCE(SUM(cost_usd_estimate),0) FROM calls WHERE run_id=?", (pilot.run_id,)).fetchone()[0]), 6)
+        report["cost_by_stage"] = {r[0]: round(r[1], 6) for r in pilot.state.conn.execute(
+            "SELECT stage, COALESCE(SUM(cost_usd_estimate),0) FROM calls WHERE run_id=? GROUP BY stage", (pilot.run_id,))}
+        report["stage_calls"] = {st: stage_summary(pilot.state, pilot.run_id, st) for st in ("enrich", "verify", "group", "memo")}
         report["ledger"] = pilot.ledger.summary()
         report["final_counts"] = pilot.state.status_counts()
         report["events"] = pilot.events
@@ -562,7 +627,14 @@ def _summary(report: dict) -> dict:
                       "cost_usd": st["cost_usd"], "per_text": st.get("per_text")}
     warm = report.get("phases", {}).get("warm")
     if warm:
-        out["warm"] = {k: warm[k] for k in ("wall_s", "enrichment_calls", "rows_completed_from_cache", "counts")}
+        out["warm"] = {k: warm.get(k) for k in ("wall_s", "enrich_wall_s", "enrichment_calls", "downstream_calls",
+                                                  "rows_completed_from_cache", "counts")}
+    if report.get("stages_cold"):
+        sc = report["stages_cold"]
+        out["stages_cold"] = {k: ({kk: v[kk] for kk in v if kk in ("wall_s", "verified", "agreement", "planted_errors",
+                                                                   "issues", "membership_rows", "status", "calls", "cached")}
+                                  if isinstance(v, dict) else v) for k, v in sc.items()}
+    out["cost_by_stage"] = report.get("cost_by_stage")
     if report.get("labels", {}).get("cold_replay_agreement"):
         out["cold_replay_agreement"] = report["labels"]["cold_replay_agreement"]
     return out
@@ -584,7 +656,16 @@ def main(argv=None) -> int:
     ap.add_argument("--limit", type=int, help="classify at most this many distinct texts")
     ap.add_argument("--ledger", default=os.fspath(config.LEDGER_DB_PATH))
     ap.add_argument("--dry-run", action="store_true", help="build requests and price the worst case; no API calls")
+    ap.add_argument("--stages", default=",".join(DOWNSTREAM), help="downstream stages after enrichment (empty to skip)")
+    ap.add_argument("--memo-model", default=MEMO_MODEL)
+    ap.add_argument("--verify-frac", type=float, default=DEFAULT_FRAC)
+    ap.add_argument("--verify-min-n", type=int, default=DEFAULT_MIN_N)
     args = ap.parse_args(argv)
+    stages = tuple(s.strip() for s in args.stages.split(",") if s.strip())
+    bad_stage = [s for s in stages if s not in DOWNSTREAM]
+    if bad_stage:
+        print(f"pilot failed: unknown stage(s) {bad_stage}", file=sys.stderr)
+        return 1
     phases = tuple(p.strip() for p in args.phases.split(",") if p.strip())
     bad = [p for p in phases if p not in PHASE_NAMES]
     if bad:
@@ -593,7 +674,8 @@ def main(argv=None) -> int:
     try:
         report = run_pilot(args.input, args.out, args.manifest, max_usd=args.max_usd, model=args.model,
                            tier=args.tier, batch_size=args.batch_size, phases=phases, ledger_path=args.ledger,
-                           limit=args.limit, dry_run=args.dry_run, cost_dir=args.cost_dir)
+                           limit=args.limit, dry_run=args.dry_run, cost_dir=args.cost_dir, stages=stages,
+                           memo_model=args.memo_model, verify_frac=args.verify_frac, verify_min_n=args.verify_min_n)
     except (FileNotFoundError, FileExistsError, ValueError) as e:
         print(f"pilot failed: {e}", file=sys.stderr)
         return 1

@@ -22,67 +22,163 @@
       "workers": 1,
       "tier": "standard"
     },
+    "other_stages": {
+      "verify": {
+        "model": "claude-haiku-5-5",
+        "sample_rule": "max(10, ceil(frac x completed heads)), blind, separate prompt",
+        "verified": 10,
+        "agreement": {
+          "topic": 1.0,
+          "intent": 0.9,
+          "severity": 0.9,
+          "joint": 0.8
+        },
+        "planted_errors": {
+          "planted": 5,
+          "detected": 5,
+          "detection_rate": 1.0
+        }
+      },
+      "group": {
+        "model": "claude-haiku-5-5",
+        "issues": 17,
+        "membership_rows": 51
+      },
+      "memo": {
+        "model": "claude-sonnet-5-5",
+        "status": "validated"
+      }
+    },
     "records": {
       "completed": 100,
       "quarantined": 0,
       "pending": 0,
       "quarantine_reasons": {},
       "distinct_nonempty_texts": 100,
-      "texts_sent": 103,
+      "texts_sent": 102,
       "rows_completed_via_exact_text_reuse": 0
     },
     "requests": {
       "succeeded": 3,
       "failed_attempts": 0,
-      "retried_texts": 3
+      "retried_texts": 2,
+      "all_stages_succeeded": 6,
+      "all_stages_failed_attempts": 1
     },
     "usage": {
-      "input_tokens": 4081,
-      "cache_creation_input_tokens": 0,
-      "cache_read_input_tokens": 8439,
-      "output_tokens": 5879
+      "input_tokens": 3944,
+      "cache_creation_input_tokens": 2813,
+      "cache_read_input_tokens": 5626,
+      "output_tokens": 5743
     },
     "cost_by_unit": {
       "input": {
-        "tokens": 4081,
+        "tokens": 3944,
         "usd_per_mtok": 0.1,
-        "usd": 0.0004081
+        "usd": 0.0003944
       },
       "cache_write_5m": {
-        "tokens": 0,
+        "tokens": 2813,
         "usd_per_mtok": 0.125,
-        "usd": 0.0
+        "usd": 0.00035162
       },
       "cache_read": {
-        "tokens": 8439,
+        "tokens": 5626,
         "usd_per_mtok": 0.01,
-        "usd": 8.439e-05
+        "usd": 5.626e-05
       },
       "output": {
-        "tokens": 5879,
+        "tokens": 5743,
         "usd_per_mtok": 0.5,
-        "usd": 0.0029395
+        "usd": 0.0028715
       }
     },
-    "api_cost_usd": 0.00343199,
-    "cost_per_1000_input_rows_usd": 0.03432,
-    "cost_per_completed_record_usd": 3.432e-05,
+    "enrich_cost_usd": 0.00367378,
+    "stages": {
+      "enrich": {
+        "calls": 3,
+        "failed_calls": 0,
+        "texts": 102,
+        "model": "claude-haiku-5-5",
+        "usage": {
+          "input_tokens": 3944,
+          "cache_creation_input_tokens": 2813,
+          "cache_read_input_tokens": 5626,
+          "output_tokens": 5743
+        },
+        "usd": 0.00367378,
+        "wall_s": 19.257,
+        "usd_per_text": 3.602e-05
+      },
+      "verify": {
+        "calls": 1,
+        "failed_calls": 0,
+        "texts": 10,
+        "model": "claude-haiku-5-5",
+        "usage": {
+          "input_tokens": 378,
+          "cache_creation_input_tokens": 1334,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 294
+        },
+        "usd": 0.00035155,
+        "wall_s": 2.171,
+        "usd_per_text": 3.515e-05
+      },
+      "group": {
+        "calls": 1,
+        "failed_calls": 0,
+        "texts": 30,
+        "model": "claude-haiku-5-5",
+        "usage": {
+          "input_tokens": 2415,
+          "cache_creation_input_tokens": 553,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 1210
+        },
+        "usd": 0.00091562,
+        "wall_s": 7.587,
+        "usd_per_text": 3.052e-05
+      },
+      "memo": {
+        "calls": 1,
+        "failed_calls": 1,
+        "texts": 13,
+        "model": "claude-sonnet-5-5",
+        "usage": {
+          "input_tokens": 2175,
+          "cache_creation_input_tokens": 1334,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 1881
+        },
+        "usd": 0.026495,
+        "wall_s": 18.091,
+        "usd_per_text": 0.00203808
+      }
+    },
+    "api_cost_usd": 0.03143595,
+    "cost_per_1000_input_rows_usd": 0.314359,
+    "cost_per_completed_record_usd": 0.00031436,
     "cold": {
-      "wall_clock_s": 20.33,
+      "wall_clock_s": 19.257,
       "calls": 3,
       "call_duration_s": {
-        "mean": 6.777,
-        "p50": 9.258,
-        "max": 9.367
+        "mean": 6.419,
+        "p50": 8.888,
+        "max": 9.157
       },
-      "throughput_texts_per_s": 5.066,
-      "prompt_cache_read_tokens": 8439
+      "throughput_texts_per_s": 5.297,
+      "prompt_cache_read_tokens": 5626,
+      "downstream_wall_s": 27.849,
+      "end_to_end_wall_s": 47.106
     },
     "warm": {
-      "wall_clock_s": 0.033,
+      "wall_clock_s": 0.039,
+      "enrich_wall_s": 0.023,
       "enrichment_calls": 0,
+      "downstream_calls": 0,
       "rows_completed_from_result_cache": 100,
-      "incremental_api_cost_usd": 0.0,
+      "incremental_api_cost_usd": 0,
       "counts": {
         "pending": 0,
         "completed": 100,
@@ -92,22 +188,91 @@
     "replay": null,
     "local_compute": "unknown (not measured; one laptop/container process, no GPU)",
     "per_text": {
-      "input_tokens": 39.621,
-      "input_tokens_per_char": 0.4181,
-      "output_tokens_per_text": 57.078,
+      "input_tokens": 38.667,
+      "input_tokens_per_char": 0.4062,
+      "output_tokens_per_text": 56.304,
       "avg_chars": 80.42,
       "system_prompt_tokens": 1963,
-      "seconds_per_call": 6.777
+      "seconds_per_call": 6.419,
+      "verify_usd_per_text": 3.515e-05,
+      "verify_seconds_per_call": 2.171,
+      "fixed_measured_usd": 0.027411
     }
   },
+  "refresh": [
+    {
+      "run_id": "pilot500",
+      "path": "/home/user/spotify-review-pipeline/runs/pilot500/run_report.json",
+      "usable": true,
+      "status": "ok",
+      "rows": 500,
+      "completed": 500,
+      "quarantined": 0,
+      "distinct_texts": 479,
+      "texts_sent": 490,
+      "enrich_calls": 10,
+      "failed_attempts": 0,
+      "api_cost_usd": 0.04929,
+      "cost_per_1000_input_rows_usd": 0.09858,
+      "stages": {
+        "enrich": {
+          "usd": 0.015955,
+          "calls": 10,
+          "wall_s": 87.535
+        },
+        "verify": {
+          "usd": 0.00038125,
+          "calls": 1,
+          "wall_s": 2.428
+        },
+        "group": {
+          "usd": 0.00133703,
+          "calls": 1,
+          "wall_s": 8.161
+        },
+        "memo": {
+          "usd": 0.031617,
+          "calls": 1,
+          "wall_s": 19.436
+        }
+      },
+      "verify": {
+        "topic": 0.8,
+        "intent": 0.8,
+        "severity": 0.8,
+        "joint": 0.8
+      },
+      "per_text": {
+        "input_tokens": 37.994,
+        "input_tokens_per_char": 0.3917,
+        "output_tokens_per_text": 56.376,
+        "avg_chars": 81.67,
+        "system_prompt_tokens": null,
+        "seconds_per_call": 8.753,
+        "verify_usd_per_text": 3.813e-05,
+        "verify_seconds_per_call": 2.428,
+        "fixed_measured_usd": 0.032954
+      }
+    },
+    {
+      "run_id": "pilot10000",
+      "path": "/home/user/spotify-review-pipeline/runs/pilot10000/run_report.json",
+      "usable": false,
+      "status": "stopped_at_limit",
+      "note": "only a completed run (status ok) is used; partial runs would understate cost per row"
+    }
+  ],
   "params": {
-    "input_tokens": 39.621,
-    "input_tokens_per_char": 0.4181,
-    "output_tokens_per_text": 57.078,
+    "input_tokens": 38.667,
+    "input_tokens_per_char": 0.4062,
+    "output_tokens_per_text": 56.304,
     "avg_chars": 80.42,
     "system_prompt_tokens": 1963,
-    "seconds_per_call": 6.777,
-    "source": "measured pilot"
+    "seconds_per_call": 6.419,
+    "verify_usd_per_text": 3.515e-05,
+    "verify_seconds_per_call": 2.171,
+    "fixed_measured_usd": 0.027411,
+    "source": "measured pilot100"
   },
   "population": {
     "source": "/home/user/spotify-review-pipeline/runs/full/ingestion_report.json",
@@ -123,10 +288,11 @@
     "max_workers": 4,
     "max_fallback_frac": 0.01,
     "verifier_frac": 0.01,
-    "fixed_usd": 0.5,
-    "remaining_pilot_texts": 10500
+    "fixed_usd": 0.0548,
+    "fixed_source": "2x measured group+memo",
+    "remaining_pilot_texts": 10021
   },
-  "already_committed_usd": 0.003819,
+  "already_committed_usd": 0.232116,
   "scenarios": {
     "base/exact_text_reuse/standard": {
       "scenario": "base",
@@ -141,20 +307,23 @@
         "cache_write_frac": 0.02
       },
       "main_run": {
-        "prompt_cache": 16.6639,
-        "no_prompt_cache": 18.3652
+        "prompt_cache": 16.4149,
+        "no_prompt_cache": 18.1162
       },
-      "verifier": 0.1666,
-      "sonnet_fallback": 1.6342,
-      "remaining_pilots": 0.3614,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0038,
-      "total": 19.3299,
-      "headroom_vs_budget": 0.6701,
+      "verifier": 0.1736,
+      "verifier_texts": 4842,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 1.6098,
+      "fallback_texts": 2421,
+      "remaining_pilots": 0.3397,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 0.2321,
+      "total": 18.8249,
+      "headroom_vs_budget": 1.1751,
       "within_budget": true,
       "wall_clock_h": {
-        "standard_1_worker": 18.59,
-        "standard_4_workers": 4.65,
+        "standard_1_worker": 17.67,
+        "standard_4_workers": 4.42,
         "batch": null
       }
     },
@@ -171,16 +340,19 @@
         "cache_write_frac": 0.02
       },
       "main_run": {
-        "prompt_cache": 8.332,
-        "no_prompt_cache": 9.1826
+        "prompt_cache": 8.2074,
+        "no_prompt_cache": 9.0581
       },
-      "verifier": 0.0833,
-      "sonnet_fallback": 1.6342,
-      "remaining_pilots": 0.1807,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0038,
-      "total": 10.734,
-      "headroom_vs_budget": 9.266,
+      "verifier": 0.0868,
+      "verifier_texts": 4842,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 1.6098,
+      "fallback_texts": 2421,
+      "remaining_pilots": 0.1699,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 0.2321,
+      "total": 10.3608,
+      "headroom_vs_budget": 9.6392,
       "within_budget": true,
       "wall_clock_h": {
         "standard_1_worker": null,
@@ -201,20 +373,23 @@
         "cache_write_frac": 0.02
       },
       "main_run": {
-        "prompt_cache": 22.0669,
-        "no_prompt_cache": 24.3881
+        "prompt_cache": 21.7461,
+        "no_prompt_cache": 24.0673
       },
-      "verifier": 0.2207,
-      "sonnet_fallback": 2.163,
-      "remaining_pilots": 0.3507,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0038,
-      "total": 25.3051,
-      "headroom_vs_budget": -5.3051,
+      "verifier": 0.2369,
+      "verifier_texts": 6607,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 2.1315,
+      "fallback_texts": 3304,
+      "remaining_pilots": 0.3299,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 0.2321,
+      "total": 24.7313,
+      "headroom_vs_budget": -4.7313,
       "within_budget": false,
       "wall_clock_h": {
-        "standard_1_worker": 25.37,
-        "standard_4_workers": 6.34,
+        "standard_1_worker": 24.11,
+        "standard_4_workers": 6.03,
         "batch": null
       }
     },
@@ -231,16 +406,19 @@
         "cache_write_frac": 0.02
       },
       "main_run": {
-        "prompt_cache": 11.0334,
-        "no_prompt_cache": 12.194
+        "prompt_cache": 10.8731,
+        "no_prompt_cache": 12.0337
       },
-      "verifier": 0.1103,
-      "sonnet_fallback": 2.163,
-      "remaining_pilots": 0.1754,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0038,
-      "total": 13.9859,
-      "headroom_vs_budget": 6.0141,
+      "verifier": 0.1184,
+      "verifier_texts": 6607,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 2.1315,
+      "fallback_texts": 3304,
+      "remaining_pilots": 0.1649,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 0.2321,
+      "total": 13.5748,
+      "headroom_vs_budget": 6.4252,
       "within_budget": true,
       "wall_clock_h": {
         "standard_1_worker": null,
@@ -261,20 +439,23 @@
         "cache_write_frac": 0.1
       },
       "main_run": {
-        "prompt_cache": 21.1824,
-        "no_prompt_cache": 22.8457
+        "prompt_cache": 20.8726,
+        "no_prompt_cache": 22.5358
       },
-      "verifier": 0.2118,
-      "sonnet_fallback": 3.2635,
-      "remaining_pilots": 0.4594,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0038,
-      "total": 25.6209,
-      "headroom_vs_budget": -5.6209,
+      "verifier": 0.1872,
+      "verifier_texts": 4842,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 3.2146,
+      "fallback_texts": 4842,
+      "remaining_pilots": 0.432,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 0.2321,
+      "total": 24.9933,
+      "headroom_vs_budget": -4.9933,
       "within_budget": false,
       "wall_clock_h": {
-        "standard_1_worker": 20.05,
-        "standard_4_workers": 5.01,
+        "standard_1_worker": 19.05,
+        "standard_4_workers": 4.76,
         "batch": null
       }
     },
@@ -291,16 +472,19 @@
         "cache_write_frac": 0.1
       },
       "main_run": {
-        "prompt_cache": 10.5912,
-        "no_prompt_cache": 11.4228
+        "prompt_cache": 10.4363,
+        "no_prompt_cache": 11.2679
       },
-      "verifier": 0.1059,
-      "sonnet_fallback": 3.2635,
-      "remaining_pilots": 0.2297,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0038,
-      "total": 14.6941,
-      "headroom_vs_budget": 5.3059,
+      "verifier": 0.0936,
+      "verifier_texts": 4842,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 3.2146,
+      "fallback_texts": 4842,
+      "remaining_pilots": 0.216,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 0.2321,
+      "total": 14.2474,
+      "headroom_vs_budget": 5.7526,
       "within_budget": true,
       "wall_clock_h": {
         "standard_1_worker": null,
@@ -321,20 +505,23 @@
         "cache_write_frac": 0.1
       },
       "main_run": {
-        "prompt_cache": 28.1792,
-        "no_prompt_cache": 30.4486
+        "prompt_cache": 27.777,
+        "no_prompt_cache": 30.0464
       },
-      "verifier": 0.2818,
-      "sonnet_fallback": 4.3205,
-      "remaining_pilots": 0.4479,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0038,
-      "total": 33.7332,
-      "headroom_vs_budget": -13.7332,
+      "verifier": 0.2555,
+      "verifier_texts": 6607,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 4.2576,
+      "fallback_texts": 6607,
+      "remaining_pilots": 0.4214,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 0.2321,
+      "total": 32.9984,
+      "headroom_vs_budget": -12.9984,
       "within_budget": false,
       "wall_clock_h": {
-        "standard_1_worker": 27.36,
-        "standard_4_workers": 6.84,
+        "standard_1_worker": 26.0,
+        "standard_4_workers": 6.5,
         "batch": null
       }
     },
@@ -351,16 +538,19 @@
         "cache_write_frac": 0.1
       },
       "main_run": {
-        "prompt_cache": 14.0896,
-        "no_prompt_cache": 15.2243
+        "prompt_cache": 13.8885,
+        "no_prompt_cache": 15.0232
       },
-      "verifier": 0.1409,
-      "sonnet_fallback": 4.3205,
-      "remaining_pilots": 0.2239,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0038,
-      "total": 19.2787,
-      "headroom_vs_budget": 0.7213,
+      "verifier": 0.1277,
+      "verifier_texts": 6607,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 4.2576,
+      "fallback_texts": 6607,
+      "remaining_pilots": 0.2107,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 0.2321,
+      "total": 18.7714,
+      "headroom_vs_budget": 1.2286,
       "within_budget": true,
       "wall_clock_h": {
         "standard_1_worker": null,

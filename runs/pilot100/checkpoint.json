@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-10-16T20:48:15.696831Z",
+  "created_at": "2026-10-16T21:36:37.801148Z",
   "run_id": "pilot100",
   "db_path": "runs/pilot100/state.sqlite",
   "counts": {
@@ -11,5 +11,5 @@
   "completed_ids_sha256": "592faa95fc01be451da973eb8c264297006127700f6bf090175ad54912a6b7f4",
   "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
   "label_cache_entries": 100,
-  "calls": 3
+  "calls": 7
 }

@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-10-16T21:22:21.930599Z",
+  "run_id": "pilot500",
+  "db_path": "runs/pilot500/state.sqlite",
+  "counts": {
+    "pending": 0,
+    "completed": 500,
+    "quarantined": 0
+  },
+  "completed_ids_count": 500,
+  "completed_ids_sha256": "19c4d84c545fb2c85118487e84486e401f829b51d7a27892181456c1ef96d5cd",
+  "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+  "label_cache_entries": 479,
+  "calls": 13
+}

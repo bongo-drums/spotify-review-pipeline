@@ -1,0 +1,105 @@
+{
+  "status": "validated",
+  "validation": {
+    "errors": [],
+    "ok": true,
+    "unverified_numbers": []
+  },
+  "model": "claude-sonnet-5-5",
+  "input_sha256": "f10f03225617909e0bcc8da00555ec6aadf44a041d59e466c1378ed2ab0ec44b",
+  "cached": true,
+  "calls": 0,
+  "cost_usd": 0.0,
+  "attempts": [],
+  "memo": {
+    "alternatives": [
+      {
+        "case_for": "It has the largest topic complaint load, driven by usability.ads_interruptions, which scores {C12} from {C9} complaints, and reviewers say ad frequency is pushing them to uninstall.",
+        "focus_area": "usability",
+        "why_not_now": "Its top issue ranks third, below the Premium-gating issue at {C4}, and ad load is closely tied to the free-versus-Premium model, so it is best handled alongside the billing_support work rather than ahead of it."
+      },
+      {
+        "case_for": "playback.crash_wont_open has a mean severity of {C19}, and a crash or a stuck loading screen leaves a user unable to use the app at all.",
+        "focus_area": "playback",
+        "why_not_now": "It has only {C17} complaints and a score of {C20}, far below the leading issues, so the evidence does not support it as the quarter's main focus. It may still merit a targeted fix."
+      },
+      {
+        "case_for": "access.login_failure has a mean severity of {C15}, the highest of any ranked issue, because users cannot get into their accounts.",
+        "focus_area": "access",
+        "why_not_now": "It has only {C13} complaints and a score of {C16}, which is too small a base to justify a quarter-long focus. Monitor it and handle it as a bug fix."
+      }
+    ],
+    "headline": "Put next quarter's effort into billing_support: the Premium-gated controls issue ranks first and billing and support together carry the second-largest complaint load.",
+    "limitations": [
+      "Reviews are self-selected public text, so they over-represent unhappy and highly motivated users and cannot be read as the whole user base.",
+      "Complaint counts are small for several issues, so rankings among the lower issues are unstable and a few reviews could change them.",
+      "Severity is a classifier-assigned score, and some reviews were flagged for human review, so individual labels may be wrong.",
+      "The data show no revenue, churn, or user-count information, so recommendations are based only on complaint frequency and severity.",
+      "The other.general_negative issue is a catch-all and may overlap with specific issues such as Premium-gated controls."
+    ],
+    "recommendation": {
+      "argument": "The highest-priority issue, billing.premium_only_controls, sits in this area with a score of {C4}, ahead of every other named issue. Its {C1} complaints at a mean severity of {C3} make it both frequent and fairly severe. Billing and support together hold the second-largest topic complaint load, close behind usability. Reviewers tie the complaint to a recent update, and the same update-and-removed-features theme appears in the second-ranked other.general_negative issue, so work on how paywalled controls are presented and communicated may address part of that complaint too. This is an argument from complaint patterns, not from measured revenue or churn effects.",
+      "claim_ids": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C8"
+      ],
+      "focus_area": "billing_support"
+    },
+    "situation": [
+      "The run labelled every review in the sample, and complaints are the largest intent group, so the ranking reflects a broad pattern of dissatisfaction rather than a few outliers.",
+      "Per-topic complaint load puts usability first and billing_support second, with playback and access far behind. The ranking weights severity as well as volume, which is why the order of issues differs from the order of topics.",
+      "The top-ranked issue, billing.premium_only_controls, has {C1} complaints and a priority score of {C4}. The second-ranked issue, other.general_negative, has {C5} complaints but a lower score of {C8} because its mean severity is only {C7}.",
+      "The third-ranked issue, usability.ads_interruptions, scores {C12} from {C9} complaints at a mean severity of {C11}. Access and playback issues each score {C16} and {C20}, with high severity per review but very few complaints."
+    ],
+    "top_issues": [
+      {
+        "claim_ids": [
+          "C1",
+          "C2",
+          "C3",
+          "C4"
+        ],
+        "evidence_review_ids": [
+          "a78d831a-69f4-428a-9235-cfdd9775c509",
+          "d146397f-4a94-4980-be00-ae9212eca3a7",
+          "ad730d1a-829a-4dc4-9561-7e1cd07e2c30"
+        ],
+        "issue_id": "billing.premium_only_controls",
+        "why_it_matters": "It is the top-ranked issue, with {C1} complaints, a severity sum of {C2}, and a mean severity of {C3}. Customers say that picking songs, playing next, and skipping now require Premium, and that basic listening feels paywalled after an update."
+      },
+      {
+        "claim_ids": [
+          "C5",
+          "C6",
+          "C7",
+          "C8"
+        ],
+        "evidence_review_ids": [
+          "45c561b9-cc47-4d80-95d3-f0d20bc84af3",
+          "b47c203f-366e-4409-922d-cd52aa8bbef6",
+          "7084ced1-0428-4093-9328-442f74719b4f"
+        ],
+        "issue_id": "other.general_negative",
+        "why_it_matters": "It has the most complaints, {C5}, but a low mean severity of {C7}, giving a score of {C8}. Reviewers describe a recent update that removed basic player features. Some of this may overlap with the Premium-gating issue, though the data do not show how much."
+      },
+      {
+        "claim_ids": [
+          "C9",
+          "C10",
+          "C11",
+          "C12"
+        ],
+        "evidence_review_ids": [
+          "3e8bdc92-4934-457e-85cc-8b9d14bf51c0",
+          "c2738a4f-e57c-46bc-a4ad-8ec5a4b5d5cd",
+          "035213ba-b1b9-411c-b028-70296e5f0e73"
+        ],
+        "issue_id": "usability.ads_interruptions",
+        "why_it_matters": "The third-ranked issue has {C9} complaints and a score of {C12}. Free-tier users report ads every one or two songs, and one says they are uninstalling. It is the main driver of the usability topic's complaint load."
+      }
+    ]
+  }
+}

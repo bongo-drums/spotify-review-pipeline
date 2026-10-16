@@ -8,7 +8,7 @@ Checks, in order, and prints one JSON report:
   2. rates       cost/rates.csv loads and names the models the pipeline uses.
   3. ledger      the shared spend ledger opens; remaining budget under the cap.
   4. models      GET /v1/models/{id} for each priced model (free): the key works and the IDs exist.
-  5. smoke       one enricher-shaped request with a single tiny review (thinking off, structured
+  5. smoke       one enricher-shaped request (Haiku) and one memo-shaped request (Sonnet) with a single tiny review (thinking off, structured
                  output, cached system prompt): proves the exact request shape is accepted, and
                  records its real cost (well under a cent) in the ledger as run 'keycheck'.
 Exit 0 only if every check passes.
@@ -36,6 +36,32 @@ def credential_status() -> dict:
         return {"ok": True, "source": var, "prefix": val[:7] + "…", "length": len(val)}
     return {"ok": False, "source": None,
             "hint": "set PIPELINE_ANTHROPIC_API_KEY in the environment (or repo .env, which is git-ignored)"}
+
+
+def smoke_memo_shape(client, ledger: SpendLedger, rates, model: str) -> dict:
+    """One tiny request in the memo stage's exact parameter shape (thinking off, structured output, effort)."""
+    import anthropic
+    from .llm import thinking_off
+    from .memo import EFFORT as MEMO_EFFORT
+    schema = {"type": "object", "properties": {"ok": {"type": "boolean"}}, "required": ["ok"], "additionalProperties": False}
+    request = {"model": model, "max_tokens": 16, "system": [{"type": "text", "text": "Reply with JSON {\"ok\": true}."}],
+               "messages": [{"role": "user", "content": "ping"}], "thinking": thinking_off(model),
+               "output_config": {"effort": MEMO_EFFORT, "format": {"type": "json_schema", "schema": schema}}}
+    est_max = pricing.max_cost(model, "standard", 64, 16, rates)
+    res = ledger.reserve(est_max, call_id="keycheck-memo-shape")
+    t0 = time.monotonic()
+    try:
+        response = client.messages.create(**request)
+    except anthropic.APIError as e:
+        ledger.release(res)
+        return {"ok": False, "model": model, "error": f"{type(e).__name__}: {getattr(e, 'message', e)}"}
+    cost = pricing.cost_of(response.usage, model, "standard", rates)
+    ledger.commit(res, cost, call_id="keycheck-memo-shape")
+    u = response.usage
+    return {"ok": True, "model": model, "thinking": request["thinking"], "effort": MEMO_EFFORT,
+            "duration_s": round(time.monotonic() - t0, 3), "cost_usd": round(cost, 7),
+            "usage": {"input_tokens": u.input_tokens, "output_tokens": u.output_tokens},
+            "request_id": getattr(response, "_request_id", None)}
 
 
 def check_models(client, models: list[str]) -> dict:
@@ -117,8 +143,12 @@ def main(argv=None) -> int:
         if ok and not args.no_smoke:
             report["smoke"] = smoke_test(client, ledger, rates)
             ok = report["smoke"]["ok"]
+            from .memo import MODEL as MEMO_MODEL
+            report["smoke_memo_shape"] = smoke_memo_shape(client, ledger, rates, MEMO_MODEL)
+            ok = ok and report["smoke_memo_shape"]["ok"]
         elif args.no_smoke:
             report["smoke"] = {"skipped": True}
+            report["smoke_memo_shape"] = {"skipped": True}
     else:
         report["models"] = {"skipped": "no credential"}
         report["smoke"] = {"skipped": "no credential"}

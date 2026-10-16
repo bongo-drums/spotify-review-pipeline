@@ -1,0 +1,337 @@
+{
+  "issue_id_rule": "topic.subtopic (label set labels-v1)",
+  "allow_multi_issue": false,
+  "naming": {
+    "model": "claude-haiku-5-5",
+    "input_sha256": "18a57a470f083f205ea6185c520bfb7bf69ceeb30a52b4d2390bb22af0c8b1be",
+    "cached": false,
+    "calls": 1,
+    "invalid_names": [],
+    "cost_usd": 0.001337025,
+    "input_tokens": 4069,
+    "output_tokens": 1722,
+    "duration_s": 8.161,
+    "unnamed": []
+  },
+  "issues": [
+    {
+      "issue_id": "other.general_negative",
+      "topic": "other",
+      "subtopic": "general_negative",
+      "complaint_count": 66,
+      "severity_sum": 133,
+      "example_review_ids": [
+        "45c561b9-cc47-4d80-95d3-f0d20bc84af3",
+        "b47c203f-366e-4409-922d-cd52aa8bbef6",
+        "7084ced1-0428-4093-9328-442f74719b4f"
+      ],
+      "name": "Recent update removed basic features and users are unhappy",
+      "summary": "Customers say a recent update made the app less useful, removed basic music player features, and leaves them disappointed.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "billing.premium_only_controls",
+      "topic": "billing",
+      "subtopic": "premium_only_controls",
+      "complaint_count": 40,
+      "severity_sum": 110,
+      "example_review_ids": [
+        "a78d831a-69f4-428a-9235-cfdd9775c509",
+        "d146397f-4a94-4980-be00-ae9212eca3a7",
+        "ad730d1a-829a-4dc4-9561-7e1cd07e2c30"
+      ],
+      "name": "Basic playback controls locked behind Premium paywall",
+      "summary": "Customers report that choosing specific songs, unlimited skipping, and playing the next track now require a Premium subscription.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.ads_interruptions",
+      "topic": "usability",
+      "subtopic": "ads_interruptions",
+      "complaint_count": 29,
+      "severity_sum": 74,
+      "example_review_ids": [
+        "3e8bdc92-4934-457e-85cc-8b9d14bf51c0",
+        "c2738a4f-e57c-46bc-a4ad-8ec5a4b5d5cd",
+        "035213ba-b1b9-411c-b028-70296e5f0e73"
+      ],
+      "name": "Frequent ads interrupt listening for free users",
+      "summary": "Customers complain that ads play after every song or two, with no long stretches of uninterrupted music unless they pay for Premium.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.stops_skips_glitches",
+      "topic": "playback",
+      "subtopic": "stops_skips_glitches",
+      "complaint_count": 13,
+      "severity_sum": 45,
+      "example_review_ids": [
+        "9c9757da-6b99-4c95-a0e7-0661ee858027",
+        "46ff0c74-5e86-4e5b-b4cd-36201aab0f9e",
+        "6c257eba-3dca-49f6-b7f0-4c4484d81e26"
+      ],
+      "name": "Music stops halfway and voice assistant fails to play",
+      "summary": "Customers report playback stopping mid-song, failing to resume where it left off, sound adjustment bugs, and Google Assistant not playing songs.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "access.login_failure",
+      "topic": "access",
+      "subtopic": "login_failure",
+      "complaint_count": 9,
+      "severity_sum": 34,
+      "example_review_ids": [
+        "32fb340f-4f9f-4551-8dae-755221e58d6a",
+        "12efd15d-4d4f-4a71-8e71-69d03b6f983a",
+        "c64af4d8-ac17-48fe-ae38-fd54b41b16b1"
+      ],
+      "name": "Cannot log in and app shows false no-internet error",
+      "summary": "Customers say they cannot log into their account, and the app reports no internet connection even though other apps on their phone work.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.connectivity",
+      "topic": "playback",
+      "subtopic": "connectivity",
+      "complaint_count": 10,
+      "severity_sum": 34,
+      "example_review_ids": [
+        "4ab2089a-ffa8-49e7-a8a3-aeb583a96796",
+        "3df77a78-ad9a-4456-8be8-8178ffd43d67",
+        "179d79f7-d052-490f-a9d6-f97525b32642"
+      ],
+      "name": "App reports no internet despite working Wi-Fi connection",
+      "summary": "Customers report the app says there is no internet connection or randomly stops playing while other apps and Wi-Fi work normally.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.ui_redesign",
+      "topic": "usability",
+      "subtopic": "ui_redesign",
+      "complaint_count": 12,
+      "severity_sum": 27,
+      "example_review_ids": [
+        "94c9f2f9-36fa-4c11-936e-660514fe7a35",
+        "e16a4550-43e7-4ae1-b538-a65cc652c31b",
+        "7f27bbab-ef19-4fb1-80d8-cd014da3e002"
+      ],
+      "name": "Redesigned interface hard to use and missing features",
+      "summary": "Customers dislike the new update's design, saying songs will not play as expected, lyrics are missing, and queue additions are unavailable.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.crash_wont_open",
+      "topic": "playback",
+      "subtopic": "crash_wont_open",
+      "complaint_count": 6,
+      "severity_sum": 21,
+      "example_review_ids": [
+        "55cc3abf-c295-4591-8c3a-78085cfdefaa",
+        "4a806587-0dde-4fb4-b4f1-f5c7d197c927",
+        "065c418e-7f18-42a3-b241-fe693b7a2b0c"
+      ],
+      "name": "App crashes or fails to open after latest update",
+      "summary": "Customers report the app crashes or will not open following the latest update, sometimes showing a black screen.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "billing.subscription_activation",
+      "topic": "billing",
+      "subtopic": "subscription_activation",
+      "complaint_count": 6,
+      "severity_sum": 20,
+      "example_review_ids": [
+        "a7b7539a-c8d3-4f4e-9edd-d46cd1b1fd12",
+        "16929558-ce1e-4b87-8738-a1de3f557f66",
+        "57aca404-d58b-4bb4-97b1-c64db92f054a"
+      ],
+      "name": "Music blocked after subscribing to Premium",
+      "summary": "Customers say that after paying for Premium they see a paused subscription screen and cannot access or play their music.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.missing_content",
+      "topic": "catalog",
+      "subtopic": "missing_content",
+      "complaint_count": 8,
+      "severity_sum": 19,
+      "example_review_ids": [
+        "0658feaa-5bec-416e-b6b0-3de2a4c14580",
+        "10775595-01b9-4623-9163-51619e2a0fa9",
+        "4d327494-7846-481a-bf00-f4b5abc099c4"
+      ],
+      "name": "Many songs and full tracks unavailable in catalog",
+      "summary": "Customers say many songs are absent, including underrated titles, and that some tracks only offer a short clip instead of the full song.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.recommendations",
+      "topic": "catalog",
+      "subtopic": "recommendations",
+      "complaint_count": 8,
+      "severity_sum": 19,
+      "example_review_ids": [
+        "1807cc68-ba99-4edc-b6f1-2a1478e69109",
+        "d27e9b26-a7af-469c-9a4e-8deea2db72ae",
+        "ed8efdfe-43e3-4baa-bbed-317807663531"
+      ],
+      "name": "Recommendations ignore settings and disregard preferences",
+      "summary": "Customers say the app keeps recommending songs into their playlists even after recommendations are turned off, and criticize the artists and content promoted.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.queue_playlist_mgmt",
+      "topic": "usability",
+      "subtopic": "queue_playlist_mgmt",
+      "complaint_count": 6,
+      "severity_sum": 17,
+      "example_review_ids": [
+        "ebc64fe2-9553-4528-87d5-cb4bb9783be6",
+        "f8a85378-c4dd-40e2-b548-beebcdf3b991",
+        "e393cec1-67e8-4f58-a484-8d9d76dc8fd6"
+      ],
+      "name": "Shuffle-only playlist controls and limited skipping",
+      "summary": "Customers report the new menu only allows shuffle, shuffle repeats the same songs, and skipping is limited to six songs in a playlist.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.controls_navigation",
+      "topic": "usability",
+      "subtopic": "controls_navigation",
+      "complaint_count": 6,
+      "severity_sum": 16,
+      "example_review_ids": [
+        "0853c56b-0fa1-4d12-9cb9-6817d52233f5",
+        "0e5a2a0d-7f67-48a5-9edd-27064f670656",
+        "caa9bb7e-814c-4895-b872-10637419b9ba"
+      ],
+      "name": "Tapping songs plays unintended tracks or demos",
+      "summary": "Customers report that tapping a liked song opens unrelated songs or demos, plays random tracks, and that video and audio-only podcasts cannot be switched.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.lyrics",
+      "topic": "catalog",
+      "subtopic": "lyrics",
+      "complaint_count": 5,
+      "severity_sum": 13,
+      "example_review_ids": [
+        "47becad0-8ae5-4a10-9731-fde8f2091862",
+        "9f7a013a-082e-4ec1-8a65-a1e0a0395d20",
+        "e0127547-4edd-44a0-8d5e-e8398bc07086"
+      ],
+      "name": "Lyrics missing or inconsistently displayed",
+      "summary": "Customers say lyrics appear for some songs but not others and sometimes fail to load for songs in their playlists.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "downloads.download_fails",
+      "topic": "downloads",
+      "subtopic": "download_fails",
+      "complaint_count": 2,
+      "severity_sum": 8,
+      "example_review_ids": [
+        "394b1e3e-205a-48a7-a9ca-64170fa5f6a0",
+        "b03d6dc9-449a-4647-b112-559186656759"
+      ],
+      "name": "Downloads fail and storage move deletes content",
+      "summary": "Customers report downloads not starting and that moving storage failed and deleted their downloaded content.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "downloads.offline_needs_internet",
+      "topic": "downloads",
+      "subtopic": "offline_needs_internet",
+      "complaint_count": 2,
+      "severity_sum": 8,
+      "example_review_ids": [
+        "dcff57c6-abd6-413b-b255-aec3dc34fcbd",
+        "1f13c3a2-e57b-460c-b569-964e6b2b1f31"
+      ],
+      "name": "Downloaded music will not play offline",
+      "summary": "Customers report offline mode not working and being unable to listen to music offline or log in without internet.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "downloads.downloads_disappear",
+      "topic": "downloads",
+      "subtopic": "downloads_disappear",
+      "complaint_count": 2,
+      "severity_sum": 7,
+      "example_review_ids": [
+        "2ffdf599-a0d5-4c01-bf26-025215d44c06",
+        "5be3399d-dcd2-405b-a931-29b02ffc966e"
+      ],
+      "name": "Downloads stall in background and questions paid value",
+      "summary": "Customers say downloads get stuck in the background until Spotify is opened, and question the value of paying for Premium.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "other.unrelated",
+      "topic": "other",
+      "subtopic": "unrelated",
+      "complaint_count": 4,
+      "severity_sum": 7,
+      "example_review_ids": [
+        "486d1d7a-d6f6-41ea-81ad-ed875452729c",
+        "b0d0660d-b859-4d87-97e8-7420f05d1f94",
+        "7fd63051-28ec-4e51-a06e-97f7010eae40"
+      ],
+      "name": "Users uninstall app over unrelated political protest",
+      "summary": "Customers say they are uninstalling the app to protest a political matter unrelated to the app's functionality.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "access.account_locked_hacked",
+      "topic": "access",
+      "subtopic": "account_locked_hacked",
+      "complaint_count": 1,
+      "severity_sum": 5,
+      "example_review_ids": [
+        "d87536c5-6fe0-4b38-b0b1-c47936e4a0d8"
+      ],
+      "name": "Account hacked and playlists cannot be recovered",
+      "summary": "A customer reports their account was hacked, playlists from last week cannot be recovered, and they feel they are paying for nothing.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.podcasts",
+      "topic": "catalog",
+      "subtopic": "podcasts",
+      "complaint_count": 1,
+      "severity_sum": 3,
+      "example_review_ids": [
+        "3899ed22-7b96-4c4f-9706-42985b8d8049"
+      ],
+      "name": "Podcast playback lags for paying subscribers",
+      "summary": "A Premium customer reports that certain podcasts have suddenly started lagging.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.background_play",
+      "topic": "playback",
+      "subtopic": "background_play",
+      "complaint_count": 1,
+      "severity_sum": 3,
+      "example_review_ids": [
+        "9e5f9745-f8be-48d3-b9de-4d118507d94a"
+      ],
+      "name": "Cannot skip back a few seconds during playback",
+      "summary": "A customer reports they cannot rewind a few seconds to replay part of a song.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "billing.price",
+      "topic": "billing",
+      "subtopic": "price",
+      "complaint_count": 1,
+      "severity_sum": 2,
+      "example_review_ids": [
+        "58511d69-67c2-4432-84d8-f3c556592f2b"
+      ],
+      "name": "Charges to listen or replay music seem excessive",
+      "summary": "A customer says there are too many charges to listen to or replay music, which is why they dislike the app now.",
+      "name_source": "model"
+    }
+  ]
+}
