@@ -16,6 +16,7 @@ To check the arithmetic, edit `rates.csv` (doubling every rate doubles the API s
 
 ```sh
 cp .env.example .env            # then fill ANTHROPIC_API_KEY locally; .env is gitignored
+python -m pipeline.keycheck     # free: reports which env vars are set and makes one count_tokens call
 python -m pipeline.pilot --input data/raw/extracted/cost_100.csv \
     --manifest data/raw/extracted/manifest.json --out runs/pilot100 --max-usd 0.25
 python cost/calculator.py
