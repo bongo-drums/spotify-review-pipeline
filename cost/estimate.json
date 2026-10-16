@@ -1,0 +1,109 @@
+{
+  "population": {
+    "source": "/home/user/spotify-review-pipeline/runs/full/ingestion_report.json",
+    "rows": 660622,
+    "nonblank_rows": 660609,
+    "distinct_texts": 484189,
+    "distinct_text_chars": 47724767
+  },
+  "requests": 9684,
+  "batch_size": 50,
+  "cache_writes_assumed": 194,
+  "params": {
+    "source": "ASSUMPTIONS (no pilot report yet)",
+    "model": "claude-haiku-5-5",
+    "input_tokens_per_char": 0.303,
+    "framing_tokens_per_text": 6,
+    "output_tokens_per_text": 48,
+    "system_prompt_tokens": 1511,
+    "seconds_per_call": 6.0,
+    "cache_worked": null
+  },
+  "main_run": {
+    "standard_cached": {
+      "usd": 13.5371,
+      "tokens": {
+        "input_tokens": 17365738,
+        "cache_creation_input_tokens": 293134,
+        "cache_read_input_tokens": 14339390,
+        "output_tokens": 23241072
+      }
+    },
+    "standard_uncached": {
+      "usd": 14.8204,
+      "tokens": {
+        "input_tokens": 31998262,
+        "output_tokens": 23241072
+      }
+    },
+    "batch_cached": {
+      "usd": 6.7686,
+      "tokens": {
+        "input_tokens": 17365738,
+        "cache_creation_input_tokens": 293134,
+        "cache_read_input_tokens": 14339390,
+        "output_tokens": 23241072
+      }
+    },
+    "batch_uncached": {
+      "usd": 7.4102,
+      "tokens": {
+        "input_tokens": 31998262,
+        "output_tokens": 23241072
+      }
+    }
+  },
+  "totals": {
+    "standard_cached": {
+      "main_run": 13.5371,
+      "verifier": 0.1354,
+      "sonnet_fallback": 1.354,
+      "remaining_pilots": 0.2936,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 15.8201,
+      "headroom_vs_cap": 4.1799,
+      "within_cap": true
+    },
+    "standard_uncached": {
+      "main_run": 14.8204,
+      "verifier": 0.1482,
+      "sonnet_fallback": 1.354,
+      "remaining_pilots": 0.2936,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 17.1162,
+      "headroom_vs_cap": 2.8838,
+      "within_cap": true
+    },
+    "batch_cached": {
+      "main_run": 6.7686,
+      "verifier": 0.0677,
+      "sonnet_fallback": 1.354,
+      "remaining_pilots": 0.2936,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 8.9839,
+      "headroom_vs_cap": 11.0161,
+      "within_cap": true
+    },
+    "batch_uncached": {
+      "main_run": 7.4102,
+      "verifier": 0.0741,
+      "sonnet_fallback": 1.354,
+      "remaining_pilots": 0.2936,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 9.6319,
+      "headroom_vs_cap": 10.3681,
+      "within_cap": true
+    }
+  },
+  "wall_clock": {
+    "standard_sequential_h": 16.14,
+    "standard_4_workers_h": 4.04,
+    "batch": "asynchronous; most batches finish within an hour, guaranteed within 24 h"
+  },
+  "cap_usd": 20.0,
+  "recommended": "batch_cached"
+}

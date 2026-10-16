@@ -1,4 +1,5 @@
-# Runtime (stdlib-only so far: csv, sqlite3, hashlib, json, argparse)
+# Runtime
+anthropic==1.15.0
 python-dotenv==1.2.3
 # Dev / test
 pytest==9.1.1
