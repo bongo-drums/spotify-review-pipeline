@@ -24,7 +24,8 @@ from dotenv import load_dotenv
 
 from . import config
 from .budget import BudgetExceeded
-from .enricher import MAX_REVIEWS_PER_REQUEST, MODEL
+from .enricher import FALLBACK_MODEL, MAX_REVIEWS_PER_REQUEST, MODEL
+from .fallback import DEFAULT_MAX_FRAC
 from .export import export_grading
 from .ingest import ingest
 from .llm import stage_summary
@@ -57,7 +58,7 @@ def write_checkpoint(pilot: Pilot, name: str) -> dict:
 
 def run(input_path, out_dir, *, manifest=None, max_usd=1.0, stages=ALL_STAGES, limit=None, memo_model=MEMO_MODEL,
         verify_frac=DEFAULT_FRAC, verify_min_n=DEFAULT_MIN_N, batch_size=MAX_REVIEWS_PER_REQUEST, ledger_path=None,
-        client=None, export=None, full_ingestion=None) -> dict:
+        client=None, export=None, full_ingestion=None, fallback_frac=DEFAULT_MAX_FRAC) -> dict:
     input_path, out_dir = Path(input_path), Path(out_dir)
     if not input_path.exists():
         raise FileNotFoundError(input_path)
@@ -67,7 +68,7 @@ def run(input_path, out_dir, *, manifest=None, max_usd=1.0, stages=ALL_STAGES, l
     downstream = tuple(s for s in stages if s in DOWNSTREAM)
     pilot = Pilot(out_dir, input_path, model=MODEL, max_usd=max_usd, ledger_path=ledger_path, client=client, limit=limit,
                   resumed=resumed, stages=downstream, memo_model=memo_model, verify_frac=verify_frac, verify_min_n=verify_min_n,
-                  batch_size=batch_size)
+                  batch_size=batch_size, fallback_frac=fallback_frac)
     report = {"run_id": pilot.run_id, "started_at": utc_now(), "status": "ok", "resumed": resumed,
               "phase": pilot.contract_phase, "stages": list(stages), "input": {"path": str(input_path), **check_manifest(manifest, input_path)},
               "counts_before": pilot.state.status_counts(), "max_usd": max_usd, "limit": limit}
@@ -108,6 +109,8 @@ def run(input_path, out_dir, *, manifest=None, max_usd=1.0, stages=ALL_STAGES, l
         report["cost_by_stage"] = {r[0]: round(r[1], 6) for r in pilot.state.conn.execute(
             "SELECT stage, COALESCE(SUM(cost_usd_estimate),0) FROM calls WHERE run_id=? GROUP BY stage", (pilot.run_id,))}
         report["stage_calls"] = {st: stage_summary(pilot.state, pilot.run_id, st) for st in ("enrich", "verify", "group", "memo")}
+        report["stage_calls"]["fallback"] = stage_summary(pilot.state, pilot.run_id, "enrich", model=FALLBACK_MODEL)
+        report["stage_calls"]["enrich"] = stage_summary(pilot.state, pilot.run_id, "enrich", model=MODEL)
         heads = pilot.state.conn.execute(
             "SELECT COUNT(*), COALESCE(SUM(LENGTH(s.review_text)),0) FROM records r JOIN source s USING(review_id) "
             "WHERE r.review_id = r.cache_source_id AND r.status != 'quarantined'").fetchone()
@@ -136,6 +139,7 @@ def main(argv=None) -> int:
     ap.add_argument("--memo-model", default=MEMO_MODEL)
     ap.add_argument("--verify-frac", type=float, default=DEFAULT_FRAC)
     ap.add_argument("--verify-min-n", type=int, default=DEFAULT_MIN_N)
+    ap.add_argument("--fallback-frac", type=float, default=DEFAULT_MAX_FRAC, help="max fraction of distinct texts routed to Sonnet")
     ap.add_argument("--batch-size", type=int, default=MAX_REVIEWS_PER_REQUEST)
     ap.add_argument("--ledger", default=os.fspath(config.LEDGER_DB_PATH))
     ap.add_argument("--export", help="also write the grading folder here when the run completes")
@@ -149,7 +153,8 @@ def main(argv=None) -> int:
     try:
         report = run(args.input, args.out, manifest=args.manifest, max_usd=args.max_usd, stages=stages, limit=args.limit,
                      memo_model=args.memo_model, verify_frac=args.verify_frac, verify_min_n=args.verify_min_n,
-                     batch_size=args.batch_size, ledger_path=args.ledger, export=args.export, full_ingestion=args.full_ingestion)
+                     batch_size=args.batch_size, ledger_path=args.ledger, export=args.export, full_ingestion=args.full_ingestion,
+                     fallback_frac=args.fallback_frac)
     except (FileNotFoundError, FileExistsError, ValueError) as e:
         print(f"run failed: {e}", file=sys.stderr)
         return 1
@@ -160,7 +165,8 @@ def main(argv=None) -> int:
         d = report["downstream"]
         summary["downstream"] = {"wall_s": d["wall_s"], "model_calls": d["model_calls"],
                                  "verify": {k: d["verify"][k] for k in ("verified", "agreement", "planted_errors")} if "verify" in d else None,
-                                 "issues": d.get("group", {}).get("issues"), "memo_status": d.get("recommend", {}).get("status")}
+                                 "issues": d.get("group", {}).get("issues"), "memo_status": d.get("recommend", {}).get("status"),
+                                 "fallback": {k: d["fallback"][k] for k in ("eligible", "routed", "completed", "still_quarantined", "cost_usd")} if "fallback" in d else None}
     print(json.dumps(summary, indent=2, default=str))
     return 0 if report["status"] in ("ok", "stopped_at_limit", "interrupted") else 2
 

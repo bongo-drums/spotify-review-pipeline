@@ -117,3 +117,65 @@ cold_resume: 50 texts, 8.4s, in=1747 cache_w=0 cache_r=2813 out=2787 $0.00160 | 
 cold_resume: 50 texts, 8.5s, in=1960 cache_w=0 cache_r=2813 out=2795 $0.00162 | ok=46 invalid=4 stop=end_turn
 cold_resume: 50 texts, 8.9s, in=1762 cache_w=0 cache_r=2813 out=2894 $0.00165 | ok=49 invalid=1 stop=end_turn
 cold_resume: 50 texts, 8.9s, in=2013 cache_w=0 cache_r=2813 out=2870 $0.00166 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1855 cache_w=0 cache_r=2813 out=2839 $0.00163 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.5s, in=1988 cache_w=0 cache_r=2813 out=2803 $0.00163 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1874 cache_w=0 cache_r=2813 out=2822 $0.00163 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1928 cache_w=0 cache_r=2813 out=2803 $0.00162 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2063 cache_w=0 cache_r=2813 out=2857 $0.00166 | ok=49 invalid=1 stop=end_turn
+cold_resume: 45 texts, 7.9s, in=1590 cache_w=0 cache_r=2813 out=2578 $0.00148 | ok=44 invalid=1 stop=end_turn
+cold_resume: 1 texts, 0.9s, in=42 cache_w=0 cache_r=2813 out=82 $0.00007 | ok=1 invalid=0 stop=end_turn
+verify: 50 texts, 7.635s, $0.00104 | verified=50 invalid=0
+verify: 35 texts, 3.697s, $0.00060 | verified=35 invalid=0
+group: named 31/31 issues in 10.69s, $0.00184
+memo: attempt 1 ok in 20.236s, $0.03288
+{
+  "status": "ok",
+  "run_id": "pilot10000",
+  "phase": "resume",
+  "counts_after": {
+    "pending": 0,
+    "completed": 9978,
+    "quarantined": 22
+  },
+  "cost_by_stage": {
+    "enrich": 0.28826,
+    "group": 0.001838,
+    "memo": 0.032877,
+    "verify": 0.001643
+  },
+  "run_spent_usd": 0.324618,
+  "stopped_because": null,
+  "checkpoint_before": null,
+  "checkpoint_after": {
+    "created_at": "2026-10-16T21:55:21.591203Z",
+    "run_id": "pilot10000",
+    "completed_count": 9978,
+    "counts": {
+      "pending": 0,
+      "completed": 9978,
+      "quarantined": 22
+    }
+  },
+  "ledger_remaining_usd": 19.586351,
+  "downstream": {
+    "wall_s": 42.811,
+    "model_calls": 4,
+    "verify": {
+      "verified": 85,
+      "agreement": {
+        "topic": 0.8706,
+        "intent": 0.9412,
+        "severity": 0.8824,
+        "joint": 0.7294
+      },
+      "planted_errors": {
+        "planted": 43,
+        "detected": 43,
+        "detection_rate": 1.0
+      }
+    },
+    "issues": 31,
+    "memo_status": "validated"
+  }
+}
+exit 0

@@ -6,8 +6,10 @@ decision memo whose every number is checked against saved aggregates. Plan and s
 Label definitions: `labels/definitions.md`. Course spec files: `docs/course/`.
 
 **Status (2026-10-16):** the staged program is complete and measured on the 100, 500 and 10,000-review
-checkpoints. The full 660k Batch-tier run, the interruption/resume recording and the dashboard deploy
-are the remaining steps (see *What is not done yet*).
+checkpoints; the grading export of the 10k run passes the course checker except for one unclassified text; the
+dashboard runs locally against the published 10k run (`docs/dashboard_pilot500.png` shows the 500 run). The full
+660k Batch-tier run, the interruption/resume recording and the dashboard deploy are the remaining steps (see
+*What is not done yet*).
 
 ## Rubric map
 
@@ -25,7 +27,7 @@ are the remaining steps (see *What is not done yet*).
 | **Working result** | |
 | Full ingestion, record coverage, successful classification | `runs/full/ingestion_report.json` (660,622 rows, 13 empty-text quarantines, 484,189 distinct texts, parsed-rows digest identical to the checker's profile); full classification not yet run (needs the go-ahead below) |
 | Runnable staged program, bounded calls, saved handoffs, demonstrated resume | `python -m pipeline.run --input <csv> --out runs/<id>`; <=50 reviews per request; every batch committed atomically; `--limit` stop + resume on the 10k checkpoint produced `checkpoint_before.json` / `checkpoint_after.json`; `python -m pipeline.rank --run runs/<id>` regenerates the ranking offline |
-| Reproducible baseline ranking, deployed dashboard with grounded recommendations | `pipeline/ranking.py` (Decimal half-up means, exact checker arithmetic, `tests/test_stages.py`); grading export `python -m pipeline.export` passes `check_submission.py` on the 10k checkpoint (`runs/pilot10000/self-check.json`); dashboard not yet deployed (needs Supabase and Vercel credentials) |
+| Reproducible baseline ranking, deployed dashboard with grounded recommendations | `pipeline/ranking.py` (Decimal half-up means, exact checker arithmetic, `tests/test_stages.py`); grading export `python -m pipeline.export` checked by `check_submission.py` on the 10k checkpoint (`runs/pilot10000/self-check.json`: only finding = 1 unclassified text); dashboard `web/` (Next.js API routes over Supabase Postgres, or the `web/data` snapshot without a database) built and exercised locally, see `web/README.md`; not yet deployed (needs Supabase and Vercel credentials) |
 
 ## Architecture
 
@@ -39,6 +41,7 @@ CSV ─▶ ingest ─▶ run DB (SQLite, WAL) ─▶ enrich ─▶ verify ─▶
 |---|---|---|---|
 | Prepare | `pipeline/ingest.py` | none | CSV → `state.sqlite` (`source`, `records` with contract row hash, exact-text `cache_source_id`, 13 `empty_review_text` quarantines), `ingestion_report.json`, `data_manifest.json` |
 | Classify | `pipeline/enricher.py` + `pipeline/pilot.py` | `enrich`: `claude-haiku-5-5`, thinking off, effort low, structured output, cached system prompt, ≤50 reviews/request | pending texts → `records.label` (topic, subtopic, intent, severity, sentiment, entities, evidence quote chosen by sentence index and expanded by code so it is always an exact substring, needs_review) + `calls` rows; invalid records retried once then quarantined |
+| Fallback | `pipeline/fallback.py` | `enrich`: `claude-sonnet-5-5`, same prompt, ≤10 texts/request, capped at 0.5% of distinct texts | texts quarantined for invalid output twice → one Sonnet attempt; records carry the Sonnet `label_config` |
 | Verify | `pipeline/verifier.py` | `verify`: Haiku, separate prompt, never sees enricher labels | seeded sample `max(10, 1%)` of model-labelled texts → `verifications` table, `artifacts/verification.{json,md}` with agreement, severity MAE, planted-error detection |
 | Group | `pipeline/grouping.py` | `group`: one Haiku call names issues from a bounded evidence pack | complaint/cancellation records → `membership.csv` (issue_id = `topic.subtopic`), `issues.json`, `evidence_pack.json` |
 | Rank | `pipeline/ranking.py` | none | `ranking.csv` (`priority_score = severity_sum`), `claims.csv`, `aggregates.json` |
@@ -69,12 +72,14 @@ In a Claude Code cloud environment add `PIPELINE_ANTHROPIC_API_KEY=sk-ant-...` u
 Offline (no key, no calls):
 
 ```bash
-python -m pytest -q                               # 37 tests against a fake client, incl. the course checker on an export
+python -m pytest -q                               # 38 tests against a fake client, incl. the course checker on an export
 python cost/calculator.py                         # offline replay of the 100-review pilot and full-run projection
 python -m pipeline.rank --run runs/pilot10000     # regenerate membership, ranking, claims, aggregates from saved labels
 python -m pipeline.export --run runs/pilot10000 --out grading --full-ingestion runs/full/ingestion_report.json
 python -m pipeline.budget                         # shared spend ledger status
 python -m pipeline.batchrun --input data/raw/extracted/spotify_reviews_18months.csv --out runs/full --max-usd 12 --dry-run
+python -m pipeline.publish --run runs/pilot10000  # dashboard snapshot into web/data (or --db "$SUPABASE_DB_URL")
+cd web && npm install && npm run build && npm start   # dashboard on http://localhost:3000 from web/data
 ```
 
 Paid (each run reserves against the $20 ledger and stops at its own `--max-usd`):
@@ -102,12 +107,24 @@ re-run the same command. The run DB only ever holds whole batches, the open spen
 | `runs/pilot100` cold | 100 | 100 / 0 | 3 | $0.0314 (enrich $0.0037) | 19.3 s | 1.0 / 0.9 / 0.9 (n=10) | validated |
 | `runs/pilot100` warm | 100 | 100 from cache | 0 | $0 | 0.04 s end to end | reused | cached |
 | `runs/pilot500` | 500 | 500 / 0 | 10 | $0.0493 | 88 s | 0.8 / 0.8 / 0.8 (n=10) | validated |
-| `runs/pilot10000` | 10,000 | see `runs/pilot10000/run_report.json` | | | | | |
+| `runs/pilot10000` | 10,000 | 9,999 / 1 | 176 Haiku + 3 Sonnet fallback (22 texts, 21 recovered) | $0.377 (enrich $0.311, fallback $0.023, memo ×2 $0.059) | 1,572 s (26 min) | 0.86 / 0.92 / 0.89 (n=170; planted errors 83/85 flagged) | validated |
 
-Full-run projection (`cost/report.md`): base scenario with exact-text reuse on the Batch tier about **$10.7**
-including verifier, capped Sonnet fallback and fixed memo cost; the same run on the standard tier about $19, and
-three of the eight scenarios exceed $20. Recommended: Batch tier. Worst-case reservation for the full run at
-batch rates: $12.47 (`runs/full/batchrun_dry_run.json`).
+The 10k run was deliberately stopped after 2,500 texts (`--limit`) and resumed: `checkpoints/checkpoint_before.json`
+(3,805 completed IDs) and `checkpoint_after.json` (9,978) are in the grading export, whose self-check
+(`runs/pilot10000/self-check.json`) reports `review_required` for exactly one reason, the single text that no model
+labelled validly (coverage candidate 0.9999). The 22 texts Haiku rejected twice went through the capped Sonnet
+fallback (`pipeline/fallback.py`, cap 0.5% of distinct texts); 21 came back valid.
+
+Full-run projection (`cost/report.md`): base scenario with exact-text reuse on the Batch tier about **$10.45**
+including the verifier, the capped Sonnet fallback and the measured group+memo cost; the same run on the standard
+tier about $18.7 (24 h with one worker, 6 h with four), and three of the eight scenarios exceed $20. Recommended:
+Batch tier. Worst-case ledger reservation for the full run at batch rates: $12.47 (`runs/full/batchrun_dry_run.json`).
+Per-text token usage was stable across 100, 500 and 10,000 reviews (38.7 / 38.0 / 39.1 input, 56.3 / 56.4 / 56.9
+output tokens per text), so the 100-review estimate held.
+
+Note on prompt versions: the checkpoints above ran with sentence format `v2`. The one remaining 10k quarantine
+("app.I am ...": a period glued to the next sentence) exposed a splitter gap, fixed in `pipeline/enricher.py`
+(`v3`, new `label_config`). The full run uses v3; the checkpoint evidence is kept as measured.
 
 Golden 50 (`evals/golden/results.md`): topic 0.66, intent 0.85 (n=46), severity 0.76, joint 0.54; severity MAE
 0.30. Most topic disagreements are praise that the human coded as general (`other`) and the model tied to a
@@ -137,6 +154,6 @@ evidence index (would be retried, then quarantined in a real run).
 2. **Interruption/resume recording** (Matt runs it on the full run).
 3. **Golden error analysis**, **memo recommendation in Matt's voice**, **README "design choices" and "one
    failure" sections** (Matt).
-4. **Dashboard**: Supabase Postgres + Next.js on Vercel, reading the saved aggregates, ranking, membership and
-   memo. Needs `SUPABASE_*` and `VERCEL_TOKEN` in the environment.
+4. **Dashboard deploy**: the app in `web/` is built; loading Supabase (`pipeline.publish --db`) and deploying to
+   Vercel need `SUPABASE_DB_URL` and `VERCEL_TOKEN` in the environment, then the live URL goes here.
 5. Decide the four golden rows (38, 41, 43, 45) recorded with an unresolved intent.

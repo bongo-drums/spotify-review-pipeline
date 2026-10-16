@@ -46,7 +46,8 @@ class FakeMessages:
         return SimpleNamespace(input_tokens=SYS_TOKENS + 5)
 
     def create(self, **kw):
-        assert kw["system"][0]["text"] == SYSTEM_PROMPT and kw["thinking"] == {"type": "disabled"}
+        from pipeline.enricher import thinking_off
+        assert kw["system"][0]["text"] == SYSTEM_PROMPT and kw["thinking"] == thinking_off(kw["model"])
         self.calls.append(kw)
         user = kw["messages"][0]["content"]
         records, n_sent = [], 0

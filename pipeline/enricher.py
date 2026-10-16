@@ -149,11 +149,22 @@ OUTPUT_SCHEMA = {
 # task, no reasoning tokens wanted). Sampling params are left at defaults (non-default -> 400).
 THINKING = {"type": "disabled"}
 EFFORT = "low"
+FALLBACK_MODEL = "claude-sonnet-5-5"   # capped stronger-model route for texts Haiku could not label validly
+
+
+def thinking_off(model: str) -> dict:
+    """The request value that turns reasoning off for `model`.
+
+    claude-haiku-5-5 accepts {"type": "disabled"}. claude-sonnet-5-5 rejects it (400) and wants
+    {"type": "between_tools"}: the model does not think before responding; only short notes between
+    tool calls would come back as thinking blocks, and this pipeline uses no tools.
+    """
+    return {"type": "between_tools"} if model.startswith("claude-sonnet-5") else dict(THINKING)
 
 
 def _fingerprint() -> str:
     blob = json.dumps({"system": SYSTEM_PROMPT, "schema": OUTPUT_SCHEMA, "thinking": THINKING,
-                       "effort": EFFORT, "format": "sentence-indexed-v2"}, sort_keys=True)
+                       "effort": EFFORT, "format": "sentence-indexed-v3"}, sort_keys=True)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 
@@ -167,7 +178,9 @@ def label_config(model: str = MODEL) -> str:
 
 # ---- sentence splitting (offsets into the raw text) ------------------------
 
-_BOUNDARY = re.compile(r"(?<=[.!?])\s+|[\r\n]+")
+# Sentence boundary: whitespace after . ! ?, a line break, or . ! ? glued to the next letter ("app.I am"):
+# reviews often omit the space, and the model then counts sentences the splitter did not (-> invalid index).
+_BOUNDARY = re.compile(r"(?<=[.!?])\s+|[\r\n]+|(?<=[.!?])(?=[A-Za-z])")
 
 
 def split_sentences(text: str) -> list[tuple[int, int]]:
@@ -220,7 +233,7 @@ def build_request(texts: list[str], model: str = MODEL) -> dict:
         "max_tokens": max_output_tokens(len(texts)),
         "system": [{"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}],
         "messages": [{"role": "user", "content": build_user_message(texts)}],
-        "thinking": dict(THINKING),
+        "thinking": thinking_off(model),
         "output_config": {"effort": EFFORT, "format": {"type": "json_schema", "schema": OUTPUT_SCHEMA}},
     }
 

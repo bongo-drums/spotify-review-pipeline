@@ -58,12 +58,33 @@ def export_records(state: RunState, path: Path, compress: bool) -> dict:
 
 
 def export_calls(state: RunState, run_id: str, path: Path) -> dict:
-    n, by_role = 0, {}
+    """One event per call. A succeeded enrich call can still hold records the validator rejected; when such a
+    record was later labelled under another label_config (the Sonnet fallback), its id is moved to a separate
+    `failed` event for that attempt, so every succeeded event names only ids it actually labelled under its
+    own config (GRADING_CONTRACT.md: enrichment calls name the same label_config as their completed records)."""
+    n, by_role, split = 0, {}, 0
+    final_cfg = {rid: cfg for rid, cfg in state.conn.execute(
+        "SELECT review_id, label_config FROM records WHERE status='completed' AND review_id = cache_source_id")}
     with open(path, "w", encoding="utf-8") as f:
         for r in state.conn.execute("SELECT * FROM calls WHERE run_id=? ORDER BY started_at", (run_id,)):
             if r["stage"] not in ROLES:
                 continue
             ids = json.loads(r["request_review_ids"] or "[]")
+            moved = []
+            if r["stage"] == "enrich" and r["status"] != "failed":
+                moved = [rid for rid in ids if rid in final_cfg and final_cfg[rid] != r["label_config"]]
+                if moved:
+                    ids = [rid for rid in ids if rid not in set(moved)]
+                    f.write(json.dumps({"request_id": f"{r['call_id']}-invalid", "role": "enrich", "review_ids": moved,
+                                        "model": r["model"], "phase": PHASE_MAP.get(r["phase"], r["phase"]), "outcome": "failed",
+                                        "label_config": r["label_config"], "input_tokens": 0, "output_tokens": 0,
+                                        "validation": "invalid_records", "error": "records rejected by the output validator in "
+                                        "this response; later labelled by the fallback model (usage is on the parent event)",
+                                        "parent_request_id": r["call_id"], "started_at": r["started_at"]}, ensure_ascii=False) + "\n")
+                    n += 1
+                    split += 1
+                    if not ids:
+                        continue
             entry = {"request_id": r["call_id"], "role": r["stage"], "review_ids": ids, "model": r["model"],
                      "phase": PHASE_MAP.get(r["phase"], r["phase"]),
                      "outcome": "failed" if r["status"] == "failed" else "succeeded",
@@ -77,7 +98,7 @@ def export_calls(state: RunState, run_id: str, path: Path) -> dict:
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
             n += 1
             by_role[r["stage"]] = by_role.get(r["stage"], 0) + 1
-    return {"calls": n, "by_role": by_role}
+    return {"calls": n, "by_role": by_role, "invalid_record_events_split_out": split}
 
 
 def export_grading(run_dir, out_dir, full_ingestion_report=None, compress: bool | None = None) -> dict:

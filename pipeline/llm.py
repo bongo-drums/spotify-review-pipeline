@@ -13,20 +13,10 @@ from pathlib import Path
 
 from . import config, pricing
 from .budget import SpendLedger
-from .enricher import estimate_prompt_tokens
+from .enricher import estimate_prompt_tokens, thinking_off  # noqa: F401  (re-exported for callers)
 from .state import RunState, utc_now
 
 BACKOFF_S = (2.0, 4.0, 8.0)
-
-
-def thinking_off(model: str) -> dict:
-    """The request value that turns reasoning off for `model`.
-
-    claude-haiku-5-5 accepts {"type": "disabled"}. claude-sonnet-5-5 rejects it (400) and wants
-    {"type": "between_tools"}: the model does not think before responding; only short notes between
-    tool calls would come back as thinking blocks, and this pipeline uses no tools.
-    """
-    return {"type": "between_tools"} if model.startswith("claude-sonnet-5") else {"type": "disabled"}
 
 
 class RunCapExceeded(RuntimeError):
@@ -120,13 +110,15 @@ def text_block_from_response(response) -> str | None:
     return next((b.text for b in getattr(response, "content", []) if getattr(b, "type", None) == "text"), None)
 
 
-def stage_calls(state: RunState, run_id: str, stage: str) -> list[dict]:
-    return [dict(r) for r in state.conn.execute(
-        "SELECT * FROM calls WHERE run_id=? AND stage=? ORDER BY started_at", (run_id, stage))]
+def stage_calls(state: RunState, run_id: str, stage: str, model: str | None = None) -> list[dict]:
+    sql, params = "SELECT * FROM calls WHERE run_id=? AND stage=?", [run_id, stage]
+    if model:
+        sql, params = sql + " AND model=?", params + [model]
+    return [dict(r) for r in state.conn.execute(sql + " ORDER BY started_at", params)]
 
 
-def stage_summary(state: RunState, run_id: str, stage: str) -> dict:
-    rows = stage_calls(state, run_id, stage)
+def stage_summary(state: RunState, run_id: str, stage: str, model: str | None = None) -> dict:
+    rows = stage_calls(state, run_id, stage, model)
     ok = [r for r in rows if r["status"] in ("success", "invalid")]
     usage = {k: sum(r[k] or 0 for r in ok) for k in pricing.USAGE_UNITS}
     import json as _json

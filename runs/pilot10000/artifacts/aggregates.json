@@ -1,0 +1,399 @@
+{
+  "generated_at": "2026-10-16T21:59:01.375123Z",
+  "run_id": "pilot10000",
+  "records": {
+    "total": 10000,
+    "pending": 0,
+    "completed": 9999,
+    "quarantined": 1,
+    "quarantine_reasons": {
+      "fallback_invalid_record:evidence sentence 3 out of range 0..0 (claude-sonnet-5-5)": 1
+    },
+    "completed_fraction": 0.9999
+  },
+  "labelled": 9999,
+  "by_topic": {
+    "access": 187,
+    "usability": 1333,
+    "playback": 670,
+    "downloads": 140,
+    "catalog": 883,
+    "billing": 984,
+    "support": 29,
+    "other": 5773
+  },
+  "by_intent": {
+    "cancellation": 331,
+    "complaint": 4216,
+    "request": 307,
+    "praise": 4332,
+    "unclear": 813
+  },
+  "by_severity": {
+    "1": 5281,
+    "2": 2650,
+    "3": 1604,
+    "4": 445,
+    "5": 19
+  },
+  "by_sentiment": {
+    "-0.5": 957,
+    "-1.0": 3433,
+    "0.0": 1162,
+    "0.5": 1794,
+    "1.0": 2653
+  },
+  "mean_sentiment": -0.0362,
+  "needs_review": {
+    "count": 1850,
+    "fraction": 0.185
+  },
+  "complaints": {
+    "total": 4547,
+    "by_topic": {
+      "access": 177,
+      "usability": 1082,
+      "playback": 563,
+      "downloads": 96,
+      "catalog": 336,
+      "billing": 866,
+      "support": 13,
+      "other": 1414
+    },
+    "severity_sum_by_topic": {
+      "access": 675,
+      "usability": 2669,
+      "playback": 1785,
+      "downloads": 323,
+      "catalog": 863,
+      "billing": 2399,
+      "support": 34,
+      "other": 2875
+    }
+  },
+  "focus_areas": {
+    "access": {
+      "topics": [
+        "access"
+      ],
+      "complaint_count": 177,
+      "severity_sum": 675,
+      "mean_severity": "3.813559",
+      "share_of_complaints": 0.0389
+    },
+    "usability": {
+      "topics": [
+        "usability"
+      ],
+      "complaint_count": 1082,
+      "severity_sum": 2669,
+      "mean_severity": "2.466728",
+      "share_of_complaints": 0.238
+    },
+    "playback": {
+      "topics": [
+        "playback"
+      ],
+      "complaint_count": 563,
+      "severity_sum": 1785,
+      "mean_severity": "3.170515",
+      "share_of_complaints": 0.1238
+    },
+    "billing_support": {
+      "topics": [
+        "billing",
+        "support"
+      ],
+      "complaint_count": 879,
+      "severity_sum": 2433,
+      "mean_severity": "2.767918",
+      "share_of_complaints": 0.1933
+    }
+  },
+  "complaints_by_month_topic": {
+    "2022-05": {
+      "access": 5,
+      "usability": 24,
+      "playback": 25,
+      "downloads": 2,
+      "catalog": 7,
+      "billing": 8,
+      "support": 1,
+      "other": 8
+    },
+    "2022-06": {
+      "access": 8,
+      "usability": 37,
+      "playback": 34,
+      "downloads": 5,
+      "catalog": 13,
+      "billing": 12,
+      "support": 2,
+      "other": 15
+    },
+    "2022-07": {
+      "access": 18,
+      "usability": 55,
+      "playback": 45,
+      "downloads": 8,
+      "catalog": 21,
+      "billing": 16,
+      "other": 28
+    },
+    "2022-08": {
+      "access": 9,
+      "usability": 45,
+      "playback": 20,
+      "downloads": 6,
+      "catalog": 5,
+      "billing": 19,
+      "other": 16
+    },
+    "2022-09": {
+      "access": 10,
+      "usability": 40,
+      "playback": 21,
+      "downloads": 8,
+      "catalog": 10,
+      "billing": 22,
+      "other": 19
+    },
+    "2022-10": {
+      "access": 2,
+      "usability": 46,
+      "playback": 18,
+      "downloads": 6,
+      "catalog": 13,
+      "billing": 15,
+      "other": 13
+    },
+    "2022-11": {
+      "access": 6,
+      "usability": 45,
+      "playback": 24,
+      "downloads": 5,
+      "catalog": 11,
+      "billing": 15,
+      "support": 2,
+      "other": 13
+    },
+    "2022-12": {
+      "access": 9,
+      "usability": 47,
+      "playback": 67,
+      "downloads": 1,
+      "catalog": 23,
+      "billing": 16,
+      "support": 2,
+      "other": 25
+    },
+    "2023-01": {
+      "access": 12,
+      "usability": 47,
+      "playback": 31,
+      "downloads": 3,
+      "catalog": 19,
+      "billing": 16,
+      "other": 28
+    },
+    "2023-02": {
+      "access": 6,
+      "usability": 34,
+      "playback": 17,
+      "downloads": 2,
+      "catalog": 9,
+      "billing": 15,
+      "other": 15
+    },
+    "2023-03": {
+      "access": 1,
+      "usability": 82,
+      "playback": 22,
+      "downloads": 7,
+      "catalog": 21,
+      "billing": 12,
+      "support": 1,
+      "other": 13
+    },
+    "2023-04": {
+      "access": 4,
+      "usability": 58,
+      "playback": 22,
+      "downloads": 2,
+      "catalog": 18,
+      "billing": 13,
+      "support": 1,
+      "other": 8
+    },
+    "2023-05": {
+      "access": 10,
+      "usability": 53,
+      "playback": 25,
+      "downloads": 6,
+      "catalog": 23,
+      "billing": 15,
+      "other": 20
+    },
+    "2023-06": {
+      "access": 10,
+      "usability": 58,
+      "playback": 25,
+      "downloads": 6,
+      "catalog": 18,
+      "billing": 20,
+      "support": 1,
+      "other": 24
+    },
+    "2023-07": {
+      "access": 19,
+      "usability": 62,
+      "playback": 28,
+      "downloads": 10,
+      "catalog": 20,
+      "billing": 22,
+      "support": 1,
+      "other": 589
+    },
+    "2023-08": {
+      "access": 13,
+      "usability": 49,
+      "playback": 35,
+      "downloads": 5,
+      "catalog": 19,
+      "billing": 30,
+      "other": 32
+    },
+    "2023-09": {
+      "access": 12,
+      "usability": 76,
+      "playback": 33,
+      "downloads": 5,
+      "catalog": 28,
+      "billing": 74,
+      "other": 78
+    },
+    "2023-10": {
+      "access": 17,
+      "usability": 157,
+      "playback": 50,
+      "downloads": 9,
+      "catalog": 36,
+      "billing": 417,
+      "support": 1,
+      "other": 343
+    },
+    "2023-11": {
+      "access": 6,
+      "usability": 67,
+      "playback": 21,
+      "catalog": 22,
+      "billing": 109,
+      "support": 1,
+      "other": 127
+    }
+  },
+  "issues": 31,
+  "top_issues": [
+    {
+      "rank": "1",
+      "issue_id": "other.general_negative",
+      "complaint_count": "1390",
+      "severity_sum": "2828",
+      "mean_severity": "2.034532",
+      "priority_score": "2828",
+      "name": "App feels worse and less useful after recent update",
+      "summary": "Customers say recent updates made the app useless or disappointing, and report bugs such as music adjustment not working properly."
+    },
+    {
+      "rank": "2",
+      "issue_id": "billing.premium_only_controls",
+      "complaint_count": "712",
+      "severity_sum": "2016",
+      "mean_severity": "2.831461",
+      "priority_score": "2016",
+      "name": "Basic music controls locked behind Premium paywall",
+      "summary": "Customers say basic features like picking specific songs, playing next tracks, and unlimited skipping now require a Premium subscription."
+    },
+    {
+      "rank": "3",
+      "issue_id": "usability.ads_interruptions",
+      "complaint_count": "586",
+      "severity_sum": "1397",
+      "mean_severity": "2.383959",
+      "priority_score": "1397",
+      "name": "Frequent ads interrupt listening for free users",
+      "summary": "Customers report ads playing every one or two songs, with many saying ads are excessive and driving them to consider uninstalling."
+    },
+    {
+      "rank": "4",
+      "issue_id": "playback.stops_skips_glitches",
+      "complaint_count": "319",
+      "severity_sum": "987",
+      "mean_severity": "3.094044",
+      "priority_score": "987",
+      "name": "Music stops randomly or skips during playback",
+      "summary": "Customers report playback halting midway, failing to resume where it left off, and randomly stopping even with a strong connection."
+    },
+    {
+      "rank": "5",
+      "issue_id": "access.login_failure",
+      "complaint_count": "155",
+      "severity_sum": "594",
+      "mean_severity": "3.832258",
+      "priority_score": "594",
+      "name": "Cannot log in, app reports false no-internet error",
+      "summary": "Customers say they cannot get into their account and the app claims there is no internet connection even when other apps and downloads work."
+    },
+    {
+      "rank": "6",
+      "issue_id": "usability.controls_navigation",
+      "complaint_count": "205",
+      "severity_sum": "564",
+      "mean_severity": "2.751220",
+      "priority_score": "564",
+      "name": "Player controls removed and song navigation confusing",
+      "summary": "Customers say basic player features were removed in an update, such as rewinding a few seconds, and that tapping liked songs plays unexpected tracks or demos."
+    },
+    {
+      "rank": "7",
+      "issue_id": "playback.crash_wont_open",
+      "complaint_count": "115",
+      "severity_sum": "398",
+      "mean_severity": "3.460870",
+      "priority_score": "398",
+      "name": "App crashes or fails to open after update",
+      "summary": "Customers report the app crashing during playback or refusing to open since the latest update."
+    },
+    {
+      "rank": "8",
+      "issue_id": "usability.ui_redesign",
+      "complaint_count": "157",
+      "severity_sum": "361",
+      "mean_severity": "2.299363",
+      "priority_score": "361",
+      "name": "New home screen and layout disliked by users",
+      "summary": "Customers say the redesigned home screen and layout are awful and that basic features they relied on have been removed."
+    },
+    {
+      "rank": "9",
+      "issue_id": "catalog.missing_content",
+      "complaint_count": "114",
+      "severity_sum": "298",
+      "mean_severity": "2.614035",
+      "priority_score": "298",
+      "name": "Many songs and artists are unavailable",
+      "summary": "Customers report that many songs, including underrated, Bollywood, and other tracks, are not present, and that some content is only available as 30-second clips."
+    },
+    {
+      "rank": "10",
+      "issue_id": "usability.queue_playlist_mgmt",
+      "complaint_count": "112",
+      "severity_sum": "293",
+      "mean_severity": "2.616071",
+      "priority_score": "293",
+      "name": "Shuffle repeats songs and liked songs won't show",
+      "summary": "Customers report shuffle playing the same songs repeatedly, songs shuffling unexpectedly after an update, and the liked songs list not displaying."
+    }
+  ],
+  "ranking_rule": "priority_score = severity_sum = complaint_count x mean_severity; sort score desc, issue_id asc"
+}

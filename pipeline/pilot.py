@@ -33,8 +33,9 @@ from dotenv import load_dotenv
 
 from . import config, pricing
 from .budget import BudgetExceeded, SpendLedger
-from .enricher import (EFFORT, MAX_ATTEMPTS, MAX_REVIEWS_PER_REQUEST, MODEL, PROMPT_SHA256, build_request,
+from .enricher import (EFFORT, FALLBACK_MODEL, MAX_ATTEMPTS, MAX_REVIEWS_PER_REQUEST, MODEL, PROMPT_SHA256, build_request,
                        estimate_prompt_tokens, label_config, parse_response)
+from .fallback import DEFAULT_MAX_FRAC, run_fallback
 from .grouping import run_group
 from .hashing import file_sha256
 from .ingest import ingest
@@ -49,7 +50,7 @@ STAGE = "enrich"   # contract role name
 LABEL_FIELDS = ("topic", "subtopic", "intent", "severity", "sentiment", "needs_review")
 PHASE_NAMES = ("cold", "warm", "replay")
 CONTRACT_PHASE = {"cold": "initial", "cold_resume": "resume", "replay": "replay"}
-DOWNSTREAM = ("verify", "group", "rank", "recommend")
+DOWNSTREAM = ("fallback", "verify", "group", "rank", "recommend")
 BACKOFF_S = (2.0, 4.0, 8.0)   # bounded backoff after the SDK's own retries are exhausted
 
 
@@ -112,7 +113,7 @@ class Pilot:
     def __init__(self, out_dir, input_path=None, *, model=MODEL, tier="standard", batch_size=MAX_REVIEWS_PER_REQUEST,
                  max_usd=0.25, ledger_path=None, client=None, limit=None, rates=None, dry_run=False,
                  resumed=False, stages=DOWNSTREAM, memo_model=MEMO_MODEL, verify_frac=DEFAULT_FRAC,
-                 verify_min_n=DEFAULT_MIN_N):
+                 verify_min_n=DEFAULT_MIN_N, fallback_frac=DEFAULT_MAX_FRAC):
         if not 1 <= batch_size <= MAX_REVIEWS_PER_REQUEST:
             raise ValueError(f"batch size must be 1..{MAX_REVIEWS_PER_REQUEST}")
         self.out_dir = Path(out_dir)
@@ -135,6 +136,7 @@ class Pilot:
         self.contract_phase = "resume" if resumed else "initial"
         self.stages = tuple(stages)
         self.memo_model, self.verify_frac, self.verify_min_n = memo_model, verify_frac, verify_min_n
+        self.fallback_frac = fallback_frac
 
     # ---- infrastructure ------------------------------------------------
 
@@ -297,7 +299,10 @@ class Pilot:
         out, t_all = {}, time.monotonic()
         for stage in self.stages:
             t0 = time.monotonic()
-            if stage == "verify":
+            if stage == "fallback":
+                out[stage] = run_fallback(state, caller, model=FALLBACK_MODEL, max_frac=self.fallback_frac,
+                                          phase=self.contract_phase, log=self.log)
+            elif stage == "verify":
                 rep = run_verify(state, caller, run_dir, frac=self.verify_frac, min_n=self.verify_min_n,
                                  phase=self.contract_phase, log=self.log)
                 out[stage] = {k: rep[k] for k in ("verified", "agreement", "severity_mae", "new_calls_this_run",
@@ -520,7 +525,7 @@ class Pilot:
 def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MODEL, tier="standard",
               batch_size=MAX_REVIEWS_PER_REQUEST, phases=("cold", "warm"), ledger_path=None, client=None,
               limit=None, rates=None, dry_run=False, cost_dir=None, stages=DOWNSTREAM, memo_model=MEMO_MODEL,
-              verify_frac=DEFAULT_FRAC, verify_min_n=DEFAULT_MIN_N) -> dict:
+              verify_frac=DEFAULT_FRAC, verify_min_n=DEFAULT_MIN_N, fallback_frac=DEFAULT_MAX_FRAC) -> dict:
     input_path, out_dir = Path(input_path), Path(out_dir)
     if not input_path.exists():
         raise FileNotFoundError(f"input not found: {input_path}")
@@ -532,13 +537,15 @@ def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MO
 
     pilot = Pilot(out_dir, input_path, model=model, tier=tier, batch_size=batch_size, max_usd=max_usd,
                   ledger_path=ledger_path, client=client, limit=limit, rates=rates, dry_run=dry_run, resumed=resumed,
-                  stages=stages, memo_model=memo_model, verify_frac=verify_frac, verify_min_n=verify_min_n)
+                  stages=stages, memo_model=memo_model, verify_frac=verify_frac, verify_min_n=verify_min_n,
+                  fallback_frac=fallback_frac)
     report = {
         "run_id": pilot.run_id, "created_at": utc_now(), "status": "ok", "resumed": resumed, "dry_run": dry_run,
         "model": model, "tier": tier, "effort": EFFORT, "thinking": "disabled", "workers": 1,
         "label_config": pilot.cfg, "prompt_sha256": PROMPT_SHA256,
         "batch_size": batch_size, "max_usd": max_usd, "phases_requested": list(phases), "stages": list(stages),
         "memo_model": memo_model, "verify_sample": {"frac": verify_frac, "min_n": verify_min_n},
+        "fallback": {"model": FALLBACK_MODEL, "max_frac": fallback_frac},
         "input": {"path": str(input_path), "sha256": manifest_check["input_sha256"],
                   "rows": pilot.state.record_count(), **pilot.state.status_counts()},
         "manifest_check": manifest_check,
@@ -601,6 +608,8 @@ def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MO
         report["cost_by_stage"] = {r[0]: round(r[1], 6) for r in pilot.state.conn.execute(
             "SELECT stage, COALESCE(SUM(cost_usd_estimate),0) FROM calls WHERE run_id=? GROUP BY stage", (pilot.run_id,))}
         report["stage_calls"] = {st: stage_summary(pilot.state, pilot.run_id, st) for st in ("enrich", "verify", "group", "memo")}
+        report["stage_calls"]["fallback"] = stage_summary(pilot.state, pilot.run_id, "enrich", model=FALLBACK_MODEL)
+        report["stage_calls"]["enrich"] = stage_summary(pilot.state, pilot.run_id, "enrich", model=pilot.model)
         report["ledger"] = pilot.ledger.summary()
         report["final_counts"] = pilot.state.status_counts()
         report["events"] = pilot.events
@@ -660,6 +669,7 @@ def main(argv=None) -> int:
     ap.add_argument("--memo-model", default=MEMO_MODEL)
     ap.add_argument("--verify-frac", type=float, default=DEFAULT_FRAC)
     ap.add_argument("--verify-min-n", type=int, default=DEFAULT_MIN_N)
+    ap.add_argument("--fallback-frac", type=float, default=DEFAULT_MAX_FRAC, help="max fraction of distinct texts routed to Sonnet")
     args = ap.parse_args(argv)
     stages = tuple(s.strip() for s in args.stages.split(",") if s.strip())
     bad_stage = [s for s in stages if s not in DOWNSTREAM]
@@ -675,7 +685,8 @@ def main(argv=None) -> int:
         report = run_pilot(args.input, args.out, args.manifest, max_usd=args.max_usd, model=args.model,
                            tier=args.tier, batch_size=args.batch_size, phases=phases, ledger_path=args.ledger,
                            limit=args.limit, dry_run=args.dry_run, cost_dir=args.cost_dir, stages=stages,
-                           memo_model=args.memo_model, verify_frac=args.verify_frac, verify_min_n=args.verify_min_n)
+                           memo_model=args.memo_model, verify_frac=args.verify_frac, verify_min_n=args.verify_min_n,
+                           fallback_frac=args.fallback_frac)
     except (FileNotFoundError, FileExistsError, ValueError) as e:
         print(f"pilot failed: {e}", file=sys.stderr)
         return 1

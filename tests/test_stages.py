@@ -164,3 +164,29 @@ def test_run_end_to_end_resume_export_and_checker(reviews_csv, tmp_path):
     assert audit["coverage"]["valid_completed"] == 119 and audit["coverage"]["quarantined"] == 1
     assert audit["coverage"]["valid_cache_reuses"] == 2 and audit["working_coverage_point_candidate"] == 1.0
     assert audit["calculated_ranking"][0]["issue_id"] == list(csv.DictReader(open(grading / "ranking.csv")))[0]["issue_id"]
+
+
+def test_fallback_routes_twice_invalid_texts_to_sonnet(tmp_path):
+    """A text Haiku cannot label validly twice goes to Sonnet once (capped); the fake Sonnet fails it too, so it
+    stays quarantined with a fallback reason, and the call log shows the Sonnet enrich call."""
+    rows = [[f"id-{i:03d}", "INVALID label please" if i == 3 else f"Love this app #{i}", "5", "0", "9.0.1", "2025-01-01 10:00:00"]
+            for i in range(40)]
+    path = tmp_path / "r.csv"
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(HEADER)
+        w.writerows(rows)
+    out, ledger, client = tmp_path / "fb", tmp_path / "l.sqlite", _client()
+    rep = runner.run(path, out, max_usd=1.0, ledger_path=ledger, client=client, stages=("enrich", "fallback"), fallback_frac=0.1)
+    fb = rep["downstream"]["fallback"]
+    assert fb["eligible"] == 1 and fb["routed"] == 1 and fb["cap_texts"] == 4 and fb["calls"] == 1
+    assert fb["completed"] == 0 and fb["still_quarantined"] == 1
+    with RunState(out / "state.sqlite") as st:
+        row = st.conn.execute("SELECT status, reason, attempts FROM records WHERE review_id='id-003'").fetchone()
+        assert row[0] == "quarantined" and row[1].startswith("fallback_invalid_record") and row[2] == 3
+        models = [r[0] for r in st.conn.execute("SELECT model FROM calls WHERE stage='enrich' ORDER BY started_at")]
+        assert models == ["claude-haiku-5-5", "claude-haiku-5-5", "claude-sonnet-5-5"]
+        cfg = st.conn.execute("SELECT label_config FROM calls WHERE model='claude-sonnet-5-5'").fetchone()[0]
+        assert cfg.startswith("labels-v1|claude-sonnet-5-5|")
+    assert rep["stage_calls"]["fallback"]["calls"] == 1 and rep["stage_calls"]["enrich"]["calls"] == 2
+    assert client.messages.calls[-1]["thinking"] == {"type": "between_tools"}

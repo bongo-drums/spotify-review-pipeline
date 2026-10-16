@@ -40,7 +40,7 @@ FALLBACK_MODEL = "claude-sonnet-5-5"
 FRAMING_TOKENS_PER_TEXT = 6  # "#k\n[0] " markers: fixed per review, independent of its length
 FULL_ROWS, FULL_NONEMPTY, FULL_EMPTY = 660_622, 660_609, 13
 VERIFY_MIN_N = 10
-DOWNSTREAM_STAGES = ("verify", "group", "memo")
+DOWNSTREAM_STAGES = ("fallback", "verify", "group", "memo")   # fallback = Sonnet re-labels of texts Haiku failed twice
 FIXED_MARGIN = 2.0           # group + memo are run once; allow one validation retry each
 
 # Used only when no pilot report exists. Replaced by measured numbers after the pilot.
