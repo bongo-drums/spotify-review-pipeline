@@ -41,11 +41,11 @@ def test_format_and_request_shape():
 
 
 def test_parse_response_valid_invalid_missing():
-    texts = ["Ads every song. Really annoying!", "Great app, love it", "Won't open at all", "meh"]
+    texts = ["Ads every song. Really annoying!", "Great app, love it", "Won't open at all. Tried twice.", "meh"]
     good = {"i": 0, "t": "usability", "s": "ads_interruptions", "n": "complaint", "v": 3, "m": 1,
             "e": ["ads", " Spotify ", "", "a", "b", "c", "d"], "q": 1, "r": False}
     bad_pair = {"i": 1, "t": "other", "s": "ads_interruptions", "n": "praise", "v": 1, "m": 4, "e": [], "q": 0, "r": False}
-    bad_q = {"i": 2, "t": "playback", "s": "crash_wont_open", "n": "complaint", "v": 4, "m": 0, "e": [], "q": 1, "r": False}
+    bad_q = {"i": 2, "t": "playback", "s": "crash_wont_open", "n": "complaint", "v": 4, "m": 0, "e": [], "q": 5, "r": False}
     dup = dict(good, i=0, v=5)  # duplicate index is ignored
     bad_m = dict(good, i=3, m=7)
     parsed = en.parse_response(_resp({"reviews": [good, bad_pair, bad_q, dup, {"i": 9, **good}, bad_m]}), texts)
@@ -72,3 +72,18 @@ def test_parse_response_request_level_failures():
     p = en.parse_response(r, texts)
     assert p.error == "refusal:cyber" and p.invalid == {0: "refusal:cyber", 1: "refusal:cyber"}
     assert en.parse_response(SimpleNamespace(content=[], stop_reason="end_turn"), texts).error == "no_text_block"
+
+
+def test_out_of_range_evidence_index_on_single_sentence_text_uses_whole_text():
+    from types import SimpleNamespace
+    from pipeline.enricher import parse_response
+    import json
+    text = "worst update ever🤬removed everything🤬bring it back"      # one span for the splitter
+    rec = {"i": 0, "t": "other", "s": "general_negative", "n": "complaint", "v": 2, "m": 0, "e": [], "q": 2, "r": False}
+    resp = SimpleNamespace(content=[SimpleNamespace(type="text", text=json.dumps({"reviews": [rec]}))], stop_reason="end_turn")
+    out = parse_response(resp, [text])
+    assert out.labels[0]["evidence_quote"] == text and out.labels[0]["evidence_sentence"] == 0 and not out.invalid
+    two = "First one. Second one."
+    out2 = parse_response(SimpleNamespace(content=[SimpleNamespace(type="text", text=json.dumps({"reviews": [{**rec, "q": 5}]}))],
+                                          stop_reason="end_turn"), [two])
+    assert 0 in out2.invalid and "out of range" in out2.invalid[0]

@@ -282,6 +282,10 @@ def _label_from_item(item: dict, text: str) -> dict:
         raise ValueError("needs_review is not boolean")
     spans = split_sentences(text)
     q = item["q"]
+    if isinstance(q, int) and not isinstance(q, bool) and q >= len(spans) == 1:
+        # The model counted more sentences than the splitter found (unspaced punctuation, emoji runs). With a
+        # single span the only possible evidence is the whole text, which is still an exact substring.
+        q = 0
     if not isinstance(q, int) or isinstance(q, bool) or not 0 <= q < len(spans):
         raise ValueError(f"evidence sentence {q!r} out of range 0..{len(spans) - 1}")
     ents = item["e"]
