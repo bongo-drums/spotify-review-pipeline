@@ -17,6 +17,7 @@ runs/*/state.sqlite
 runs/*/state.sqlite-journal
 runs/*/state.sqlite-wal
 runs/*/state.sqlite-shm
+runs/**/state.sqlite*
 runs/ledger.sqlite-wal
 runs/ledger.sqlite-shm
 
