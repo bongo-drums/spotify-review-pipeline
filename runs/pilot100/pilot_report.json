@@ -1,0 +1,255 @@
+{
+  "run_id": "pilot100",
+  "created_at": "2026-10-16T20:47:54.081254Z",
+  "status": "ok",
+  "resumed": false,
+  "dry_run": false,
+  "model": "claude-haiku-5-5",
+  "tier": "standard",
+  "effort": "low",
+  "thinking": "disabled",
+  "workers": 1,
+  "label_config": "labels-v1|claude-haiku-5-5|68d569ab095d",
+  "prompt_sha256": "68d569ab095d88e7319142647235130475af9f198a6f656b026449bdcca6a10b",
+  "batch_size": 50,
+  "max_usd": 0.25,
+  "phases_requested": [
+    "cold",
+    "warm"
+  ],
+  "input": {
+    "path": "data/raw/extracted/cost_100.csv",
+    "sha256": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e",
+    "rows": 100,
+    "pending": 100,
+    "completed": 0,
+    "quarantined": 0,
+    "distinct_texts": 100,
+    "distinct_text_chars": 8042,
+    "avg_chars_per_distinct_text": 80.42
+  },
+  "manifest_check": {
+    "manifest_path": "data/raw/extracted/manifest.json",
+    "found_entry": true,
+    "sha256_matches": true,
+    "input_sha256": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e",
+    "manifest_sha256": "07afdd96dd7f97ff5fbf967961e14d6d9f48170ba3f417399e20d5b620291011",
+    "manifest_sha256_for_input": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e"
+  },
+  "system_prompt_tokens": 1963,
+  "cold_loop": {
+    "calls": 3,
+    "texts_sent": 103,
+    "wall_s": 20.343,
+    "dry_run": []
+  },
+  "phases": {
+    "cold": {
+      "calls": 3,
+      "failed_calls": 0,
+      "texts": 103,
+      "wall_s_sum_of_calls": 20.33,
+      "call_duration_s": {
+        "mean": 6.777,
+        "p50": 9.258,
+        "max": 9.367
+      },
+      "usage": {
+        "input_tokens": 4081,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 8439,
+        "output_tokens": 5879
+      },
+      "cost_usd": 0.003432,
+      "calls_detail": [
+        {
+          "call_id": "84bb8118c97a412bbf71fae1b50f15f2",
+          "status": "success",
+          "error": "3 invalid records",
+          "input_tokens": 1859,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2813,
+          "output_tokens": 2864,
+          "duration_s": 9.258,
+          "cost_usd_estimate": 0.00164603
+        },
+        {
+          "call_id": "f2655dde81de40aca869ee9650adf50b",
+          "status": "success",
+          "error": null,
+          "input_tokens": 1884,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2813,
+          "output_tokens": 2836,
+          "duration_s": 9.367,
+          "cost_usd_estimate": 0.00163453
+        },
+        {
+          "call_id": "403c2387e45e43b3b594dbbb89dfb940",
+          "status": "success",
+          "error": null,
+          "input_tokens": 338,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 2813,
+          "output_tokens": 179,
+          "duration_s": 1.705,
+          "cost_usd_estimate": 0.00015142999999999998
+        }
+      ],
+      "per_text": {
+        "input_tokens": 39.62,
+        "cache_read_tokens": 81.93,
+        "cache_write_tokens": 0.0,
+        "output_tokens": 57.08,
+        "cost_usd": 3.33e-05,
+        "seconds": 0.1974
+      }
+    },
+    "replay": {
+      "calls": 0,
+      "failed_calls": 0,
+      "texts": 0,
+      "wall_s_sum_of_calls": 0,
+      "call_duration_s": null,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "cost_usd": 0,
+      "calls_detail": []
+    },
+    "warm": {
+      "wall_s": 0.033,
+      "enrichment_calls": 0,
+      "cost_usd": 0.0,
+      "result_cache_entries": 100,
+      "rows_completed_from_cache": 100,
+      "counts": {
+        "pending": 0,
+        "completed": 100,
+        "quarantined": 0
+      },
+      "pending_text_ids": [],
+      "checkpoint": {
+        "created_at": "2026-10-16T20:48:15.690322Z",
+        "run_id": "pilot100-warm",
+        "db_path": "runs/pilot100/warm/state.sqlite",
+        "counts": {
+          "pending": 0,
+          "completed": 100,
+          "quarantined": 0
+        },
+        "completed_ids_count": 100,
+        "completed_ids_sha256": "592faa95fc01be451da973eb8c264297006127700f6bf090175ad54912a6b7f4",
+        "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+        "label_cache_entries": 100,
+        "calls": 0
+      },
+      "db": "runs/pilot100/warm/state.sqlite"
+    }
+  },
+  "labels": {
+    "labeled_rows": 100,
+    "distribution": {
+      "topic": {
+        "access": 2,
+        "billing": 6,
+        "catalog": 10,
+        "downloads": 3,
+        "other": 55,
+        "playback": 6,
+        "usability": 18
+      },
+      "subtopic": {
+        "ads_interruptions": 8,
+        "audio_quality": 1,
+        "connectivity": 1,
+        "controls_navigation": 2,
+        "crash_wont_open": 2,
+        "download_fails": 1,
+        "general_negative": 13,
+        "general_positive": 39,
+        "login_failure": 2,
+        "lyrics": 2,
+        "missing_content": 4,
+        "offline_needs_internet": 2,
+        "podcasts": 1,
+        "premium_only_controls": 6,
+        "queue_playlist_mgmt": 4,
+        "recommendations": 3,
+        "stops_skips_glitches": 2,
+        "ui_redesign": 4,
+        "unrelated": 3
+      },
+      "intent": {
+        "cancellation": 9,
+        "complaint": 41,
+        "praise": 43,
+        "request": 2,
+        "unclear": 5
+      },
+      "severity": {
+        "1": 50,
+        "2": 25,
+        "3": 19,
+        "4": 6
+      },
+      "sentiment": {
+        "-0.5": 6,
+        "-1.0": 41,
+        "0.0": 10,
+        "0.5": 15,
+        "1.0": 28
+      },
+      "needs_review": {
+        "False": 84,
+        "True": 16
+      }
+    },
+    "quarantine_reasons": {},
+    "cold_replay_agreement": null
+  },
+  "labels_csv_rows": 100,
+  "checkpoint": {
+    "created_at": "2026-10-16T20:48:15.696831Z",
+    "run_id": "pilot100",
+    "db_path": "runs/pilot100/state.sqlite",
+    "counts": {
+      "pending": 0,
+      "completed": 100,
+      "quarantined": 0
+    },
+    "completed_ids_count": 100,
+    "completed_ids_sha256": "592faa95fc01be451da973eb8c264297006127700f6bf090175ad54912a6b7f4",
+    "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+    "label_cache_entries": 100,
+    "calls": 3
+  },
+  "cost_evidence": {
+    "dir": "/home/user/spotify-review-pipeline/cost",
+    "pilot_records": 100,
+    "pilot_calls": 3
+  },
+  "run_spent_usd": 0.003432,
+  "ledger": {
+    "cap_usd": 20.0,
+    "committed_usd": 0.003819,
+    "outstanding_reservations_usd": 0.0,
+    "remaining_usd": 19.996181,
+    "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
+  },
+  "final_counts": {
+    "pending": 0,
+    "completed": 100,
+    "quarantined": 0
+  },
+  "events": [
+    "2026-10-16T20:48:04.582924Z cold: 50 texts, 9.3s, in=1859 cache_w=0 cache_r=2813 out=2864 $0.00165 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T20:48:13.954137Z cold: 50 texts, 9.4s, in=1884 cache_w=0 cache_r=2813 out=2836 $0.00163 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T20:48:15.660065Z cold: 3 texts, 1.7s, in=338 cache_w=0 cache_r=2813 out=179 $0.00015 | ok=3 invalid=0 stop=end_turn",
+    "2026-10-16T20:48:15.693701Z warm: 100 rows completed from the saved result cache in 0.033s, 0 enrichment calls, 0 text(s) still pending (not labelled in the cold run)"
+  ],
+  "finished_at": "2026-10-16T20:48:15.699817Z"
+}

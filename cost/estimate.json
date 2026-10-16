@@ -3,13 +3,111 @@
   "pilot_report": "/home/user/spotify-review-pipeline/runs/pilot100/pilot_report.json",
   "rates_path": "/home/user/spotify-review-pipeline/cost/rates.csv",
   "rates_retrieved_on": "2026-10-16",
-  "measured": null,
+  "measured": {
+    "input": {
+      "path": "data/raw/extracted/cost_100.csv",
+      "sha256": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e",
+      "rows": 100,
+      "manifest_sha256_matches": true
+    },
+    "stage": {
+      "role": "enrich",
+      "provider": "anthropic",
+      "model": "claude-haiku-5-5",
+      "effort": "low",
+      "thinking": "disabled",
+      "label_config": "labels-v1|claude-haiku-5-5|68d569ab095d",
+      "prompt_sha256": "68d569ab095d88e7319142647235130475af9f198a6f656b026449bdcca6a10b",
+      "batch_size": 50,
+      "workers": 1,
+      "tier": "standard"
+    },
+    "records": {
+      "completed": 100,
+      "quarantined": 0,
+      "pending": 0,
+      "quarantine_reasons": {},
+      "distinct_nonempty_texts": 100,
+      "texts_sent": 103,
+      "rows_completed_via_exact_text_reuse": 0
+    },
+    "requests": {
+      "succeeded": 3,
+      "failed_attempts": 0,
+      "retried_texts": 3
+    },
+    "usage": {
+      "input_tokens": 4081,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 8439,
+      "output_tokens": 5879
+    },
+    "cost_by_unit": {
+      "input": {
+        "tokens": 4081,
+        "usd_per_mtok": 0.1,
+        "usd": 0.0004081
+      },
+      "cache_write_5m": {
+        "tokens": 0,
+        "usd_per_mtok": 0.125,
+        "usd": 0.0
+      },
+      "cache_read": {
+        "tokens": 8439,
+        "usd_per_mtok": 0.01,
+        "usd": 8.439e-05
+      },
+      "output": {
+        "tokens": 5879,
+        "usd_per_mtok": 0.5,
+        "usd": 0.0029395
+      }
+    },
+    "api_cost_usd": 0.00343199,
+    "cost_per_1000_input_rows_usd": 0.03432,
+    "cost_per_completed_record_usd": 3.432e-05,
+    "cold": {
+      "wall_clock_s": 20.33,
+      "calls": 3,
+      "call_duration_s": {
+        "mean": 6.777,
+        "p50": 9.258,
+        "max": 9.367
+      },
+      "throughput_texts_per_s": 5.066,
+      "prompt_cache_read_tokens": 8439
+    },
+    "warm": {
+      "wall_clock_s": 0.033,
+      "enrichment_calls": 0,
+      "rows_completed_from_result_cache": 100,
+      "incremental_api_cost_usd": 0.0,
+      "counts": {
+        "pending": 0,
+        "completed": 100,
+        "quarantined": 0
+      }
+    },
+    "replay": null,
+    "local_compute": "unknown (not measured; one laptop/container process, no GPU)",
+    "per_text": {
+      "input_tokens": 39.621,
+      "input_tokens_per_char": 0.4181,
+      "output_tokens_per_text": 57.078,
+      "avg_chars": 80.42,
+      "system_prompt_tokens": 1963,
+      "seconds_per_call": 6.777
+    }
+  },
   "params": {
-    "input_tokens_per_char": 0.303,
-    "output_tokens_per_text": 48,
-    "system_prompt_tokens": 1531,
-    "seconds_per_call": 6.0,
-    "source": "ASSUMPTIONS (no pilot report yet)"
+    "input_tokens": 39.621,
+    "input_tokens_per_char": 0.4181,
+    "output_tokens_per_text": 57.078,
+    "avg_chars": 80.42,
+    "system_prompt_tokens": 1963,
+    "seconds_per_call": 6.777,
+    "source": "measured pilot"
   },
   "population": {
     "source": "/home/user/spotify-review-pipeline/runs/full/ingestion_report.json",
@@ -28,7 +126,7 @@
     "fixed_usd": 0.5,
     "remaining_pilot_texts": 10500
   },
-  "already_committed_usd": 0.0,
+  "already_committed_usd": 0.003819,
   "scenarios": {
     "base/exact_text_reuse/standard": {
       "scenario": "base",
@@ -43,20 +141,20 @@
         "cache_write_frac": 0.02
       },
       "main_run": {
-        "prompt_cache": 13.8096,
-        "no_prompt_cache": 15.1365
+        "prompt_cache": 16.6639,
+        "no_prompt_cache": 18.3652
       },
-      "verifier": 0.1381,
-      "sonnet_fallback": 1.3543,
-      "remaining_pilots": 0.2995,
+      "verifier": 0.1666,
+      "sonnet_fallback": 1.6342,
+      "remaining_pilots": 0.3614,
       "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 16.1015,
-      "headroom_vs_budget": 3.8985,
+      "already_committed": 0.0038,
+      "total": 19.3299,
+      "headroom_vs_budget": 0.6701,
       "within_budget": true,
       "wall_clock_h": {
-        "standard_1_worker": 16.46,
-        "standard_4_workers": 4.12,
+        "standard_1_worker": 18.59,
+        "standard_4_workers": 4.65,
         "batch": null
       }
     },
@@ -73,16 +171,16 @@
         "cache_write_frac": 0.02
       },
       "main_run": {
-        "prompt_cache": 6.9048,
-        "no_prompt_cache": 7.5683
+        "prompt_cache": 8.332,
+        "no_prompt_cache": 9.1826
       },
-      "verifier": 0.069,
-      "sonnet_fallback": 1.3543,
-      "remaining_pilots": 0.1497,
+      "verifier": 0.0833,
+      "sonnet_fallback": 1.6342,
+      "remaining_pilots": 0.1807,
       "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 8.9778,
-      "headroom_vs_budget": 11.0222,
+      "already_committed": 0.0038,
+      "total": 10.734,
+      "headroom_vs_budget": 9.266,
       "within_budget": true,
       "wall_clock_h": {
         "standard_1_worker": null,
@@ -103,20 +201,20 @@
         "cache_write_frac": 0.02
       },
       "main_run": {
-        "prompt_cache": 18.3567,
-        "no_prompt_cache": 20.1671
+        "prompt_cache": 22.0669,
+        "no_prompt_cache": 24.3881
       },
-      "verifier": 0.1836,
-      "sonnet_fallback": 1.7994,
-      "remaining_pilots": 0.2918,
+      "verifier": 0.2207,
+      "sonnet_fallback": 2.163,
+      "remaining_pilots": 0.3507,
       "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 21.1315,
-      "headroom_vs_budget": -1.1315,
+      "already_committed": 0.0038,
+      "total": 25.3051,
+      "headroom_vs_budget": -5.3051,
       "within_budget": false,
       "wall_clock_h": {
-        "standard_1_worker": 22.46,
-        "standard_4_workers": 5.62,
+        "standard_1_worker": 25.37,
+        "standard_4_workers": 6.34,
         "batch": null
       }
     },
@@ -133,16 +231,16 @@
         "cache_write_frac": 0.02
       },
       "main_run": {
-        "prompt_cache": 9.1783,
-        "no_prompt_cache": 10.0835
+        "prompt_cache": 11.0334,
+        "no_prompt_cache": 12.194
       },
-      "verifier": 0.0918,
-      "sonnet_fallback": 1.7994,
-      "remaining_pilots": 0.1459,
+      "verifier": 0.1103,
+      "sonnet_fallback": 2.163,
+      "remaining_pilots": 0.1754,
       "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 11.7154,
-      "headroom_vs_budget": 8.2846,
+      "already_committed": 0.0038,
+      "total": 13.9859,
+      "headroom_vs_budget": 6.0141,
       "within_budget": true,
       "wall_clock_h": {
         "standard_1_worker": null,
@@ -163,20 +261,20 @@
         "cache_write_frac": 0.1
       },
       "main_run": {
-        "prompt_cache": 17.583,
-        "no_prompt_cache": 18.8802
+        "prompt_cache": 21.1824,
+        "no_prompt_cache": 22.8457
       },
-      "verifier": 0.1758,
-      "sonnet_fallback": 2.7047,
-      "remaining_pilots": 0.3813,
+      "verifier": 0.2118,
+      "sonnet_fallback": 3.2635,
+      "remaining_pilots": 0.4594,
       "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 21.3448,
-      "headroom_vs_budget": -1.3448,
+      "already_committed": 0.0038,
+      "total": 25.6209,
+      "headroom_vs_budget": -5.6209,
       "within_budget": false,
       "wall_clock_h": {
-        "standard_1_worker": 17.75,
-        "standard_4_workers": 4.44,
+        "standard_1_worker": 20.05,
+        "standard_4_workers": 5.01,
         "batch": null
       }
     },
@@ -193,16 +291,16 @@
         "cache_write_frac": 0.1
       },
       "main_run": {
-        "prompt_cache": 8.7915,
-        "no_prompt_cache": 9.4401
+        "prompt_cache": 10.5912,
+        "no_prompt_cache": 11.4228
       },
-      "verifier": 0.0879,
-      "sonnet_fallback": 2.7047,
-      "remaining_pilots": 0.1907,
+      "verifier": 0.1059,
+      "sonnet_fallback": 3.2635,
+      "remaining_pilots": 0.2297,
       "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 12.2748,
-      "headroom_vs_budget": 7.7252,
+      "already_committed": 0.0038,
+      "total": 14.6941,
+      "headroom_vs_budget": 5.3059,
       "within_budget": true,
       "wall_clock_h": {
         "standard_1_worker": null,
@@ -223,20 +321,20 @@
         "cache_write_frac": 0.1
       },
       "main_run": {
-        "prompt_cache": 23.4669,
-        "no_prompt_cache": 25.2368
+        "prompt_cache": 28.1792,
+        "no_prompt_cache": 30.4486
       },
-      "verifier": 0.2347,
-      "sonnet_fallback": 3.5944,
-      "remaining_pilots": 0.373,
+      "verifier": 0.2818,
+      "sonnet_fallback": 4.3205,
+      "remaining_pilots": 0.4479,
       "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 28.169,
-      "headroom_vs_budget": -8.169,
+      "already_committed": 0.0038,
+      "total": 33.7332,
+      "headroom_vs_budget": -13.7332,
       "within_budget": false,
       "wall_clock_h": {
-        "standard_1_worker": 24.22,
-        "standard_4_workers": 6.06,
+        "standard_1_worker": 27.36,
+        "standard_4_workers": 6.84,
         "batch": null
       }
     },
@@ -253,16 +351,16 @@
         "cache_write_frac": 0.1
       },
       "main_run": {
-        "prompt_cache": 11.7334,
-        "no_prompt_cache": 12.6184
+        "prompt_cache": 14.0896,
+        "no_prompt_cache": 15.2243
       },
-      "verifier": 0.1173,
-      "sonnet_fallback": 3.5944,
-      "remaining_pilots": 0.1865,
+      "verifier": 0.1409,
+      "sonnet_fallback": 4.3205,
+      "remaining_pilots": 0.2239,
       "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 16.1316,
-      "headroom_vs_budget": 3.8684,
+      "already_committed": 0.0038,
+      "total": 19.2787,
+      "headroom_vs_budget": 0.7213,
       "within_budget": true,
       "wall_clock_h": {
         "standard_1_worker": null,

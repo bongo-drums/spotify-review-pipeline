@@ -1,0 +1,10 @@
+request_id,run_id,phase,role,model,service_tier,unit,billed_tokens,usd_per_mtok,cost_usd,price_source_url,price_retrieved_on
+84bb8118c97a412bbf71fae1b50f15f2,pilot100,cold,enrich,claude-haiku-5-5,standard,input,1859,0.1,0.00018590,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
+84bb8118c97a412bbf71fae1b50f15f2,pilot100,cold,enrich,claude-haiku-5-5,standard,cache_read,2813,0.01,0.00002813,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
+84bb8118c97a412bbf71fae1b50f15f2,pilot100,cold,enrich,claude-haiku-5-5,standard,output,2864,0.5,0.00143200,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
+f2655dde81de40aca869ee9650adf50b,pilot100,cold,enrich,claude-haiku-5-5,standard,input,1884,0.1,0.00018840,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
+f2655dde81de40aca869ee9650adf50b,pilot100,cold,enrich,claude-haiku-5-5,standard,cache_read,2813,0.01,0.00002813,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
+f2655dde81de40aca869ee9650adf50b,pilot100,cold,enrich,claude-haiku-5-5,standard,output,2836,0.5,0.00141800,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
+403c2387e45e43b3b594dbbb89dfb940,pilot100,cold,enrich,claude-haiku-5-5,standard,input,338,0.1,0.00003380,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
+403c2387e45e43b3b594dbbb89dfb940,pilot100,cold,enrich,claude-haiku-5-5,standard,cache_read,2813,0.01,0.00002813,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
+403c2387e45e43b3b594dbbb89dfb940,pilot100,cold,enrich,claude-haiku-5-5,standard,output,179,0.5,0.00008950,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16
