@@ -128,6 +128,8 @@ def run(input_path, out_dir, *, manifest=None, max_usd=1.0, stages=ALL_STAGES, l
 
 
 def main(argv=None) -> int:
+    import signal
+    signal.signal(signal.SIGINT, signal.default_int_handler)   # Ctrl-C / SIGINT -> KeyboardInterrupt even when a parent shell ignored it
     load_dotenv(config.REPO_ROOT / ".env")
     ap = argparse.ArgumentParser(description="Run the staged pipeline on an input CSV.")
     ap.add_argument("--input", required=True)

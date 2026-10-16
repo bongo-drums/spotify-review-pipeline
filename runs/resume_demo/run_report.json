@@ -1,0 +1,163 @@
+{
+  "run_id": "resume_demo",
+  "started_at": "2026-10-16T22:32:50.535162Z",
+  "status": "ok",
+  "resumed": true,
+  "phase": "resume",
+  "stages": [
+    "enrich"
+  ],
+  "input": {
+    "path": "data/raw/extracted/checkpoint_500.csv",
+    "manifest_path": null,
+    "found_entry": false,
+    "sha256_matches": null,
+    "input_sha256": "a94e31663ee7b7eaa77e23b7a8425b530cc0c866ed5e714953172a0afef6a12f",
+    "rows": 500,
+    "distinct_texts": 478,
+    "distinct_text_chars": 39060
+  },
+  "counts_before": {
+    "pending": 388,
+    "completed": 112,
+    "quarantined": 0
+  },
+  "max_usd": 0.1,
+  "limit": null,
+  "enrich": {
+    "calls": 8,
+    "texts_sent": 391,
+    "wall_s": 72.029,
+    "dry_run": []
+  },
+  "checkpoint_after": {
+    "created_at": "2026-10-16T22:34:03.969874Z",
+    "run_id": "resume_demo",
+    "completed_count": 499,
+    "counts": {
+      "pending": 0,
+      "completed": 499,
+      "quarantined": 1
+    }
+  },
+  "counts_after": {
+    "pending": 0,
+    "completed": 499,
+    "quarantined": 1
+  },
+  "checkpoint": {
+    "created_at": "2026-10-16T22:34:03.970891Z",
+    "run_id": "resume_demo",
+    "db_path": "runs/resume_demo/state.sqlite",
+    "counts": {
+      "pending": 0,
+      "completed": 499,
+      "quarantined": 1
+    },
+    "completed_ids_count": 499,
+    "completed_ids_sha256": "cc59c3194730192aa47a2ddf714e624c3afc849d4b6a893a0770ed170726fbe2",
+    "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+    "label_cache_entries": 478,
+    "calls": 10
+  },
+  "labels_csv_rows": 500,
+  "cost_by_stage": {
+    "enrich": 0.016094
+  },
+  "stage_calls": {
+    "enrich": {
+      "calls": 10,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 18888,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 28130,
+        "output_tokens": 27847
+      },
+      "texts": 491,
+      "cost_usd": 0.016094,
+      "wall_s_sum_of_calls": 90.061,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "verify": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    },
+    "group": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    },
+    "memo": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    },
+    "fallback": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    }
+  },
+  "model": "claude-haiku-5-5",
+  "label_config": "labels-v1|claude-haiku-5-5|e4a34e06e1be",
+  "tier": "standard",
+  "run_spent_usd": 0.016094,
+  "ledger": {
+    "cap_usd": 20.0,
+    "committed_usd": 0.514955,
+    "outstanding_reservations_usd": 0.0,
+    "remaining_usd": 19.485045,
+    "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
+  },
+  "events": [
+    "2026-10-16T22:33:00.458500Z cold_resume: 50 texts, 8.5s, in=1816 cache_w=0 cache_r=2813 out=2785 $0.00160 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T22:33:09.154158Z cold_resume: 50 texts, 8.7s, in=1652 cache_w=0 cache_r=2813 out=2823 $0.00160 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T22:33:20.146450Z cold_resume: 50 texts, 11.0s, in=2263 cache_w=0 cache_r=2813 out=2878 $0.00169 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T22:33:29.105519Z cold_resume: 50 texts, 9.0s, in=1919 cache_w=0 cache_r=2813 out=2817 $0.00163 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T22:33:38.513331Z cold_resume: 50 texts, 9.4s, in=1866 cache_w=0 cache_r=2813 out=2867 $0.00165 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T22:33:47.205943Z cold_resume: 50 texts, 8.7s, in=1860 cache_w=0 cache_r=2813 out=2859 $0.00164 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T22:33:56.302060Z cold_resume: 50 texts, 9.1s, in=1920 cache_w=0 cache_r=2813 out=2780 $0.00161 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T22:34:03.968956Z cold_resume: 41 texts, 7.7s, in=1671 cache_w=0 cache_r=2813 out=2387 $0.00139 | ok=40 invalid=1 stop=end_turn"
+  ],
+  "finished_at": "2026-10-16T22:34:03.981341Z"
+}

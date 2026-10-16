@@ -21,9 +21,9 @@ dashboard runs locally against the published 10k run (`docs/dashboard_pilot500.p
 | Memo numbers linked to calculations and evidence | `pipeline/memo.py`: the model may only reference numbers as `{C7}` claim placeholders; code substitutes values from `claims.csv`, rejects unknown claims, issue IDs or review IDs, and flags any typed digits. Memos: `runs/pilot500/artifacts/memo.md`, `runs/pilot10000/artifacts/memo.md` (claims appendix at the bottom of each) |
 | Coherent recommendation, alternatives, limitations | memo sections *Recommendation*, *Alternatives*, *Limitations*; Matt's rewrite of the recommendation in his own voice is pending (see below) |
 | **Testing & evaluation** | |
-| 50 human labels, per-field comparison, error analysis | `evals/golden/human_codes.csv` (Matt, by hand), scorer `pipeline/evals.py golden`, results `evals/golden/results.md` (agreement, macro F1, confusions, every disagreement listed); Matt's written error analysis is pending |
+| 50 human labels, per-field comparison, error analysis | `evals/golden/human_codes.csv` (Matt, by hand), scorer `pipeline/evals.py golden`, results `evals/golden/results.md` (agreement, macro F1, confusions, every disagreement listed); error analysis `evals/golden/error_analysis.md` (draft for Matt's review) |
 | Independent verification, planted-error and injection tests | blind verifier with a separate prompt: `pipeline/verifier.py`, reports in `runs/*/artifacts/verification.md`; planted-error detection in the same report; prompt-injection test `evals/injection/results.md` (48 synthetic copies, 0 followed the injected instruction) |
-| Real 100-review cold/warm pilot, offline calculator, retry/spend/recovery controls (T3) | `cost/README.md`, `cost/report.md`, `cost/estimate.json`, `cost/usage.csv`, `cost/pilot_calls.jsonl`, `cost/pilot_records.jsonl`, `runs/pilot100/pilot_report.json`; controls: `pipeline/budget.py` (shared ledger, reserve-before-send), bounded backoff and per-run cap in `pipeline/llm.py` / `pipeline/pilot.py`, resume demonstrated in `tests/test_stages.py` and on the 10,000 checkpoint (`runs/pilot10000/checkpoints/`), batch reconciliation in `tests/test_batchrun.py` |
+| Real 100-review cold/warm pilot, offline calculator, retry/spend/recovery controls (T3) | `cost/README.md`, `cost/report.md`, `cost/estimate.json`, `cost/usage.csv`, `cost/pilot_calls.jsonl`, `cost/pilot_records.jsonl`, `runs/pilot100/pilot_report.json`; controls: `pipeline/budget.py` (shared ledger, reserve-before-send), bounded backoff and per-run cap in `pipeline/llm.py` / `pipeline/pilot.py`, resume demonstrated in `tests/test_stages.py`, on the 10,000 checkpoint (`runs/pilot10000/checkpoints/`) and in the recorded SIGINT demo `runs/resume_demo/resume_demo.cast` (`asciinema play`; plain transcript `transcript.txt`), batch reconciliation in `tests/test_batchrun.py` |
 | **Working result** | |
 | Full ingestion, record coverage, successful classification | `runs/full/ingestion_report.json` (660,622 rows, 13 empty-text quarantines, 484,189 distinct texts, parsed-rows digest identical to the checker's profile); full classification not yet run (needs the go-ahead below) |
 | Runnable staged program, bounded calls, saved handoffs, demonstrated resume | `python -m pipeline.run --input <csv> --out runs/<id>`; <=50 reviews per request; every batch committed atomically; `--limit` stop + resume on the 10k checkpoint produced `checkpoint_before.json` / `checkpoint_after.json`; `python -m pipeline.rank --run runs/<id>` regenerates the ranking offline |
@@ -95,10 +95,13 @@ python -m pipeline.evals golden                   # classify the golden 50, then
 python -m pipeline.evals injection                # 12 reviews x 4 injected instructions through the enricher
 ```
 
-Interruption/resume demo (to be recorded): start any `pipeline.run`, press Ctrl-C after a few `cold:` lines,
-re-run the same command. The run DB only ever holds whole batches, the open spend reservation is released, and
-`checkpoints/checkpoint_before.json` is written on interruption; the resumed run finishes the pending texts with
-`phase=resume` and writes `checkpoint_after.json`.
+Interruption/resume demo: `python scripts/resume_demo.py` starts a run on `checkpoint_500.csv`, sends SIGINT (what
+Ctrl-C sends) after two committed batches, then runs the same command again. Recorded in
+`runs/resume_demo/resume_demo.cast` (play with `asciinema play`, or read `transcript.txt`): the interrupted run
+wrote `checkpoints/checkpoint_before.json` (100 completed IDs), the resumed run finished the rest with
+`phase=resume` and wrote `checkpoint_after.json` (499 IDs; 1 text quarantined after two invalid outputs since the
+demo ran enrichment only). The run DB only ever holds whole batches and the open spend reservation is released on
+interruption.
 
 ## Measured results so far
 
@@ -135,6 +138,55 @@ Injection (`evals/injection/results.md`): 46 of 48 synthetic copies returned val
 the injected instruction, every evidence quote was an exact substring; 2 copies produced an out-of-range
 evidence index (would be retried, then quarantined in a real run).
 
+## Design choices
+
+> *Draft written by Claude in Matt's voice for Matt to edit before submission.*
+
+- **One cheap classifier, no reasoning tokens.** Classification into fixed labels does not need chain-of-thought,
+  so the enricher is `claude-haiku-5-5` with thinking off, effort low and a JSON schema the model must fill. The
+  whole 660k corpus projects to about $10 on the Batch tier; Sonnet for every review would cost over $1,000 at
+  list price. Sonnet is used for exactly two things where judgment matters: the memo, once, and a capped fallback
+  for texts Haiku rejected twice (22 of 10,000).
+- **Evidence by sentence number, expanded by code.** The model picks a sentence index; the code copies the
+  verbatim span. The quote can never be a paraphrase, which is why the course checker finds zero unsupported
+  quotes, and it keeps output tokens (five times the price of input) to about 57 per review.
+- **Exact-text cache keyed by configuration.** 660,609 texts collapse to 484,189 distinct ones. A cache hit
+  requires identical text *and* identical `label_config` (label set, model, prompt and schema hash), so a prompt
+  change can never silently reuse a label produced under old rules. Every original ID stays its own row with a
+  `cache_source_id` pointing at the record that carries the model call.
+- **Reserve before you send.** Every paid call reserves its worst case (all prompt tokens at the cache-write
+  rate plus `max_tokens` of output) in one SQLite ledger shared by every run, and commits the real cost after.
+  The ledger, not my attention, enforces the $20 cap, and `--max-usd` caps each run on top of it.
+- **Whole batches or nothing.** A request's labels, retries, quarantines and its call row are one transaction.
+  Ctrl-C at any moment leaves a consistent database; the resume never re-sends a labelled text.
+- **A verifier that cannot copy.** The verification prompt is worded independently, has no worked examples and
+  never sees the enricher's labels. Agreement is computed in code, and the planted-error test corrupts stored
+  labels to prove the comparison would notice.
+- **Numbers the memo cannot type.** The memo model references issue metrics only as claim placeholders; code
+  substitutes the values from `claims.csv` and rejects anything it cannot trace. The recommendation is therefore
+  arguable from the ranking table, not from the model's memory.
+- **Stable issue IDs.** Issues are `topic.subtopic` from the label set, so the ranking is reproducible offline
+  and the model only *names* issues from a bounded evidence pack.
+
+## One failure, in my words
+
+> *Draft by Claude for Matt to rewrite.*
+
+The 100-review pilot's first full run died at the memo stage with an HTTP 400: `claude-sonnet-5-5` rejects
+`thinking: {"type": "disabled"}` and wants `{"type": "between_tools"}`. Every earlier stage had used Haiku, and
+`keycheck` only smoke-tested the Haiku request shape, so the first Sonnet request in the whole project was the
+one inside a paid run. Nothing was lost: the failed attempt was logged with its error, the reservation was
+released, and re-running the same command resumed from the saved state with zero new enrichment calls. The fix
+was a model-aware `thinking_off()` helper and a second smoke request in `keycheck` that sends the memo stage's
+exact parameter shape to Sonnet for a tenth of a cent. The lesson I am keeping: a pre-flight check has to
+exercise every model and every request shape the pipeline will use, not just the first one.
+
+A second, smaller one: the only text in 10,000 that no model could label had its sentences glued together
+("app.I am ..."). My splitter required whitespace after a period, so the prompt showed one sentence while the
+model counted four and returned an index out of range, twice, and then Sonnet did the same. The splitter now
+breaks on punctuation followed directly by a letter; the label configuration changed with it, so the
+checkpoint evidence is kept as measured and the full run uses the new version.
+
 ## Layout
 
 | Path | What |
@@ -151,9 +203,11 @@ evidence index (would be retried, then quarantined in a real run).
 
 1. **Full 660k run** on the Batch tier (`pipeline.batchrun`), then `verify/group/rank/recommend`, the grading
    export and the self-check. Waiting on the go-ahead and the Batch-tier confirmation.
-2. **Interruption/resume recording** (Matt runs it on the full run).
-3. **Golden error analysis**, **memo recommendation in Matt's voice**, **README "design choices" and "one
-   failure" sections** (Matt).
+2. **Interruption/resume on the full run**: the recorded demo above covers the mechanism on 500 reviews; a
+   screen recording of Ctrl-C on the full run is optional extra evidence Matt can make.
+3. **Matt's review of the drafts**: `evals/golden/error_analysis.md`, the README *Design choices* and *One
+   failure* sections (all marked as drafts), and the memo's recommendation and alternatives, which should be
+   rewritten in Matt's voice once the full run's memo exists.
 4. **Dashboard deploy**: the app in `web/` is built; loading Supabase (`pipeline.publish --db`) and deploying to
    Vercel need `SUPABASE_DB_URL` and `VERCEL_TOKEN` in the environment, then the live URL goes here.
 5. Decide the four golden rows (38, 41, 43, 45) recorded with an unresolved intent.

@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-10-16T22:34:03.970891Z",
+  "run_id": "resume_demo",
+  "db_path": "runs/resume_demo/state.sqlite",
+  "counts": {
+    "pending": 0,
+    "completed": 499,
+    "quarantined": 1
+  },
+  "completed_ids_count": 499,
+  "completed_ids_sha256": "cc59c3194730192aa47a2ddf714e624c3afc849d4b6a893a0770ed170726fbe2",
+  "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+  "label_cache_entries": 478,
+  "calls": 10
+}
