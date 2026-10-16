@@ -44,7 +44,8 @@ TOPICS: dict[str, tuple[str, ...]] = {
 }
 ALL_SUBTOPICS = tuple(s for subs in TOPICS.values() for s in subs)
 INTENTS = ("cancellation", "complaint", "request", "praise", "unclear")
-SENTIMENTS = ("positive", "negative", "mixed", "neutral")
+# Sentiment is asked for as a 5-level integer and exported as the contract's -1..1 number: m/2 - 1.
+SENTIMENT_LEVELS = (0, 1, 2, 3, 4)
 
 # short output key -> stored label field
 KEYS = {"i": "index", "t": "topic", "s": "subtopic", "n": "intent", "v": "severity", "m": "sentiment",
@@ -64,7 +65,7 @@ Return JSON: {"reviews": [record, ...]} with exactly one record per review, in i
   s  subtopic from the list for that topic (below)
   n  intent: cancellation | complaint | request | praise | unclear
   v  severity: integer 1-5
-  m  sentiment: positive | negative | mixed | neutral
+  m  sentiment of the text's tone, integer: 0 very negative, 1 negative, 2 neutral or evenly mixed, 3 positive, 4 very positive
   e  up to 5 short entities the text names (features, devices, plans, content, companies, places); [] if none; copy words from the text, never translate
   q  the sentence number (the integer inside the brackets) that best supports the topic and severity; one number only
   r  needs_review: true when the topic or the impact cannot be determined from the text
@@ -100,20 +101,20 @@ BOUNDARY RULES
 - A login problem that support solved is support / praise / 1 / positive_support.
 - "worst update ever" with no detail is other / complaint / 2 / general_negative. Do not infer a defect.
 - "Boycott" alone is other / unclear / 1 / unrelated.
-- Sentiment is about the text's tone, independent of intent: a praise-with-a-gripe review is "mixed".
+- Sentiment is about the text's tone, independent of intent: praise with a gripe is 2 or 3; a request can be 2.
 
-EXAMPLES
-"Would not let me in on Spotify" -> access / login_failure / complaint / 4 / negative
-"Ads keep replaying and it's the same two!?" -> usability / ads_interruptions / complaint / 3 / negative
-"Buggy, really buggy. App just crashes randomly all the time" -> playback / crash_wont_open / complaint / 3 / negative
-"Why does it need internet to play downloaded songs?" -> downloads / offline_needs_internet / complaint / 4 / negative
-"It would be nice to give Bhojpuri songs here also. And ads appear minimal" -> catalog / missing_content / request / 1 / positive
-"forcing you to pay premium for basic things like just listening to music." -> billing / premium_only_controls / complaint / 3 / negative
-"Hate this app" -> other / general_negative / complaint / 2 / negative
-"Great app, It has all the songs I like." -> catalog / missing_content / praise / 1 / positive
-"I want the Spotify Wrapped again" -> catalog / recommendations / request / 1 / neutral
-"Nice app but the subscription is way too expensive" -> billing / price / complaint / 2 / mixed
-"Crazy thieve company I feel regret to use it" -> billing / charges_refunds / complaint / 2 / negative, needs_review true
+EXAMPLES (topic / subtopic / intent / severity / sentiment level)
+"Would not let me in on Spotify" -> access / login_failure / complaint / 4 / 0
+"Ads keep replaying and it's the same two!?" -> usability / ads_interruptions / complaint / 3 / 1
+"Buggy, really buggy. App just crashes randomly all the time" -> playback / crash_wont_open / complaint / 3 / 0
+"Why does it need internet to play downloaded songs?" -> downloads / offline_needs_internet / complaint / 4 / 1
+"It would be nice to give Bhojpuri songs here also. And ads appear minimal" -> catalog / missing_content / request / 1 / 3
+"forcing you to pay premium for basic things like just listening to music." -> billing / premium_only_controls / complaint / 3 / 1
+"Hate this app" -> other / general_negative / complaint / 2 / 0
+"Great app, It has all the songs I like." -> catalog / missing_content / praise / 1 / 4
+"I want the Spotify Wrapped again" -> catalog / recommendations / request / 1 / 2
+"Nice app but the subscription is way too expensive" -> billing / price / complaint / 2 / 2
+"Crazy thieve company I feel regret to use it" -> billing / charges_refunds / complaint / 2 / 0, needs_review true
 """
 
 OUTPUT_SCHEMA = {
@@ -129,7 +130,7 @@ OUTPUT_SCHEMA = {
                     "s": {"type": "string", "enum": list(ALL_SUBTOPICS)},
                     "n": {"type": "string", "enum": list(INTENTS)},
                     "v": {"type": "integer"},
-                    "m": {"type": "string", "enum": list(SENTIMENTS)},
+                    "m": {"type": "integer"},
                     "e": {"type": "array", "items": {"type": "string"}},
                     "q": {"type": "integer"},
                     "r": {"type": "boolean"},
@@ -152,7 +153,7 @@ EFFORT = "low"
 
 def _fingerprint() -> str:
     blob = json.dumps({"system": SYSTEM_PROMPT, "schema": OUTPUT_SCHEMA, "thinking": THINKING,
-                       "effort": EFFORT, "format": "sentence-indexed-v1"}, sort_keys=True)
+                       "effort": EFFORT, "format": "sentence-indexed-v2"}, sort_keys=True)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 
@@ -262,8 +263,8 @@ def _label_from_item(item: dict, text: str) -> dict:
         raise ValueError(f"bad intent {intent!r}")
     if not isinstance(sev, int) or isinstance(sev, bool) or not 1 <= sev <= 5:
         raise ValueError(f"bad severity {sev!r}")
-    if sent not in SENTIMENTS:
-        raise ValueError(f"bad sentiment {sent!r}")
+    if not isinstance(sent, int) or isinstance(sent, bool) or sent not in SENTIMENT_LEVELS:
+        raise ValueError(f"bad sentiment level {sent!r}")
     if not isinstance(item["r"], bool):
         raise ValueError("needs_review is not boolean")
     spans = split_sentences(text)
@@ -276,8 +277,9 @@ def _label_from_item(item: dict, text: str) -> dict:
     ents = [e.strip()[:MAX_ENTITY_CHARS] for e in ents if e.strip()][:MAX_ENTITIES]
     a, b = spans[q]
     return {
-        "topic": topic, "subtopic": sub, "intent": intent, "severity": sev, "sentiment": sent,
-        "entities": ents, "evidence_sentence": q, "evidence": text[a:b], "needs_review": item["r"],
+        "topic": topic, "subtopic": sub, "intent": intent, "severity": sev,
+        "sentiment": round(sent / 2 - 1, 1), "sentiment_level": sent,
+        "entities": ents, "evidence_sentence": q, "evidence_quote": text[a:b], "needs_review": item["r"],
     }
 
 

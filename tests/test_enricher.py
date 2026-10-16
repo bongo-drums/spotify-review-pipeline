@@ -42,19 +42,22 @@ def test_format_and_request_shape():
 
 def test_parse_response_valid_invalid_missing():
     texts = ["Ads every song. Really annoying!", "Great app, love it", "Won't open at all", "meh"]
-    good = {"i": 0, "t": "usability", "s": "ads_interruptions", "n": "complaint", "v": 3, "m": "negative",
+    good = {"i": 0, "t": "usability", "s": "ads_interruptions", "n": "complaint", "v": 3, "m": 1,
             "e": ["ads", " Spotify ", "", "a", "b", "c", "d"], "q": 1, "r": False}
-    bad_pair = {"i": 1, "t": "other", "s": "ads_interruptions", "n": "praise", "v": 1, "m": "positive", "e": [], "q": 0, "r": False}
-    bad_q = {"i": 2, "t": "playback", "s": "crash_wont_open", "n": "complaint", "v": 4, "m": "negative", "e": [], "q": 1, "r": False}
+    bad_pair = {"i": 1, "t": "other", "s": "ads_interruptions", "n": "praise", "v": 1, "m": 4, "e": [], "q": 0, "r": False}
+    bad_q = {"i": 2, "t": "playback", "s": "crash_wont_open", "n": "complaint", "v": 4, "m": 0, "e": [], "q": 1, "r": False}
     dup = dict(good, i=0, v=5)  # duplicate index is ignored
-    parsed = en.parse_response(_resp({"reviews": [good, bad_pair, bad_q, dup, {"i": 9, **good}]}), texts)
+    bad_m = dict(good, i=3, m=7)
+    parsed = en.parse_response(_resp({"reviews": [good, bad_pair, bad_q, dup, {"i": 9, **good}, bad_m]}), texts)
     assert set(parsed.labels) == {0} and set(parsed.invalid) == {1, 2, 3}
     lab = parsed.labels[0]
-    assert lab["evidence"] == "Really annoying!" and lab["evidence_sentence"] == 1 and lab["severity"] == 3
+    assert lab["evidence_quote"] == "Really annoying!" and lab["evidence_sentence"] == 1 and lab["severity"] == 3
+    assert lab["sentiment"] == -0.5 and lab["sentiment_level"] == 1
+    assert "sentiment level" in parsed.invalid[3]
     assert lab["entities"] == ["ads", "Spotify", "a", "b", "c"]
     assert parsed.invalid[1].startswith("invalid_record:subtopic")
     assert "out of range" in parsed.invalid[2]
-    assert parsed.invalid[3] == "missing_from_output"
+    assert en.parse_response(_resp({"reviews": [good]}), texts).invalid[3] == "missing_from_output"
     assert parsed.error is None
 
 

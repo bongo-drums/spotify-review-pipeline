@@ -4,14 +4,17 @@ Usage:
     python -m pipeline.pilot --input data/raw/extracted/cost_100.csv \
         --manifest data/raw/extracted/manifest.json --out runs/pilot100 --max-usd 0.25
 
-Phases:
-  cold  classify every pending text in <= 50-review requests. The first request writes the
-        system-prompt cache; later ones read it. Labels are committed to the run DB.
-  warm  re-send the exact same requests immediately afterwards (cache reads only) to measure
-        warm wall-clock and label stability. Nothing is committed; labels are only compared.
+Phases (COST_CALCULATOR.md section 2):
+  cold    classify every pending text in <= 50-review requests with an empty result cache.
+          The first request writes the provider prompt cache; later ones read it.
+  warm    rerun the same input against the saved result cache: a fresh run DB is loaded from
+          the cold run's label cache, wall-clock is measured, and zero enrichment calls are made.
+  replay  (optional, paid) re-send the cold requests verbatim to measure prompt-cache reads
+          and label stability; nothing is committed, labels are only compared.
 
 Every request reserves its worst-case cost in the shared ledger (the $20 cap) and the run
 stops cleanly at --max-usd. Resumable: re-running with the same --out continues.
+Evidence for cost/ (pilot_records.jsonl, pilot_calls.jsonl, usage.csv) is exported at the end.
 Add --dry-run to build the requests and print the worst-case cost without calling the API.
 """
 from __future__ import annotations
@@ -30,14 +33,16 @@ from dotenv import load_dotenv
 
 from . import config, pricing
 from .budget import BudgetExceeded, SpendLedger
-from .enricher import (MAX_ATTEMPTS, MAX_REVIEWS_PER_REQUEST, MODEL, PROMPT_SHA256, build_request,
+from .enricher import (EFFORT, MAX_ATTEMPTS, MAX_REVIEWS_PER_REQUEST, MODEL, PROMPT_SHA256, build_request,
                        estimate_prompt_tokens, label_config, parse_response)
 from .hashing import file_sha256
 from .ingest import ingest
 from .state import RunState, utc_now
 
-STAGE = "classify"
+STAGE = "enrich"   # contract role name
 LABEL_FIELDS = ("topic", "subtopic", "intent", "severity", "sentiment", "needs_review")
+PHASE_NAMES = ("cold", "warm", "replay")
+CONTRACT_PHASE = {"cold": "initial", "replay": "replay"}
 BACKOFF_S = (2.0, 4.0, 8.0)   # bounded backoff after the SDK's own retries are exhausted
 
 
@@ -97,11 +102,12 @@ def check_manifest(manifest_path, input_path) -> dict:
 
 
 class Pilot:
-    def __init__(self, out_dir, *, model=MODEL, tier="standard", batch_size=MAX_REVIEWS_PER_REQUEST,
+    def __init__(self, out_dir, input_path=None, *, model=MODEL, tier="standard", batch_size=MAX_REVIEWS_PER_REQUEST,
                  max_usd=0.25, ledger_path=None, client=None, limit=None, rates=None, dry_run=False):
         if not 1 <= batch_size <= MAX_REVIEWS_PER_REQUEST:
             raise ValueError(f"batch size must be 1..{MAX_REVIEWS_PER_REQUEST}")
         self.out_dir = Path(out_dir)
+        self.input_path = Path(input_path) if input_path else None
         self.run_id = self.out_dir.name
         self.model, self.tier, self.batch_size = model, tier, batch_size
         self.max_usd, self.limit, self.dry_run = float(max_usd), limit, dry_run
@@ -113,7 +119,7 @@ class Pilot:
         self.system_tokens: int | None = None
         self.run_spent = float(self.state.conn.execute(
             "SELECT COALESCE(SUM(cost_usd_estimate),0) FROM calls WHERE run_id=?", (self.run_id,)).fetchone()[0])
-        self.warm_labels: dict[str, dict] = {}
+        self.replay_labels: dict[str, dict] = {}
         self.events: list[str] = []
 
     # ---- infrastructure ------------------------------------------------
@@ -236,7 +242,7 @@ class Pilot:
             self.state.record_call(call_row)
             counts = {"completed": 0, "quarantined": 0, "retried": 0}
             for k, lab in parsed.labels.items():
-                self.warm_labels[groups[k]["cache_source_id"]] = lab
+                self.replay_labels[groups[k]["cache_source_id"]] = lab
         self.log(f"{phase}: {len(texts)} texts, {duration:.1f}s, in={call_row['input_tokens']} "
                  f"cache_w={call_row['cache_creation_input_tokens']} cache_r={call_row['cache_read_input_tokens']} "
                  f"out={call_row['output_tokens']} ${cost:.5f} | ok={len(parsed.labels)} invalid={len(parsed.invalid)} "
@@ -264,7 +270,38 @@ class Pilot:
         return {"calls": calls, "texts_sent": sent, "wall_s": round(time.monotonic() - t0, 3), "dry_run": dry}
 
     def run_warm(self) -> dict:
-        """Replay every successful cold request verbatim; compare labels; commit nothing."""
+        """Warm run per COST_CALCULATOR.md: same input, saved result cache, zero enrichment calls.
+
+        A fresh run DB under <out>/warm/ is ingested from the input, loaded with the cold run's
+        label cache, and completed by exact-text lookup. Wall-clock covers ingest + cache apply.
+        Texts the cold run could not label (quarantined) stay pending here and are reported, not sent.
+        """
+        if self.input_path is None:
+            raise ValueError("warm phase needs the input path")
+        t0 = time.monotonic()
+        warm_dir = self.out_dir / "warm"
+        ingest(self.input_path, warm_dir, force=True)
+        warm = RunState(warm_dir / "state.sqlite")
+        try:
+            rows = self.state.conn.execute(
+                "SELECT text_sha256, label_config, label, source_review_id, created_at FROM label_cache").fetchall()
+            with warm.transaction() as c:
+                c.executemany("INSERT OR IGNORE INTO label_cache VALUES (?,?,?,?,?)", [tuple(r) for r in rows])
+            hits = warm.apply_cache_hits(self.cfg)
+            counts = warm.status_counts()
+            pending = [g["cache_source_id"] for g in warm.pending_text_groups(MAX_REVIEWS_PER_REQUEST)]
+            snap = warm.export_checkpoint(warm_dir / "checkpoint.json", run_id=f"{self.run_id}-warm")
+        finally:
+            warm.close()
+        wall = round(time.monotonic() - t0, 3)
+        self.log(f"warm: {hits} rows completed from the saved result cache in {wall}s, 0 enrichment calls, "
+                 f"{len(pending)} text(s) still pending (not labelled in the cold run)")
+        return {"wall_s": wall, "enrichment_calls": 0, "cost_usd": 0.0, "result_cache_entries": len(rows),
+                "rows_completed_from_cache": hits, "counts": counts, "pending_text_ids": pending,
+                "checkpoint": snap, "db": str(warm_dir / "state.sqlite")}
+
+    def run_replay(self) -> dict:
+        """Paid: re-send every cold request verbatim; compare labels; commit nothing."""
         t0, calls, sent = time.monotonic(), 0, 0
         rows = self.state.conn.execute(
             "SELECT request_review_ids FROM calls WHERE run_id=? AND phase='cold' AND status IN ('success','invalid') "
@@ -275,7 +312,7 @@ class Pilot:
             for rid in ids:
                 text = self.state.conn.execute("SELECT review_text FROM source WHERE review_id=?", (rid,)).fetchone()[0]
                 groups.append({"cache_source_id": rid, "review_text": text, "review_ids": [rid]})
-            self._send(groups, "warm")
+            self._send(groups, "replay")
             calls += 1
             sent += len(groups)
         return {"calls": calls, "texts_sent": sent, "wall_s": round(time.monotonic() - t0, 3)}
@@ -323,12 +360,12 @@ class Pilot:
                 for f in LABEL_FIELDS:
                     dist[f][str(lab.get(f))] += 1
         agreement = None
-        if self.warm_labels:
+        if self.replay_labels:
             same_field = Counter()
             compared, identical = 0, 0
             for r in rows:
-                if r["review_id"] in self.warm_labels and r["label"]:
-                    cold, warm = json.loads(r["label"]), self.warm_labels[r["review_id"]]
+                if r["review_id"] in self.replay_labels and r["label"]:
+                    cold, warm = json.loads(r["label"]), self.replay_labels[r["review_id"]]
                     compared += 1
                     identical += all(cold[f] == warm[f] for f in LABEL_FIELDS)
                     for f in LABEL_FIELDS:
@@ -340,12 +377,12 @@ class Pilot:
             "labeled_rows": n_labeled,
             "distribution": {f: dict(sorted(c.items())) for f, c in dist.items()},
             "quarantine_reasons": dict(Counter(r["reason"] for r in rows if r["status"] == "quarantined")),
-            "cold_warm_agreement": agreement,
+            "cold_replay_agreement": agreement,
         }
 
     def export_labels_csv(self, path: Path) -> int:
         cols = ["review_id", "cache_source_id", "status", "topic", "subtopic", "intent", "severity", "sentiment",
-                "needs_review", "entities", "evidence_sentence", "evidence", "reason", "attempts"]
+                "needs_review", "entities", "evidence_sentence", "evidence_quote", "reason", "attempts"]
         n = 0
         with open(path, "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
@@ -356,14 +393,77 @@ class Pilot:
                 w.writerow([r["review_id"], r["cache_source_id"], r["status"], lab.get("topic"), lab.get("subtopic"),
                             lab.get("intent"), lab.get("severity"), lab.get("sentiment"), lab.get("needs_review"),
                             json.dumps(lab.get("entities", []), ensure_ascii=False) if lab else "",
-                            lab.get("evidence_sentence"), lab.get("evidence"), r["reason"], r["attempts"]])
+                            lab.get("evidence_sentence"), lab.get("evidence_quote"), r["reason"], r["attempts"]])
                 n += 1
         return n
+
+    # ---- cost/ evidence (COST_CALCULATOR.md section 5) ----------------------
+
+    def export_cost_evidence(self, cost_dir: Path) -> dict:
+        cost_dir = Path(cost_dir)
+        cost_dir.mkdir(parents=True, exist_ok=True)
+        n_rec = 0
+        with open(cost_dir / "pilot_records.jsonl", "w", encoding="utf-8") as f:
+            for r in self.state.conn.execute(
+                    "SELECT review_id, source_sha256, cache_source_id, status, label, label_config, reason, attempts "
+                    "FROM records ORDER BY row_index"):
+                rec = {"review_id": r["review_id"], "source_sha256": r["source_sha256"], "status": r["status"]}
+                if r["status"] == "completed":
+                    lab = json.loads(r["label"])
+                    rec.update({k: lab[k] for k in ("topic", "intent", "sentiment", "severity", "entities",
+                                                    "evidence_quote", "needs_review")})
+                    rec["label_config"] = r["label_config"]
+                    rec["subtopic"] = lab["subtopic"]
+                    if r["cache_source_id"] != r["review_id"]:
+                        rec["cache_source_id"] = r["cache_source_id"]
+                else:
+                    rec["reason"] = r["reason"]
+                rec["attempts"] = r["attempts"]
+                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+                n_rec += 1
+        rate_rows = {}
+        with open(config.RATES_CSV_PATH, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                rate_rows[(row["model"].strip(), row["tier"].strip(), row["unit"].strip())] = row
+        n_calls = 0
+        with open(cost_dir / "pilot_calls.jsonl", "w", encoding="utf-8") as fj, \
+                open(cost_dir / "usage.csv", "w", newline="", encoding="utf-8") as fu:
+            w = csv.writer(fu)
+            w.writerow(["request_id", "run_id", "phase", "role", "model", "service_tier", "unit", "billed_tokens",
+                        "usd_per_mtok", "cost_usd", "price_source_url", "price_retrieved_on"])
+            for r in self.state.conn.execute("SELECT * FROM calls WHERE run_id=? ORDER BY started_at", (self.run_id,)):
+                usage = {k: r[k] for k in ("input_tokens", "cache_creation_input_tokens",
+                                           "cache_read_input_tokens", "output_tokens")}
+                entry = {
+                    "request_id": r["call_id"], "run_id": r["run_id"], "role": r["stage"],
+                    "review_ids": json.loads(r["request_review_ids"] or "[]"), "model": r["model"],
+                    "phase": CONTRACT_PHASE.get(r["phase"], r["phase"]), "pilot_phase": r["phase"],
+                    "outcome": "failed" if r["status"] == "failed" else "succeeded",
+                    "validation": r["status"], "error": r["error"], "attempt": r["attempt"],
+                    "label_config": r["label_config"], "prompt_sha256": PROMPT_SHA256, "effort": EFFORT,
+                    "thinking": "disabled", "service_tier": r["service_tier"], "workers": 1,
+                    "max_reviews_per_request": self.batch_size, **usage,
+                    "started_at": r["started_at"], "ended_at": r["ended_at"], "duration_s": r["duration_s"],
+                    "cost_usd": r["cost_usd_estimate"],
+                }
+                fj.write(json.dumps(entry, ensure_ascii=False) + "\n")
+                n_calls += 1
+                if r["status"] == "failed":
+                    continue
+                for field, unit in pricing.USAGE_UNITS.items():
+                    n = usage[field] or 0
+                    if not n:
+                        continue
+                    rate = rate_rows[(r["model"], r["service_tier"], unit)]
+                    usd = float(rate["usd_per_mtok"])
+                    w.writerow([r["call_id"], r["run_id"], r["phase"], r["stage"], r["model"], r["service_tier"],
+                                unit, n, usd, f"{n * usd / 1e6:.8f}", rate["source_url"], rate["retrieved_on"]])
+        return {"dir": str(cost_dir), "pilot_records": n_rec, "pilot_calls": n_calls}
 
 
 def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MODEL, tier="standard",
               batch_size=MAX_REVIEWS_PER_REQUEST, phases=("cold", "warm"), ledger_path=None, client=None,
-              limit=None, rates=None, dry_run=False) -> dict:
+              limit=None, rates=None, dry_run=False, cost_dir=None) -> dict:
     input_path, out_dir = Path(input_path), Path(out_dir)
     if not input_path.exists():
         raise FileNotFoundError(f"input not found: {input_path}")
@@ -373,11 +473,12 @@ def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MO
         ingest(input_path, out_dir)
     manifest_check = check_manifest(manifest_path, input_path)
 
-    pilot = Pilot(out_dir, model=model, tier=tier, batch_size=batch_size, max_usd=max_usd,
+    pilot = Pilot(out_dir, input_path, model=model, tier=tier, batch_size=batch_size, max_usd=max_usd,
                   ledger_path=ledger_path, client=client, limit=limit, rates=rates, dry_run=dry_run)
     report = {
         "run_id": pilot.run_id, "created_at": utc_now(), "status": "ok", "resumed": resumed, "dry_run": dry_run,
-        "model": model, "tier": tier, "label_config": pilot.cfg, "prompt_sha256": PROMPT_SHA256,
+        "model": model, "tier": tier, "effort": EFFORT, "thinking": "disabled", "workers": 1,
+        "label_config": pilot.cfg, "prompt_sha256": PROMPT_SHA256,
         "batch_size": batch_size, "max_usd": max_usd, "phases_requested": list(phases),
         "input": {"path": str(input_path), "sha256": manifest_check["input_sha256"],
                   "rows": pilot.state.record_count(), **pilot.state.status_counts()},
@@ -399,12 +500,14 @@ def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MO
         report["input"]["avg_chars_per_distinct_text"] = round(heads[1] / heads[0], 2) if heads[0] else None
         if "cold" in phases:
             report["cold_loop"] = pilot.run_cold()
-        if "warm" in phases and not dry_run:
-            if pilot.state.conn.execute("SELECT 1 FROM calls WHERE run_id=? AND phase='warm' LIMIT 1",
+        if "replay" in phases and not dry_run:
+            if pilot.state.conn.execute("SELECT 1 FROM calls WHERE run_id=? AND phase='replay' LIMIT 1",
                                         (pilot.run_id,)).fetchone():
-                pilot.log("warm phase already recorded for this run; skipping")
+                pilot.log("replay phase already recorded for this run; skipping")
             else:
-                report["warm_loop"] = pilot.run_warm()
+                report["replay_loop"] = pilot.run_replay()
+        if "warm" in phases and not dry_run:
+            report["warm"] = pilot.run_warm()
     except RunCapExceeded as e:
         report["status"], report["stopped_because"] = "stopped_run_cap", str(e)
         pilot.log(f"STOP: {e}")
@@ -425,10 +528,13 @@ def run_pilot(input_path, out_dir, manifest_path=None, *, max_usd=0.25, model=MO
             pilot.state.conn.execute(
                 "UPDATE records SET status='pending', attempts=0, reason=NULL WHERE reason='dry_run'")
         else:
-            report["phases"] = {p: pilot._phase_stats(p) for p in ("cold", "warm")}
+            report["phases"] = {p: pilot._phase_stats(p) for p in ("cold", "replay")}
+            if "warm" in report:
+                report["phases"]["warm"] = report.pop("warm")
             report["labels"] = pilot._label_stats()
             report["labels_csv_rows"] = pilot.export_labels_csv(out_dir / "labels.csv")
             report["checkpoint"] = pilot.state.export_checkpoint(out_dir / "checkpoint.json", run_id=pilot.run_id)
+            report["cost_evidence"] = pilot.export_cost_evidence(cost_dir or config.REPO_ROOT / "cost")
         report["run_spent_usd"] = round(pilot.run_spent, 6)
         report["ledger"] = pilot.ledger.summary()
         report["final_counts"] = pilot.state.status_counts()
@@ -449,13 +555,16 @@ def _summary(report: dict) -> dict:
         out["stopped_because"] = report["stopped_because"]
     if report.get("dry_run"):
         out["dry_run_estimate"] = report.get("dry_run_estimate")
-    for p in ("cold", "warm"):
+    for p in ("cold", "replay"):
         st = report.get("phases", {}).get(p)
         if st and st["calls"]:
             out[p] = {"calls": st["calls"], "wall_s": st["wall_s_sum_of_calls"], "usage": st["usage"],
                       "cost_usd": st["cost_usd"], "per_text": st.get("per_text")}
-    if report.get("labels", {}).get("cold_warm_agreement"):
-        out["cold_warm_agreement"] = report["labels"]["cold_warm_agreement"]
+    warm = report.get("phases", {}).get("warm")
+    if warm:
+        out["warm"] = {k: warm[k] for k in ("wall_s", "enrichment_calls", "rows_completed_from_cache", "counts")}
+    if report.get("labels", {}).get("cold_replay_agreement"):
+        out["cold_replay_agreement"] = report["labels"]["cold_replay_agreement"]
     return out
 
 
@@ -469,20 +578,22 @@ def main(argv=None) -> int:
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--tier", default="standard", choices=("standard",), help="pilots run on the standard tier")
     ap.add_argument("--batch-size", type=int, default=MAX_REVIEWS_PER_REQUEST)
-    ap.add_argument("--phases", default="cold,warm", help="comma list from: cold,warm")
+    ap.add_argument("--phases", default="cold,warm", help="comma list from: cold,warm,replay (replay is paid)")
+    ap.add_argument("--cost-dir", default=os.fspath(config.REPO_ROOT / "cost"),
+                    help="where pilot_records.jsonl, pilot_calls.jsonl and usage.csv are written")
     ap.add_argument("--limit", type=int, help="classify at most this many distinct texts")
     ap.add_argument("--ledger", default=os.fspath(config.LEDGER_DB_PATH))
     ap.add_argument("--dry-run", action="store_true", help="build requests and price the worst case; no API calls")
     args = ap.parse_args(argv)
     phases = tuple(p.strip() for p in args.phases.split(",") if p.strip())
-    bad = [p for p in phases if p not in ("cold", "warm")]
+    bad = [p for p in phases if p not in PHASE_NAMES]
     if bad:
         print(f"pilot failed: unknown phase(s) {bad}", file=sys.stderr)
         return 1
     try:
         report = run_pilot(args.input, args.out, args.manifest, max_usd=args.max_usd, model=args.model,
                            tier=args.tier, batch_size=args.batch_size, phases=phases, ledger_path=args.ledger,
-                           limit=args.limit, dry_run=args.dry_run)
+                           limit=args.limit, dry_run=args.dry_run, cost_dir=args.cost_dir)
     except (FileNotFoundError, FileExistsError, ValueError) as e:
         print(f"pilot failed: {e}", file=sys.stderr)
         return 1

@@ -1,109 +1,275 @@
 {
+  "generated_by": "cost/calculator.py (offline)",
+  "pilot_report": "/home/user/spotify-review-pipeline/runs/pilot100/pilot_report.json",
+  "rates_path": "/home/user/spotify-review-pipeline/cost/rates.csv",
+  "rates_retrieved_on": "2026-10-16",
+  "measured": null,
+  "params": {
+    "input_tokens_per_char": 0.303,
+    "output_tokens_per_text": 48,
+    "system_prompt_tokens": 1531,
+    "seconds_per_call": 6.0,
+    "source": "ASSUMPTIONS (no pilot report yet)"
+  },
   "population": {
     "source": "/home/user/spotify-review-pipeline/runs/full/ingestion_report.json",
     "rows": 660622,
     "nonblank_rows": 660609,
+    "nonblank_chars": 49430325,
     "distinct_texts": 484189,
     "distinct_text_chars": 47724767
   },
-  "requests": 9684,
-  "batch_size": 50,
-  "cache_writes_assumed": 194,
-  "params": {
-    "source": "ASSUMPTIONS (no pilot report yet)",
-    "model": "claude-haiku-5-5",
-    "input_tokens_per_char": 0.303,
-    "framing_tokens_per_text": 6,
-    "output_tokens_per_text": 48,
-    "system_prompt_tokens": 1511,
-    "seconds_per_call": 6.0,
-    "cache_worked": null
+  "controls": {
+    "budget_usd": 20.0,
+    "output_token_cap": 4000,
+    "max_workers": 4,
+    "max_fallback_frac": 0.01,
+    "verifier_frac": 0.01,
+    "fixed_usd": 0.5,
+    "remaining_pilot_texts": 10500
   },
-  "main_run": {
-    "standard_cached": {
-      "usd": 13.5371,
-      "tokens": {
-        "input_tokens": 17365738,
-        "cache_creation_input_tokens": 293134,
-        "cache_read_input_tokens": 14339390,
-        "output_tokens": 23241072
+  "already_committed_usd": 0.0,
+  "scenarios": {
+    "base/exact_text_reuse/standard": {
+      "scenario": "base",
+      "reuse": "exact_text_reuse",
+      "tier": "standard",
+      "texts": 484189,
+      "requests": 9684,
+      "assumptions": {
+        "retry_overhead": 0.02,
+        "fallback_frac": 0.005,
+        "output_factor": 1.0,
+        "cache_write_frac": 0.02
+      },
+      "main_run": {
+        "prompt_cache": 13.8096,
+        "no_prompt_cache": 15.1365
+      },
+      "verifier": 0.1381,
+      "sonnet_fallback": 1.3543,
+      "remaining_pilots": 0.2995,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 16.1015,
+      "headroom_vs_budget": 3.8985,
+      "within_budget": true,
+      "wall_clock_h": {
+        "standard_1_worker": 16.46,
+        "standard_4_workers": 4.12,
+        "batch": null
       }
     },
-    "standard_uncached": {
-      "usd": 14.8204,
-      "tokens": {
-        "input_tokens": 31998262,
-        "output_tokens": 23241072
+    "base/exact_text_reuse/batch": {
+      "scenario": "base",
+      "reuse": "exact_text_reuse",
+      "tier": "batch",
+      "texts": 484189,
+      "requests": 9684,
+      "assumptions": {
+        "retry_overhead": 0.02,
+        "fallback_frac": 0.005,
+        "output_factor": 1.0,
+        "cache_write_frac": 0.02
+      },
+      "main_run": {
+        "prompt_cache": 6.9048,
+        "no_prompt_cache": 7.5683
+      },
+      "verifier": 0.069,
+      "sonnet_fallback": 1.3543,
+      "remaining_pilots": 0.1497,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 8.9778,
+      "headroom_vs_budget": 11.0222,
+      "within_budget": true,
+      "wall_clock_h": {
+        "standard_1_worker": null,
+        "standard_4_workers": null,
+        "batch": "asynchronous, typically < 1 h, guaranteed < 24 h"
       }
     },
-    "batch_cached": {
-      "usd": 6.7686,
-      "tokens": {
-        "input_tokens": 17365738,
-        "cache_creation_input_tokens": 293134,
-        "cache_read_input_tokens": 14339390,
-        "output_tokens": 23241072
+    "base/no_reuse/standard": {
+      "scenario": "base",
+      "reuse": "no_reuse",
+      "tier": "standard",
+      "texts": 660609,
+      "requests": 13213,
+      "assumptions": {
+        "retry_overhead": 0.02,
+        "fallback_frac": 0.005,
+        "output_factor": 1.0,
+        "cache_write_frac": 0.02
+      },
+      "main_run": {
+        "prompt_cache": 18.3567,
+        "no_prompt_cache": 20.1671
+      },
+      "verifier": 0.1836,
+      "sonnet_fallback": 1.7994,
+      "remaining_pilots": 0.2918,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 21.1315,
+      "headroom_vs_budget": -1.1315,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": 22.46,
+        "standard_4_workers": 5.62,
+        "batch": null
       }
     },
-    "batch_uncached": {
-      "usd": 7.4102,
-      "tokens": {
-        "input_tokens": 31998262,
-        "output_tokens": 23241072
+    "base/no_reuse/batch": {
+      "scenario": "base",
+      "reuse": "no_reuse",
+      "tier": "batch",
+      "texts": 660609,
+      "requests": 13213,
+      "assumptions": {
+        "retry_overhead": 0.02,
+        "fallback_frac": 0.005,
+        "output_factor": 1.0,
+        "cache_write_frac": 0.02
+      },
+      "main_run": {
+        "prompt_cache": 9.1783,
+        "no_prompt_cache": 10.0835
+      },
+      "verifier": 0.0918,
+      "sonnet_fallback": 1.7994,
+      "remaining_pilots": 0.1459,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 11.7154,
+      "headroom_vs_budget": 8.2846,
+      "within_budget": true,
+      "wall_clock_h": {
+        "standard_1_worker": null,
+        "standard_4_workers": null,
+        "batch": "asynchronous, typically < 1 h, guaranteed < 24 h"
+      }
+    },
+    "conservative/exact_text_reuse/standard": {
+      "scenario": "conservative",
+      "reuse": "exact_text_reuse",
+      "tier": "standard",
+      "texts": 484189,
+      "requests": 9684,
+      "assumptions": {
+        "retry_overhead": 0.1,
+        "fallback_frac": 0.01,
+        "output_factor": 1.2,
+        "cache_write_frac": 0.1
+      },
+      "main_run": {
+        "prompt_cache": 17.583,
+        "no_prompt_cache": 18.8802
+      },
+      "verifier": 0.1758,
+      "sonnet_fallback": 2.7047,
+      "remaining_pilots": 0.3813,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 21.3448,
+      "headroom_vs_budget": -1.3448,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": 17.75,
+        "standard_4_workers": 4.44,
+        "batch": null
+      }
+    },
+    "conservative/exact_text_reuse/batch": {
+      "scenario": "conservative",
+      "reuse": "exact_text_reuse",
+      "tier": "batch",
+      "texts": 484189,
+      "requests": 9684,
+      "assumptions": {
+        "retry_overhead": 0.1,
+        "fallback_frac": 0.01,
+        "output_factor": 1.2,
+        "cache_write_frac": 0.1
+      },
+      "main_run": {
+        "prompt_cache": 8.7915,
+        "no_prompt_cache": 9.4401
+      },
+      "verifier": 0.0879,
+      "sonnet_fallback": 2.7047,
+      "remaining_pilots": 0.1907,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 12.2748,
+      "headroom_vs_budget": 7.7252,
+      "within_budget": true,
+      "wall_clock_h": {
+        "standard_1_worker": null,
+        "standard_4_workers": null,
+        "batch": "asynchronous, typically < 1 h, guaranteed < 24 h"
+      }
+    },
+    "conservative/no_reuse/standard": {
+      "scenario": "conservative",
+      "reuse": "no_reuse",
+      "tier": "standard",
+      "texts": 660609,
+      "requests": 13213,
+      "assumptions": {
+        "retry_overhead": 0.1,
+        "fallback_frac": 0.01,
+        "output_factor": 1.2,
+        "cache_write_frac": 0.1
+      },
+      "main_run": {
+        "prompt_cache": 23.4669,
+        "no_prompt_cache": 25.2368
+      },
+      "verifier": 0.2347,
+      "sonnet_fallback": 3.5944,
+      "remaining_pilots": 0.373,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 28.169,
+      "headroom_vs_budget": -8.169,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": 24.22,
+        "standard_4_workers": 6.06,
+        "batch": null
+      }
+    },
+    "conservative/no_reuse/batch": {
+      "scenario": "conservative",
+      "reuse": "no_reuse",
+      "tier": "batch",
+      "texts": 660609,
+      "requests": 13213,
+      "assumptions": {
+        "retry_overhead": 0.1,
+        "fallback_frac": 0.01,
+        "output_factor": 1.2,
+        "cache_write_frac": 0.1
+      },
+      "main_run": {
+        "prompt_cache": 11.7334,
+        "no_prompt_cache": 12.6184
+      },
+      "verifier": 0.1173,
+      "sonnet_fallback": 3.5944,
+      "remaining_pilots": 0.1865,
+      "fixed_memo_grouping": 0.5,
+      "already_committed": 0.0,
+      "total": 16.1316,
+      "headroom_vs_budget": 3.8684,
+      "within_budget": true,
+      "wall_clock_h": {
+        "standard_1_worker": null,
+        "standard_4_workers": null,
+        "batch": "asynchronous, typically < 1 h, guaranteed < 24 h"
       }
     }
   },
-  "totals": {
-    "standard_cached": {
-      "main_run": 13.5371,
-      "verifier": 0.1354,
-      "sonnet_fallback": 1.354,
-      "remaining_pilots": 0.2936,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 15.8201,
-      "headroom_vs_cap": 4.1799,
-      "within_cap": true
-    },
-    "standard_uncached": {
-      "main_run": 14.8204,
-      "verifier": 0.1482,
-      "sonnet_fallback": 1.354,
-      "remaining_pilots": 0.2936,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 17.1162,
-      "headroom_vs_cap": 2.8838,
-      "within_cap": true
-    },
-    "batch_cached": {
-      "main_run": 6.7686,
-      "verifier": 0.0677,
-      "sonnet_fallback": 1.354,
-      "remaining_pilots": 0.2936,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 8.9839,
-      "headroom_vs_cap": 11.0161,
-      "within_cap": true
-    },
-    "batch_uncached": {
-      "main_run": 7.4102,
-      "verifier": 0.0741,
-      "sonnet_fallback": 1.354,
-      "remaining_pilots": 0.2936,
-      "fixed_memo_grouping": 0.5,
-      "already_committed": 0.0,
-      "total": 9.6319,
-      "headroom_vs_cap": 10.3681,
-      "within_cap": true
-    }
-  },
-  "wall_clock": {
-    "standard_sequential_h": 16.14,
-    "standard_4_workers_h": 4.04,
-    "batch": "asynchronous; most batches finish within an hour, guaranteed within 24 h"
-  },
-  "cap_usd": 20.0,
-  "recommended": "batch_cached"
+  "recommended": "base/exact_text_reuse/batch"
 }

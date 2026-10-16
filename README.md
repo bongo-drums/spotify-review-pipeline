@@ -14,8 +14,10 @@ cp .env.example .env        # fill PIPELINE_ANTHROPIC_API_KEY (never committed; 
 In a Claude Code cloud environment, add `PIPELINE_ANTHROPIC_API_KEY=sk-ant-...` under
 Environment variables instead (the name `ANTHROPIC_API_KEY` is reserved there and not passed through).
 
-The course dataset is unzipped to `data/raw/extracted/` (git-ignored). The pilot expects
-`cost_100.csv` and `manifest.json` there; the full run expects `spotify_reviews_18months.csv`.
+The course dataset (link in `docs/ASSIGNMENT.md`, checksums in `docs/course/manifest.json`) goes in
+`data/raw/extracted/` (git-ignored). `bash scripts/fetch_dataset.sh` downloads and verifies it; in a
+Claude Code cloud environment put that line in the Setup script so every session has the data.
+The course spec files are kept in `docs/course/` (grading contract, calculator spec, checker).
 
 ## Before any paid run
 
@@ -40,13 +42,18 @@ python cost/calculator.py            # projects the full run from runs/pilot100/
 * `--max-usd` is a per-run stop; the shared ledger in `runs/ledger.sqlite` enforces the $20 cap
   across every run (`python -m pipeline.budget` shows it).
 * Re-running with the same `--out` resumes: labelled texts are never re-sent.
-* Outputs in `runs/pilot100/`: `pilot_report.json` (per-phase tokens, cost, wall-clock, cold/warm
-  label agreement), `labels.csv` (one row per review, evidence quotes are exact substrings),
-  `checkpoint.json`, `ingestion_report.json`.
+* Phases: `cold` (real run, empty result cache), `warm` (same input against the saved result
+  cache: zero enrichment calls, measured wall-clock). `--phases cold,warm,replay` adds a paid
+  replay of the cold requests to measure provider prompt-cache reads and label stability.
+* Outputs in `runs/pilot100/`: `pilot_report.json`, `labels.csv` (one row per review, evidence quotes
+  are exact substrings), `checkpoint.json`, `ingestion_report.json`, `warm/`. Evidence for the
+  calculator spec lands in `cost/`: `pilot_records.jsonl`, `pilot_calls.jsonl`, `usage.csv`.
 
-`cost/calculator.py` prices the 484,189 distinct texts on the standard and Batch tiers, with and
-without a working prompt cache, plus the verifier sample, the Sonnet fallback, the remaining
-pilots and the memo. Without a pilot report it uses the assumptions listed in the file and says so.
+`cost/calculator.py` is the offline replay: it recomputes the pilot bill from `usage.csv` and the
+dated, editable `cost/rates.csv`, then projects the full run (base and conservative scenarios, with
+and without exact-text reuse, standard and Batch tiers, verifier sample, capped Sonnet fallback,
+remaining pilots, fixed memo cost) and writes `cost/estimate.json` and `cost/report.md`. Scenarios
+over `--budget` are flagged. Without a pilot report it uses the assumptions listed in the file and says so.
 
 ## Layout
 
