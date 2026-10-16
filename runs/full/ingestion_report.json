@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T16:39:01.666034Z",
+  "generated_at": "2026-10-16T21:38:00.882256Z",
   "source": {
     "path": "data/raw/extracted/spotify_reviews_18months.csv",
     "bytes": 97400616,
@@ -148,5 +148,5 @@
     "empty_review_text": 13
   },
   "db_path": "runs/full/state.sqlite",
-  "elapsed_s": 61.86
+  "elapsed_s": 82.81
 }

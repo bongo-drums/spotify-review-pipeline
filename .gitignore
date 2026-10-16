@@ -27,3 +27,9 @@ runs/ledger.sqlite-shm
 # Web / deploy
 node_modules/
 .vercel/
+
+# Dashboard build outputs
+web/node_modules/
+web/.next/
+web/next-env.d.ts
+web/.vercel/

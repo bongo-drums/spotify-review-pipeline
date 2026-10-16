@@ -2,6 +2,17 @@
 
 Due **Tue Oct 20, 2026, 11:59 pm PT**. Hard API spending cap: **$20.00 total** across pilots, the full run, verification, grouping, the memo and dashboard recommendations. A persistent spend ledger enforces it in code.
 
+## Status (Fri 10/16, end of day)
+
+Done: ingestion of the full file, enricher, keycheck (Haiku + Sonnet request shapes), 100-review cold/warm pilot with
+all stages and the offline calculator, blind verifier with planted-error check, grouping and ranking, memo with
+claim validation, grading export that passes the course checker, staged `pipeline.run` with limit/resume and
+checkpoint snapshots, Batch-tier runner (dry-run priced: 9,684 requests, worst case $12.47), golden-50 scoring,
+prompt-injection test, 500 and 10,000-review checkpoints. See README *Measured results so far*.
+
+Open: full 660k Batch run (needs Matt's go-ahead), interruption/resume recording, dashboard (needs Supabase and
+Vercel credentials), Matt's golden error analysis, memo rewrite, README sections, four unresolved golden rows.
+
 ## Key decisions
 
 | Decision | Choice | Why |
