@@ -222,7 +222,10 @@ class BatchRunner:
                         continue
                     reason = parsed.invalid[k]
                     done = attempts.get(g["review_ids"][0], 0) + 1
-                    if reason.startswith("refusal") or done >= MAX_ATTEMPTS:
+                    if reason.startswith("refusal") and len(groups) > 1 and done < MAX_ATTEMPTS:
+                        # the whole request was refused; re-send each text alone so one review cannot sink 49 others
+                        retries.append({"review_ids": g["review_ids"], "reason": f"batch_{reason}"})
+                    elif reason.startswith("refusal") or done >= MAX_ATTEMPTS:
                         quarantines.append({"review_ids": g["review_ids"], "reason": f"{reason} (attempt {done})"})
                     else:
                         retries.append({"review_ids": g["review_ids"], "reason": reason})

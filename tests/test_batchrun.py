@@ -33,6 +33,11 @@ class FakeBatches:
     def results(self, bid):
         for req in self.batches[bid]:
             user = req["params"]["messages"][0]["content"]
+            if "REFUSE" in user and user.count("\n#") + 1 > 1:   # a whole multi-review request is refused
+                msg = SimpleNamespace(content=[], stop_reason="refusal", stop_details=SimpleNamespace(category="bio"),
+                                      usage=SimpleNamespace(input_tokens=5, cache_creation_input_tokens=0, cache_read_input_tokens=0, output_tokens=0))
+                yield SimpleNamespace(custom_id=req["custom_id"], result=SimpleNamespace(type="succeeded", message=msg))
+                continue
             if "ERROR" in user:
                 yield SimpleNamespace(custom_id=req["custom_id"], result=SimpleNamespace(
                     type="errored", error=SimpleNamespace(error=SimpleNamespace(type="api_error", message="boom"))))
@@ -53,7 +58,7 @@ def _csv(tmp_path, n=130):
     from tests.conftest import HEADER
     rows = []
     for i in range(n):
-        text = "ERROR please" if i == 5 else ("" if i == 7 else f"Love this app #{i}")
+        text = "ERROR please" if i == 5 else ("" if i == 7 else ("REFUSE this one" if i == 60 else f"Love this app #{i}"))
         rows.append([f"id-{i:03d}", text, "5", "0", "9.0.1", "2025-01-01 10:00:00"])
     path = tmp_path / "r.csv"
     with open(path, "w", newline="", encoding="utf-8") as f:
@@ -76,15 +81,18 @@ def test_batchrun_dry_run_then_real_run_with_retry(tmp_path):
 
     r = batchrun.BatchRunner(out, max_usd=1.0, batch_requests=100, poll_s=0, ledger_path=ledger, client=client)
     s = r.run()
-    # batch 1: 3 requests (129 texts); the request holding the ERROR text fails as a whole, so its 50 texts are
-    # re-sent one per request in batch 2: 49 succeed, the ERROR text fails again -> quarantined after MAX_ATTEMPTS
-    assert s["batches"] == 2 and s["requests"] == 53
+    # batch 1: 3 requests (129 texts); the request holding the ERROR text fails as a whole and the request holding
+    # the REFUSE text is refused as a whole, so 100 texts are re-sent one per request in batch 2: 98 succeed, the
+    # ERROR text fails again -> quarantined; the REFUSE text alone is labelled (the fake only refuses multi-review requests)
+    assert s["batches"] == 2 and s["requests"] == 103
     assert s["counts"] == {"pending": 0, "completed": 128, "quarantined": 2}
+    assert dict(r.state.conn.execute("SELECT review_id, attempts FROM records WHERE review_id IN ('id-060','id-061')")) == {"id-060": 2, "id-061": 2}
     rows = {row[0]: row for row in r.state.conn.execute("SELECT review_id, status, reason, attempts FROM records")}
     assert rows["id-005"][1] == "quarantined" and rows["id-005"][3] == 2 and rows["id-005"][2].startswith("batch_errored (attempt 2)")
     assert rows["id-006"][1] == "completed" and rows["id-006"][3] == 2
     calls = list(r.state.conn.execute("SELECT status, service_tier, phase, cost_usd_estimate FROM calls"))
-    assert len(calls) == 53 and sum(c[0] == "failed" for c in calls) == 2 and all(c[1] == "batch" and c[2] == "initial" for c in calls)
+    assert len(calls) == 103 and sum(c[0] == "failed" for c in calls) == 2 and sum(c[0] == "invalid" for c in calls) == 1
+    assert all(c[1] == "batch" and c[2] == "initial" for c in calls)
     assert all(row[0] == "collected" for row in r.state.conn.execute("SELECT status FROM batch_jobs"))
     led = r.ledger.summary()
     assert led["outstanding_reservations_usd"] == 0 and abs(led["committed_usd"] - r.run_spent()) < 1e-6  # summary rounds to 6 dp
