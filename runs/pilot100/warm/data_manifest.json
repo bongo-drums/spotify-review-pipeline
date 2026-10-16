@@ -1,0 +1,18 @@
+{
+  "created_at": "2026-10-16T20:48:15.676094Z",
+  "source_path": "data/raw/extracted/cost_100.csv",
+  "source_bytes": 15466,
+  "source_sha256": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e",
+  "row_count": 100,
+  "loaded_row_count": 100,
+  "row_hash_rule": "GRADING_CONTRACT.md v1 / check_submission.py row_sha: sha256(utf8(json.dumps([review_id, review_text, review_rating, review_likes, app_version, review_timestamp], ensure_ascii=False, separators=(',',':'), sort_keys=True, allow_nan=False)))",
+  "code": {
+    "commit": "1cb127bb144fc1339130110bf480139eb1adee33",
+    "dirty": true
+  },
+  "python": "3.13.16",
+  "outputs": {
+    "ingestion_report": "ingestion_report.json",
+    "run_db": "state.sqlite"
+  }
+}
