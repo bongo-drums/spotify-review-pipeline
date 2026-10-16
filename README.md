@@ -98,7 +98,7 @@ python -m pipeline.evals injection                # 12 reviews x 4 injected inst
 Interruption/resume demo: `python scripts/resume_demo.py` starts a run on `checkpoint_500.csv`, sends SIGINT (what
 Ctrl-C sends) after two committed batches, then runs the same command again. Recorded in
 `runs/resume_demo/resume_demo.cast` (play with `asciinema play`, or read `transcript.txt`): the interrupted run
-wrote `checkpoints/checkpoint_before.json` (100 completed IDs), the resumed run finished the rest with
+wrote `checkpoints/checkpoint_before.json` (112 completed IDs: 100 texts plus duplicate-text rows), the resumed run finished the rest with
 `phase=resume` and wrote `checkpoint_after.json` (499 IDs; 1 text quarantined after two invalid outputs since the
 demo ran enrichment only). The run DB only ever holds whole batches and the open spend reservation is released on
 interruption.
