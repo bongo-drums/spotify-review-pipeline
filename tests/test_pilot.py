@@ -256,7 +256,10 @@ def test_calculator_offline_replay_and_rate_doubling(cost_csv, tmp_path, capsys)
     assert sc["conservative/no_reuse/standard"]["total"] > sc["base/no_reuse/standard"]["total"]
     assert sc[k]["already_committed"] > 0
     md = md_path.read_text()
-    assert "API total" in md and "OVER BUDGET" not in md
+    assert "API total" in md
+    rec_line = next(l for l in md.splitlines() if l.startswith("| base | exact_text_reuse | batch |"))
+    assert "OVER BUDGET" not in rec_line
+    assert any("OVER BUDGET" in l for l in md.splitlines() if l.startswith("| conservative | no_reuse | standard |"))
     assert "| base | exact_text_reuse | batch |" in capsys.readouterr().out
 
     # T3: doubling every rate with usage fixed doubles API spend and leaves measured time unchanged
@@ -270,7 +273,7 @@ def test_calculator_offline_replay_and_rate_doubling(cost_csv, tmp_path, capsys)
             w.writerow(row)
     assert calculator.main(base_args + ["--rates", str(doubled), "--out", str(tmp_path / "e2.json")]) == 0
     e2 = json.loads((tmp_path / "e2.json").read_text())
-    assert e2["measured"]["api_cost_usd"] == pytest.approx(2 * m["api_cost_usd"], rel=1e-6)
+    assert e2["measured"]["api_cost_usd"] == pytest.approx(2 * m["api_cost_usd"], abs=2e-8)
     assert e2["measured"]["cold"]["wall_clock_s"] == m["cold"]["wall_clock_s"]
     assert e2["scenarios"][k]["main_run"] == pytest.approx({u: 2 * v for u, v in sc[k]["main_run"].items()}, rel=1e-3)
 

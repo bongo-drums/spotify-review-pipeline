@@ -69,9 +69,9 @@ def measured(report: dict, rates) -> dict:
     calls = [c for c in cold["calls_detail"] if c["status"] in ("success", "invalid")]
     usage = {k: sum(c[k] or 0 for c in calls) for k in pricing.USAGE_UNITS}
     by_unit = {unit: {"tokens": usage[f], "usd_per_mtok": rates[(report["model"], report["tier"], unit)],
-                      "usd": round(usage[f] * rates[(report["model"], report["tier"], unit)] / 1e6, 6)}
+                      "usd": round(usage[f] * rates[(report["model"], report["tier"], unit)] / 1e6, 8)}
                for f, unit in pricing.USAGE_UNITS.items()}
-    api_usd = round(sum(u["usd"] for u in by_unit.values()), 6)
+    api_usd = round(sum(u["usd"] for u in by_unit.values()), 8)
     rows = report["input"]["rows"]
     counts = report["final_counts"]
     texts = cold["texts"]
@@ -177,8 +177,8 @@ def write_report_md(path: Path, est: dict) -> None:
                   f"- Requests: {m['requests']['succeeded']} succeeded, {m['requests']['failed_attempts']} failed attempts, {m['requests']['retried_texts']} texts re-sent after invalid output",
                   "", "| billing item | tokens | USD per MTok | USD |", "|---|---|---|---|"]
         for unit, u in m["cost_by_unit"].items():
-            lines.append(f"| {unit} | {u['tokens']:,} | {u['usd_per_mtok']} | {u['usd']:.6f} |")
-        lines += [f"| **API total** | | | **{m['api_cost_usd']:.6f}** |", "",
+            lines.append(f"| {unit} | {u['tokens']:,} | {u['usd_per_mtok']} | {u['usd']:.8f} |")
+        lines += [f"| **API total** | | | **{m['api_cost_usd']:.8f}** |", "",
                   f"- Cost per 1,000 input rows: ${m['cost_per_1000_input_rows_usd']:.4f}; per completed record: ${m['cost_per_completed_record_usd']:.6f}",
                   f"- Cold wall-clock: {m['cold']['wall_clock_s']} s over {m['cold']['calls']} sequential calls "
                   f"(mean {m['cold']['call_duration_s']['mean'] if m['cold']['call_duration_s'] else '?'} s); throughput {m['cold']['throughput_texts_per_s']} texts/s; "
