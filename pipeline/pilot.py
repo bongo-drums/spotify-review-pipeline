@@ -122,7 +122,10 @@ class Pilot:
     def client(self):
         if self._client is None:
             import anthropic
-            self._client = anthropic.Anthropic(max_retries=2, timeout=120.0)
+            key, var = config.api_key()
+            if not key:
+                raise RuntimeError("no API key: set PIPELINE_ANTHROPIC_API_KEY (see python -m pipeline.keycheck)")
+            self._client = anthropic.Anthropic(api_key=key, max_retries=2, timeout=120.0)
         return self._client
 
     def close(self):

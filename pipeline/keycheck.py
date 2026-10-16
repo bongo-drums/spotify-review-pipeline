@@ -3,8 +3,8 @@
 Usage:  python -m pipeline.keycheck [--no-smoke] [--ledger PATH]
 
 Checks, in order, and prints one JSON report:
-  1. credential  ANTHROPIC_API_KEY (or ANTHROPIC_AUTH_TOKEN) from the environment or .env. The
-                 value is never printed; only its source, prefix and length.
+  1. credential  PIPELINE_ANTHROPIC_API_KEY (or ANTHROPIC_API_KEY) from the environment or .env.
+                 The value is never printed; only its source, prefix and length.
   2. rates       cost/rates.csv loads and names the models the pipeline uses.
   3. ledger      the shared spend ledger opens; remaining budget under the cap.
   4. models      GET /v1/models/{id} for each priced model (free): the key works and the IDs exist.
@@ -31,12 +31,11 @@ SMOKE_REVIEW = "Great app, it has all the songs I like."
 
 
 def credential_status() -> dict:
-    for var in ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN"):
-        val = os.environ.get(var)
-        if val:
-            return {"ok": True, "source": var, "prefix": val[:7] + "…", "length": len(val)}
+    val, var = config.api_key()
+    if val:
+        return {"ok": True, "source": var, "prefix": val[:7] + "…", "length": len(val)}
     return {"ok": False, "source": None,
-            "hint": "set ANTHROPIC_API_KEY in the environment (or repo .env, which is git-ignored)"}
+            "hint": "set PIPELINE_ANTHROPIC_API_KEY in the environment (or repo .env, which is git-ignored)"}
 
 
 def check_models(client, models: list[str]) -> dict:
@@ -112,7 +111,7 @@ def main(argv=None) -> int:
 
     if ok:
         import anthropic
-        client = anthropic.Anthropic(max_retries=1, timeout=60.0)
+        client = anthropic.Anthropic(api_key=config.api_key()[0], max_retries=1, timeout=60.0)
         report["models"] = check_models(client, models or [MODEL])
         ok = report["models"]["ok"]
         if ok and not args.no_smoke:

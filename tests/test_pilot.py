@@ -228,7 +228,7 @@ def test_calculator_from_pilot_and_from_assumptions(cost_csv, tmp_path, capsys):
 
 def test_keycheck_without_credential(tmp_path, monkeypatch, capsys):
     from pipeline import keycheck
-    for var in ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN"):
+    for var in ("PIPELINE_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY"):
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setattr(keycheck, "load_dotenv", lambda *a, **k: None)
     assert keycheck.main(["--ledger", str(tmp_path / "l.sqlite")]) == 1
@@ -236,3 +236,6 @@ def test_keycheck_without_credential(tmp_path, monkeypatch, capsys):
     assert out["ok"] is False and out["credential"]["ok"] is False
     assert out["rates"]["ok"] and "claude-haiku-5-5" in out["rates"]["models"]
     assert out["ledger"]["remaining_usd"] == 20.0 and out["models"] == {"skipped": "no credential"}
+    monkeypatch.setenv("PIPELINE_ANTHROPIC_API_KEY", "sk-ant-test-0000")
+    assert keycheck.credential_status() == {"ok": True, "source": "PIPELINE_ANTHROPIC_API_KEY",
+                                            "prefix": "sk-ant-…", "length": 16}

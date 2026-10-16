@@ -8,8 +8,11 @@ Label definitions: `labels/definitions.md`. Golden set: `evals/golden/`.
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env        # fill ANTHROPIC_API_KEY (never committed; .env is git-ignored)
+cp .env.example .env        # fill PIPELINE_ANTHROPIC_API_KEY (never committed; .env is git-ignored)
 ```
+
+In a Claude Code cloud environment, add `PIPELINE_ANTHROPIC_API_KEY=sk-ant-...` under
+Environment variables instead (the name `ANTHROPIC_API_KEY` is reserved there and not passed through).
 
 The course dataset is unzipped to `data/raw/extracted/` (git-ignored). The pilot expects
 `cost_100.csv` and `manifest.json` there; the full run expects `spotify_reviews_18months.csv`.
