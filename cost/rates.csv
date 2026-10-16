@@ -1,0 +1,17 @@
+provider,model,tier,unit,usd_per_mtok,source_url,retrieved_on,note
+anthropic,claude-haiku-5-5,standard,input,0.1,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run; prompts <=100K tokens only (longer prompts use a higher rate card)
+anthropic,claude-haiku-5-5,standard,cache_write_5m,0.125,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run; prompts <=100K tokens only (longer prompts use a higher rate card)
+anthropic,claude-haiku-5-5,standard,cache_read,0.01,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run; prompts <=100K tokens only (longer prompts use a higher rate card)
+anthropic,claude-haiku-5-5,standard,output,0.5,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run; prompts <=100K tokens only (longer prompts use a higher rate card)
+anthropic,claude-haiku-5-5,batch,input,0.05,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run; prompts <=100K tokens only (longer prompts use a higher rate card)
+anthropic,claude-haiku-5-5,batch,cache_write_5m,0.0625,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run; prompts <=100K tokens only (longer prompts use a higher rate card)
+anthropic,claude-haiku-5-5,batch,cache_read,0.005,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run; prompts <=100K tokens only (longer prompts use a higher rate card)
+anthropic,claude-haiku-5-5,batch,output,0.25,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run; prompts <=100K tokens only (longer prompts use a higher rate card)
+anthropic,claude-sonnet-5-5,standard,input,2,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run
+anthropic,claude-sonnet-5-5,standard,cache_write_5m,2.5,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run
+anthropic,claude-sonnet-5-5,standard,cache_read,0.2,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run
+anthropic,claude-sonnet-5-5,standard,output,10,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run
+anthropic,claude-sonnet-5-5,batch,input,1,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run
+anthropic,claude-sonnet-5-5,batch,cache_write_5m,1.25,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run
+anthropic,claude-sonnet-5-5,batch,cache_read,0.1,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run
+anthropic,claude-sonnet-5-5,batch,output,5,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-16,verify before paid run

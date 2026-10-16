@@ -1,0 +1,4 @@
+# Runtime (stdlib-only so far: csv, sqlite3, hashlib, json, argparse)
+python-dotenv==1.2.3
+# Dev / test
+pytest==9.1.1

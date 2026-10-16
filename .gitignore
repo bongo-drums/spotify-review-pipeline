@@ -1,0 +1,25 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Data (raw CSV is never committed)
+data/raw/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Run state (run DBs are hundreds of MB; export small artifacts instead)
+runs/*/state.sqlite
+runs/*/state.sqlite-journal
+runs/*/state.sqlite-wal
+runs/*/state.sqlite-shm
+runs/ledger.sqlite-wal
+runs/ledger.sqlite-shm
+
+# Web / deploy
+node_modules/
+.vercel/
