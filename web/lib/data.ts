@@ -25,7 +25,15 @@ export type RunInfo = {
   memo_status: string | null; memo_model: string | null;
 };
 
-const DSN = process.env.DATABASE_URL || process.env.SUPABASE_DB_URL || "";
+const RAW_DSN = process.env.DATABASE_URL || process.env.SUPABASE_DB_URL || "";
+/** Serverless instances each hold a connection, and Supabase's session pooler caps at 15 clients. Route through
+ *  the transaction pooler (port 6543, multiplexed) unless the URL already says so or opts out with ?pool=session. */
+function serverlessDsn(dsn: string): string {
+  if (!dsn || dsn.includes("pool=session")) return dsn;
+  if (dsn.includes("pooler.supabase.com:5432")) return dsn.replace("pooler.supabase.com:5432", "pooler.supabase.com:6543");
+  return dsn;
+}
+const DSN = serverlessDsn(RAW_DSN);
 const DATA_DIR = process.env.DASHBOARD_DATA_DIR || path.join(process.cwd(), "data");
 
 export function sourceName(): "postgres" | "files" {
@@ -39,7 +47,8 @@ let seeded = false;
 async function pg() {
   if (!pool) {
     const { Pool } = await import("pg");
-    pool = new Pool({ connectionString: DSN, max: 3, ssl: DSN.includes("localhost") ? undefined : { rejectUnauthorized: false } });
+    pool = new Pool({ connectionString: DSN, max: 1, idleTimeoutMillis: 5_000, connectionTimeoutMillis: 20_000,
+                      ssl: DSN.includes("localhost") ? undefined : { rejectUnauthorized: false } });
   }
   if (!seeded) {
     // First request on an empty database: create the schema and load the committed snapshot (see lib/seed.ts).

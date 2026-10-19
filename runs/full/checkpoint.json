@@ -1,15 +1,15 @@
 {
-  "created_at": "2026-10-16T23:13:23.073779Z",
+  "created_at": "2026-10-19T22:27:27.222300Z",
   "run_id": "full",
   "db_path": "runs/full/state.sqlite",
   "counts": {
-    "pending": 8079,
-    "completed": 650147,
-    "quarantined": 2396
+    "pending": 0,
+    "completed": 658584,
+    "quarantined": 2038
   },
-  "completed_ids_count": 650147,
-  "completed_ids_sha256": "13b21bfcad35046693ec04c50e30b16df2cfb43c04fcce15a22b84a2ebaa8a7c",
+  "completed_ids_count": 658584,
+  "completed_ids_sha256": "538387f6446c7fc4cd33f5f343fd4ad52c1f5fb32518b9a7f1b2ed5e6066d045",
   "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
-  "label_cache_entries": 473861,
-  "calls": 9861
+  "label_cache_entries": 482275,
+  "calls": 10195
 }
