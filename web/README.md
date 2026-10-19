@@ -23,9 +23,16 @@ DATABASE_URL="$SUPABASE_DB_URL" npm run dev      # or omit DATABASE_URL to use w
 
 ## Deploy (Vercel)
 
+Live: https://spotify-review-dashboard-lilac.vercel.app (Vercel project `spotify-review-dashboard`, root
+directory `web`, framework Next.js). The CLI links the git root, so deploy from the repository root:
+
 ```bash
-cd web && npx vercel --prod --token "$VERCEL_TOKEN" -e DATABASE_URL="$SUPABASE_DB_URL"
+npx vercel link --yes --project spotify-review-dashboard --token "$VERCEL_TOKEN"
+printf '%s' "$SUPABASE_DB_URL" | npx vercel env add DATABASE_URL production --token "$VERCEL_TOKEN"   # once
+npx vercel --prod --yes --token "$VERCEL_TOKEN"
 ```
 
-Set `DATABASE_URL` (Supabase connection string, pooled port 6543 recommended) in the Vercel project. The live
-URL goes into the root README once deployed.
+`DATABASE_URL` (Supabase connection string, pooled port 6543 recommended) is stored as a production secret. Vercel
+rejects deploys on Next.js versions it flags as vulnerable, so keep `next` in `package.json` current.
+`/api/overview` reports `source: "postgres"` once `python -m pipeline.publish --run runs/<id> --db "$SUPABASE_DB_URL"`
+has loaded a run; before that it returns `relation "runs" does not exist`.

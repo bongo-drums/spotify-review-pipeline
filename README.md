@@ -7,9 +7,9 @@ Label definitions: `labels/definitions.md`. Course spec files: `docs/course/`.
 
 **Status (2026-10-16):** the staged program is complete and measured on the 100, 500 and 10,000-review
 checkpoints; the grading export of the 10k run passes the course checker except for one unclassified text; the
-dashboard runs locally against the published 10k run (`docs/dashboard_pilot500.png` shows the 500 run). The full
-660k Batch-tier run, the interruption/resume recording and the dashboard deploy are the remaining steps (see
-*What is not done yet*).
+dashboard runs locally against the published 10k run (`docs/dashboard_pilot500.png` shows the 500 run) and is
+deployed at https://spotify-review-dashboard-lilac.vercel.app pending the Supabase data load. The full 660k Batch-tier
+run, the interruption/resume recording and that data load are the remaining steps (see *What is not done yet*).
 
 ## Rubric map
 
@@ -27,7 +27,7 @@ dashboard runs locally against the published 10k run (`docs/dashboard_pilot500.p
 | **Working result** | |
 | Full ingestion, record coverage, successful classification | `runs/full/ingestion_report.json` (660,622 rows, 13 empty-text quarantines, 484,189 distinct texts, parsed-rows digest identical to the checker's profile); full classification not yet run (needs the go-ahead below) |
 | Runnable staged program, bounded calls, saved handoffs, demonstrated resume | `python -m pipeline.run --input <csv> --out runs/<id>`; <=50 reviews per request; every batch committed atomically; `--limit` stop + resume on the 10k checkpoint produced `checkpoint_before.json` / `checkpoint_after.json`; `python -m pipeline.rank --run runs/<id>` regenerates the ranking offline |
-| Reproducible baseline ranking, deployed dashboard with grounded recommendations | `pipeline/ranking.py` (Decimal half-up means, exact checker arithmetic, `tests/test_stages.py`); grading export `python -m pipeline.export` checked by `check_submission.py` on the 10k checkpoint (`runs/pilot10000/self-check.json`: only finding = 1 unclassified text); dashboard `web/` (Next.js API routes over Supabase Postgres, or the `web/data` snapshot without a database) built and exercised locally, see `web/README.md`; not yet deployed (needs Supabase and Vercel credentials) |
+| Reproducible baseline ranking, deployed dashboard with grounded recommendations | `pipeline/ranking.py` (Decimal half-up means, exact checker arithmetic, `tests/test_stages.py`); grading export `python -m pipeline.export` checked by `check_submission.py` on the 10k checkpoint (`runs/pilot10000/self-check.json`: only finding = 1 unclassified text); dashboard `web/` (Next.js API routes over Supabase Postgres, or the `web/data` snapshot without a database) built and exercised locally, see `web/README.md`; deployed to Vercel at https://spotify-review-dashboard-lilac.vercel.app (API routes read Supabase Postgres via `DATABASE_URL`; `/api/overview` reports `source: "postgres"` once `pipeline.publish --db` has loaded a run, see *What is not done yet*) |
 
 ## Architecture
 
@@ -207,5 +207,9 @@ checkpoint evidence is kept as measured and the full run uses the new version.
 3. **Matt's review of the drafts**: `evals/golden/error_analysis.md`, the README *Design choices* and *One
    failure* sections (all marked as drafts), and the memo's recommendation and alternatives, which should be
    rewritten in Matt's voice once the full run's memo exists.
-4. **Dashboard deploy**: the app in `web/` is built; loading Supabase (`pipeline.publish --db`) and deploying to
-   Vercel need `SUPABASE_DB_URL` and `VERCEL_TOKEN` in the environment, then the live URL goes here.
+4. **Dashboard data load**: the app in `web/` is deployed to Vercel at https://spotify-review-dashboard-lilac.vercel.app
+   (project `spotify-review-dashboard`, root directory `web`, `DATABASE_URL` set as a production secret). The
+   Supabase database is still empty, so `/api/overview` returns `relation "runs" does not exist` until
+   `python -m pipeline.publish --run runs/pilot10000 --db "$SUPABASE_DB_URL"` is run once (it creates the
+   schema and is idempotent per run); the page then serves the 10k run with `source: "postgres"`. Re-run it
+   with `--run runs/full` after the full run so the dashboard serves the latest published run.
