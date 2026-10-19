@@ -10,6 +10,11 @@ is called at request time.
 1. Create the tables once: `psql "$SUPABASE_DB_URL" -f db/schema.sql` (the loader also runs it).
 2. Load a finished run: `python -m pipeline.publish --run runs/full --db "$SUPABASE_DB_URL"`
    (`pip install 'psycopg[binary]'`). Tables: `runs`, `aggregates`, `issues`, `membership`, `records`, `claims`, `memo`.
+   The loader reads `runs/<id>/state.sqlite`, which is git-ignored. From a fresh checkout rebuild it first from the
+   run's source CSV and committed `labels.csv`:
+   `python scripts/rebuild_run_db.py --run runs/pilot10000 --input data/raw/extracted/analysis_10000.csv`.
+   Run the loader from a machine with direct Postgres access: a Claude Code cloud session cannot reach port 5432
+   (its egress proxy only carries HTTPS).
 3. Without a database (local development, CI): `python -m pipeline.publish --run runs/pilot10000` writes a JSON
    snapshot into `web/data/`, and the same API routes read that instead. The response's `source` field says
    which backend answered (`postgres` or `files`).
