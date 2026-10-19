@@ -1,0 +1,153 @@
+{
+  "generated_at": "2026-10-16T21:19:38.733695Z",
+  "source": {
+    "path": "data/raw/extracted/golden_50_to_label.csv",
+    "bytes": 7905,
+    "sha256": "1a125c3e509f58b0246ba16d0ea332675a53ffadb1928be4338a0bd7053a11c7",
+    "utf8_bom": false
+  },
+  "header": [
+    "review_id",
+    "review_text",
+    "review_rating",
+    "review_likes",
+    "app_version",
+    "review_timestamp",
+    "topic",
+    "intent",
+    "sentiment",
+    "severity",
+    "entities",
+    "evidence_quote",
+    "needs_review"
+  ],
+  "row_hash_rule": "GRADING_CONTRACT.md v1 / check_submission.py row_sha: sha256(utf8(json.dumps([review_id, review_text, review_rating, review_likes, app_version, review_timestamp], ensure_ascii=False, separators=(',',':'), sort_keys=True, allow_nan=False)))",
+  "checker_profile": {
+    "file_sha256": "1a125c3e509f58b0246ba16d0ea332675a53ffadb1928be4338a0bd7053a11c7",
+    "parsed_rows_sha256": "32f9562d48193e1ac3f4c4dc44d4e3c46922019f21848b8342f46b4de3ac4a50",
+    "counts": {
+      "records": 50,
+      "duplicate_review_ids": 0,
+      "empty_review_text": 0,
+      "missing_app_version": 12
+    },
+    "reviews_by_month": {
+      "2022-06": 2,
+      "2023-09": 7,
+      "2023-10": 7,
+      "2023-02": 2,
+      "2023-07": 6,
+      "2022-11": 2,
+      "2022-09": 2,
+      "2022-08": 6,
+      "2023-08": 3,
+      "2023-03": 2,
+      "2022-05": 1,
+      "2023-11": 2,
+      "2022-12": 2,
+      "2023-01": 1,
+      "2023-05": 1,
+      "2023-04": 2,
+      "2022-07": 2
+    },
+    "reviews_by_rating": {
+      "1": 22,
+      "5": 21,
+      "3": 2,
+      "4": 4,
+      "2": 1
+    },
+    "first_review": "2022-05-31 10:50:59",
+    "last_review": "2023-11-15 13:31:03"
+  },
+  "rows": {
+    "total": 50,
+    "loaded": 50,
+    "malformed_field_count": 0,
+    "malformed_examples": []
+  },
+  "review_text": {
+    "empty_exact": 0,
+    "whitespace_only": 0,
+    "nonblank_rows": 50,
+    "multiline_rows": 1,
+    "distinct_nonblank_texts": 49,
+    "rows_reusing_earlier_text": 1,
+    "distinct_nonblank_text_chars": 3770,
+    "dedup_rule": "exact raw text, sha256 of UTF-8 bytes, no normalization"
+  },
+  "missing_by_column": {
+    "review_id": 0,
+    "review_text": 0,
+    "review_rating": 0,
+    "review_likes": 0,
+    "app_version": 12,
+    "review_timestamp": 0
+  },
+  "missing_rule": "value.strip() == '' (same as check_submission.py profile)",
+  "empty_string_by_column": {
+    "review_id": 0,
+    "review_text": 0,
+    "review_rating": 0,
+    "review_likes": 0,
+    "app_version": 12,
+    "review_timestamp": 0
+  },
+  "duplicate_review_ids": {
+    "count": 0,
+    "examples": [],
+    "handling": "first occurrence loaded, later ones skipped"
+  },
+  "rating_distribution": {
+    "1": 22,
+    "2": 1,
+    "3": 2,
+    "4": 4,
+    "5": 21
+  },
+  "timestamps": {
+    "min": "2022-05-31 10:50:59",
+    "max": "2023-11-15 13:31:03",
+    "min_max_rule": "string comparison (ISO 'YYYY-MM-DD HH:MM:SS' sorts chronologically)",
+    "not_iso_parseable": 0,
+    "not_iso_parseable_examples": [],
+    "per_month": {
+      "2022-05": 1,
+      "2022-06": 2,
+      "2022-07": 2,
+      "2022-08": 6,
+      "2022-09": 2,
+      "2022-11": 2,
+      "2022-12": 2,
+      "2023-01": 1,
+      "2023-02": 2,
+      "2023-03": 2,
+      "2023-04": 2,
+      "2023-05": 1,
+      "2023-07": 6,
+      "2023-08": 3,
+      "2023-09": 7,
+      "2023-10": 7,
+      "2023-11": 2
+    }
+  },
+  "text_length_chars_nonblank": {
+    "count": 50,
+    "min": 4,
+    "max": 329,
+    "mean": 75.48,
+    "median": 39.0,
+    "p90": 176,
+    "p95": 284,
+    "p99": 329,
+    "total_chars": 3774
+  },
+  "status_counts": {
+    "pending": 50,
+    "completed": 0,
+    "quarantined": 0
+  },
+  "quarantine_reasons": {},
+  "db_path": "runs/golden50/state.sqlite",
+  "elapsed_s": 0.01
+}

@@ -1,0 +1,284 @@
+{
+  "generated_at": "2026-10-16T21:36:37.791966Z",
+  "run_id": "pilot100",
+  "records": {
+    "total": 100,
+    "pending": 0,
+    "completed": 100,
+    "quarantined": 0,
+    "quarantine_reasons": {},
+    "completed_fraction": 1.0
+  },
+  "labelled": 100,
+  "by_topic": {
+    "access": 2,
+    "usability": 12,
+    "playback": 5,
+    "downloads": 3,
+    "catalog": 14,
+    "billing": 10,
+    "support": 0,
+    "other": 54
+  },
+  "by_intent": {
+    "cancellation": 6,
+    "complaint": 45,
+    "request": 3,
+    "praise": 41,
+    "unclear": 5
+  },
+  "by_severity": {
+    "1": 50,
+    "2": 26,
+    "3": 19,
+    "4": 5,
+    "5": 0
+  },
+  "by_sentiment": {
+    "-0.5": 9,
+    "-1.0": 39,
+    "0.0": 12,
+    "0.5": 14,
+    "1.0": 26
+  },
+  "mean_sentiment": -0.105,
+  "needs_review": {
+    "count": 16,
+    "fraction": 0.16
+  },
+  "complaints": {
+    "total": 51,
+    "by_topic": {
+      "access": 2,
+      "usability": 11,
+      "playback": 5,
+      "downloads": 2,
+      "catalog": 6,
+      "billing": 10,
+      "support": 0,
+      "other": 15
+    },
+    "severity_sum_by_topic": {
+      "access": 8,
+      "usability": 28,
+      "playback": 16,
+      "downloads": 7,
+      "catalog": 11,
+      "billing": 29,
+      "support": 0,
+      "other": 30
+    }
+  },
+  "focus_areas": {
+    "access": {
+      "topics": [
+        "access"
+      ],
+      "complaint_count": 2,
+      "severity_sum": 8,
+      "mean_severity": "4.000000",
+      "share_of_complaints": 0.0392
+    },
+    "usability": {
+      "topics": [
+        "usability"
+      ],
+      "complaint_count": 11,
+      "severity_sum": 28,
+      "mean_severity": "2.545455",
+      "share_of_complaints": 0.2157
+    },
+    "playback": {
+      "topics": [
+        "playback"
+      ],
+      "complaint_count": 5,
+      "severity_sum": 16,
+      "mean_severity": "3.200000",
+      "share_of_complaints": 0.098
+    },
+    "billing_support": {
+      "topics": [
+        "billing",
+        "support"
+      ],
+      "complaint_count": 10,
+      "severity_sum": 29,
+      "mean_severity": "2.900000",
+      "share_of_complaints": 0.1961
+    }
+  },
+  "complaints_by_month_topic": {
+    "2022-06": {
+      "downloads": 1,
+      "catalog": 1
+    },
+    "2022-07": {
+      "usability": 1,
+      "playback": 1,
+      "other": 1
+    },
+    "2022-08": {
+      "billing": 1
+    },
+    "2022-09": {
+      "usability": 1
+    },
+    "2022-10": {
+      "catalog": 2,
+      "billing": 1
+    },
+    "2022-11": {
+      "usability": 1
+    },
+    "2023-01": {
+      "access": 1,
+      "playback": 1,
+      "other": 1
+    },
+    "2023-02": {
+      "usability": 1,
+      "playback": 1
+    },
+    "2023-03": {
+      "usability": 2,
+      "playback": 1
+    },
+    "2023-04": {
+      "billing": 1
+    },
+    "2023-05": {
+      "billing": 1,
+      "other": 1
+    },
+    "2023-06": {
+      "playback": 1,
+      "other": 2
+    },
+    "2023-07": {
+      "downloads": 1,
+      "other": 4
+    },
+    "2023-08": {
+      "access": 1
+    },
+    "2023-09": {
+      "usability": 1,
+      "other": 1
+    },
+    "2023-10": {
+      "usability": 2,
+      "catalog": 3,
+      "billing": 6,
+      "other": 4
+    },
+    "2023-11": {
+      "usability": 2,
+      "other": 1
+    }
+  },
+  "issues": 17,
+  "top_issues": [
+    {
+      "rank": "1",
+      "issue_id": "billing.premium_only_controls",
+      "complaint_count": "10",
+      "severity_sum": "29",
+      "mean_severity": "2.900000",
+      "priority_score": "29",
+      "name": "Basic music controls locked behind Premium",
+      "summary": "Customers report that choosing specific songs, playing next tracks, and skipping are restricted to Premium subscribers, and they feel basic listening now requires payment."
+    },
+    {
+      "rank": "2",
+      "issue_id": "other.general_negative",
+      "complaint_count": "13",
+      "severity_sum": "26",
+      "mean_severity": "2.000000",
+      "priority_score": "26",
+      "name": "Recent update made app feel useless",
+      "summary": "Customers say a recent update removed basic music player features and left the app disappointing or useless to them."
+    },
+    {
+      "rank": "3",
+      "issue_id": "usability.ads_interruptions",
+      "complaint_count": "7",
+      "severity_sum": "18",
+      "mean_severity": "2.571429",
+      "priority_score": "18",
+      "name": "Frequent ads interrupt listening on free tier",
+      "summary": "Customers report ads playing every one or two songs on the free tier, with some saying the ads are excessive enough to make them uninstall."
+    },
+    {
+      "rank": "4",
+      "issue_id": "access.login_failure",
+      "complaint_count": "2",
+      "severity_sum": "8",
+      "mean_severity": "4.000000",
+      "priority_score": "8",
+      "name": "Password rejected and account not accessible",
+      "summary": "Customers report being unable to log in because the app will not accept their password or lets them into their account."
+    },
+    {
+      "rank": "5",
+      "issue_id": "playback.crash_wont_open",
+      "complaint_count": "2",
+      "severity_sum": "8",
+      "mean_severity": "4.000000",
+      "priority_score": "8",
+      "name": "App crashes or stalls on loading screen",
+      "summary": "Customers report the app crashing after an update, failing to open, or getting stuck on the loading or logo screen."
+    },
+    {
+      "rank": "6",
+      "issue_id": "usability.ui_redesign",
+      "complaint_count": "3",
+      "severity_sum": "7",
+      "mean_severity": "2.333333",
+      "priority_score": "7",
+      "name": "Interface changes make songs hard to play",
+      "summary": "Customers say the app's interface feels like a social media app and that they struggle to play songs after recent design changes made without beta testing."
+    },
+    {
+      "rank": "7",
+      "issue_id": "catalog.lyrics",
+      "complaint_count": "2",
+      "severity_sum": "4",
+      "mean_severity": "2.000000",
+      "priority_score": "4",
+      "name": "Lyrics missing or inconsistently displayed",
+      "summary": "Customers report that lyrics appear for some songs but not others, and sometimes fail to show at all, which they find confusing."
+    },
+    {
+      "rank": "8",
+      "issue_id": "catalog.missing_content",
+      "complaint_count": "2",
+      "severity_sum": "4",
+      "mean_severity": "2.000000",
+      "priority_score": "4",
+      "name": "Expected songs and genres not available",
+      "summary": "Customers report that many songs they expect are not present in the catalog, and that certain genres such as gospel music are underrepresented."
+    },
+    {
+      "rank": "9",
+      "issue_id": "downloads.offline_needs_internet",
+      "complaint_count": "1",
+      "severity_sum": "4",
+      "mean_severity": "4.000000",
+      "priority_score": "4",
+      "name": "Offline mode not working",
+      "summary": "A customer reports that offline playback does not work as expected."
+    },
+    {
+      "rank": "10",
+      "issue_id": "other.unrelated",
+      "complaint_count": "2",
+      "severity_sum": "4",
+      "mean_severity": "2.000000",
+      "priority_score": "4",
+      "name": "Off-topic complaints about content and Google Assistant",
+      "summary": "Customers raise concerns unrelated to core app function, including objections to content and Spotify playlists not playing through Google Assistant."
+    }
+  ],
+  "ranking_rule": "priority_score = severity_sum = complaint_count x mean_severity; sort score desc, issue_id asc"
+}

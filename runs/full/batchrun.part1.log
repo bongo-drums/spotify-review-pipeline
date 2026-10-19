@@ -1,0 +1,63 @@
+submitted batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB (job local-5a238096aafe489080d656ba36f6fece): 5000 requests, 250000 texts, reserved worst case $6.4189
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB in_progress: processing=5000 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+collected batch msgbatch_01RFf33NCjSDt5gcaHwqwKwB: 5000 ok, 0 failed requests; 399742 completed, 101 quarantined, 9243 to retry; $4.1608
+submitted batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS (job local-dbcaed9db32c426eb63f072b3155b319): 4861 requests, 243035 texts, reserved worst case $6.2915
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS in_progress: processing=4861 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+collected batch msgbatch_01RbZrv8Sjyb1dRxicyGjnfS: 4861 ok, 0 failed requests; 250405 completed, 2282 quarantined, 8079 to retry; $4.1158
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/user/spotify-review-pipeline/pipeline/batchrun.py", line 385, in <module>
+  File "/home/user/spotify-review-pipeline/pipeline/batchrun.py", line 355, in main
+    "phase": runner.phase, "resumed": resumed, "max_usd": args.max_usd, "batch_requests": args.batch_requests}
+                 ^^^^^^^^^^^^
+  File "/home/user/spotify-review-pipeline/pipeline/batchrun.py", line 319, in run
+    # park the groups so the loop advances; restored below
+  File "/home/user/spotify-review-pipeline/pipeline/batchrun.py", line 155, in submit
+    batch = self.client.messages.batches.create(requests=[{"custom_id": r["custom_id"], "params": r["params"]} for r in reqs])
+  File "/usr/local/lib/python3.13/dist-packages/anthropic/resources/messages/batches.py", line 106, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/v1/messages/batches",
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+        cast_to=MessageBatch,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/anthropic/_base_client.py", line 1676, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/anthropic/_base_client.py", line 1227, in request
+    return self._request(cast_to, options, stream=stream, stream_cls=stream_cls)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/anthropic/_base_client.py", line 1330, in _request
+    raise self._make_status_error_from_response(response) from None
+anthropic.BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Cg6mGnrgXYSPB1goFsBWm'}
+exit 1

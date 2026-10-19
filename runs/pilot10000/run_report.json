@@ -1,0 +1,361 @@
+{
+  "run_id": "pilot10000",
+  "started_at": "2026-10-16T21:58:31.080134Z",
+  "status": "ok",
+  "resumed": true,
+  "phase": "resume",
+  "stages": [
+    "fallback",
+    "verify",
+    "group",
+    "rank",
+    "recommend"
+  ],
+  "input": {
+    "path": "data/raw/extracted/analysis_10000.csv",
+    "manifest_path": "data/raw/extracted/manifest.json",
+    "found_entry": true,
+    "sha256_matches": true,
+    "input_sha256": "eaa62ca6d44d717302904a9c922e99b0b4584d174309cb45295ecbc2ba2a91b5",
+    "manifest_sha256": "07afdd96dd7f97ff5fbf967961e14d6d9f48170ba3f417399e20d5b620291011",
+    "manifest_sha256_for_input": "eaa62ca6d44d717302904a9c922e99b0b4584d174309cb45295ecbc2ba2a91b5",
+    "rows": 10000,
+    "distinct_texts": 8447,
+    "distinct_text_chars": 739669
+  },
+  "counts_before": {
+    "pending": 0,
+    "completed": 9978,
+    "quarantined": 22
+  },
+  "max_usd": 1.5,
+  "limit": null,
+  "downstream": {
+    "fallback": {
+      "model": "claude-sonnet-5-5",
+      "label_config": "labels-v1|claude-sonnet-5-5|68d569ab095d",
+      "max_frac": 0.005,
+      "cap_texts": 42,
+      "eligible": 22,
+      "routed": 22,
+      "skipped_over_cap": 0,
+      "completed": 21,
+      "still_quarantined": 1,
+      "calls": 3,
+      "cost_usd": 0.023084,
+      "wall_s": 9.384
+    },
+    "verify": {
+      "verified": 170,
+      "agreement": {
+        "topic": 0.8588,
+        "intent": 0.9176,
+        "severity": 0.8882,
+        "joint": 0.7176
+      },
+      "severity_mae": 0.1118,
+      "new_calls_this_run": 2,
+      "reused_verifications": 0,
+      "sample": 85,
+      "planted_errors": {
+        "planted": 85,
+        "detected": 83,
+        "detection_rate": 0.9765
+      },
+      "calls": {
+        "calls": 4,
+        "failed_calls": 0,
+        "usage": {
+          "input_tokens": 5934,
+          "cache_creation_input_tokens": 1334,
+          "cache_read_input_tokens": 4002,
+          "output_tokens": 4978
+        },
+        "texts": 170,
+        "cost_usd": 0.003289,
+        "wall_s_sum_of_calls": 20.039,
+        "models": [
+          "claude-haiku-5-5"
+        ]
+      },
+      "wall_s": 8.745
+    },
+    "group": {
+      "membership_rows": 4547,
+      "issues": 31,
+      "naming": {
+        "model": "claude-haiku-5-5",
+        "input_sha256": "d6831fc6327e2dbb1661ee99f014da137716175a522eee4f6f21b6c73dae9904",
+        "cached": false,
+        "calls": 1,
+        "invalid_names": [],
+        "cost_usd": 0.00181213,
+        "input_tokens": 6311,
+        "output_tokens": 2351,
+        "duration_s": 10.658,
+        "unnamed": []
+      },
+      "wall_s": 11.043
+    },
+    "rank": {
+      "membership_rows": 4547,
+      "issues": 31,
+      "claims": 40,
+      "top": [
+        {
+          "rank": "1",
+          "issue_id": "other.general_negative",
+          "complaint_count": "1390",
+          "severity_sum": "2828",
+          "mean_severity": "2.034532",
+          "priority_score": "2828"
+        },
+        {
+          "rank": "2",
+          "issue_id": "billing.premium_only_controls",
+          "complaint_count": "712",
+          "severity_sum": "2016",
+          "mean_severity": "2.831461",
+          "priority_score": "2016"
+        },
+        {
+          "rank": "3",
+          "issue_id": "usability.ads_interruptions",
+          "complaint_count": "586",
+          "severity_sum": "1397",
+          "mean_severity": "2.383959",
+          "priority_score": "1397"
+        },
+        {
+          "rank": "4",
+          "issue_id": "playback.stops_skips_glitches",
+          "complaint_count": "319",
+          "severity_sum": "987",
+          "mean_severity": "3.094044",
+          "priority_score": "987"
+        },
+        {
+          "rank": "5",
+          "issue_id": "access.login_failure",
+          "complaint_count": "155",
+          "severity_sum": "594",
+          "mean_severity": "3.832258",
+          "priority_score": "594"
+        }
+      ],
+      "focus_areas": {
+        "access": {
+          "topics": [
+            "access"
+          ],
+          "complaint_count": 177,
+          "severity_sum": 675,
+          "mean_severity": "3.813559",
+          "share_of_complaints": 0.0389
+        },
+        "usability": {
+          "topics": [
+            "usability"
+          ],
+          "complaint_count": 1082,
+          "severity_sum": 2669,
+          "mean_severity": "2.466728",
+          "share_of_complaints": 0.238
+        },
+        "playback": {
+          "topics": [
+            "playback"
+          ],
+          "complaint_count": 563,
+          "severity_sum": 1785,
+          "mean_severity": "3.170515",
+          "share_of_complaints": 0.1238
+        },
+        "billing_support": {
+          "topics": [
+            "billing",
+            "support"
+          ],
+          "complaint_count": 879,
+          "severity_sum": 2433,
+          "mean_severity": "2.767918",
+          "share_of_complaints": 0.1933
+        }
+      },
+      "wall_s": 0.126
+    },
+    "recommend": {
+      "status": "validated",
+      "validation": {
+        "ok": true,
+        "errors": [],
+        "unverified_numbers": []
+      },
+      "model": "claude-sonnet-5-5",
+      "input_sha256": "6175943e6bc8e511b8a347c5f9cb3e0a8c2e076f8b1c89b5922429f3275bf835",
+      "cached": false,
+      "calls": 1,
+      "cost_usd": 0.026268800000000002,
+      "wall_s": 17.912
+    },
+    "wall_s": 47.209,
+    "model_calls": 7
+  },
+  "counts_after": {
+    "pending": 0,
+    "completed": 9999,
+    "quarantined": 1
+  },
+  "checkpoint": {
+    "created_at": "2026-10-16T21:59:19.310664Z",
+    "run_id": "pilot10000",
+    "db_path": "runs/pilot10000/state.sqlite",
+    "counts": {
+      "pending": 0,
+      "completed": 9999,
+      "quarantined": 1
+    },
+    "completed_ids_count": 9999,
+    "completed_ids_sha256": "29a8af6466df63b0afa19e36e048778085f757e68d95b6af3d41acf16d7cdd35",
+    "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+    "label_cache_entries": 8447,
+    "calls": 187
+  },
+  "labels_csv_rows": 10000,
+  "cost_by_stage": {
+    "enrich": 0.311344,
+    "group": 0.00365,
+    "memo": 0.059146,
+    "verify": 0.003289
+  },
+  "stage_calls": {
+    "enrich": {
+      "calls": 176,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 342330,
+        "cache_creation_input_tokens": 2813,
+        "cache_read_input_tokens": 492275,
+        "output_tokens": 497506
+      },
+      "texts": 8746,
+      "cost_usd": 0.28826,
+      "wall_s_sum_of_calls": 1572.015,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "verify": {
+      "calls": 4,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 5934,
+        "cache_creation_input_tokens": 1334,
+        "cache_read_input_tokens": 4002,
+        "output_tokens": 4978
+      },
+      "texts": 170,
+      "cost_usd": 0.003289,
+      "wall_s_sum_of_calls": 20.039,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "group": {
+      "calls": 2,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 12622,
+        "cache_creation_input_tokens": 553,
+        "cache_read_input_tokens": 553,
+        "output_tokens": 4626
+      },
+      "texts": 186,
+      "cost_usd": 0.00365,
+      "wall_s_sum_of_calls": 21.348,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "memo": {
+      "calls": 2,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 5252,
+        "cache_creation_input_tokens": 1334,
+        "cache_read_input_tokens": 1334,
+        "output_tokens": 4504
+      },
+      "texts": 30,
+      "cost_usd": 0.059146,
+      "wall_s_sum_of_calls": 38.143,
+      "models": [
+        "claude-sonnet-5-5"
+      ]
+    },
+    "fallback": {
+      "calls": 3,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 838,
+        "cache_creation_input_tokens": 2813,
+        "cache_read_input_tokens": 5626,
+        "output_tokens": 1325
+      },
+      "texts": 22,
+      "cost_usd": 0.023084,
+      "wall_s_sum_of_calls": 9.364,
+      "models": [
+        "claude-sonnet-5-5"
+      ]
+    }
+  },
+  "model": "claude-haiku-5-5",
+  "label_config": "labels-v1|claude-haiku-5-5|68d569ab095d",
+  "tier": "standard",
+  "run_spent_usd": 0.377429,
+  "ledger": {
+    "cap_usd": 20.0,
+    "committed_usd": 0.46646,
+    "outstanding_reservations_usd": 0.0,
+    "remaining_usd": 19.53354,
+    "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
+  },
+  "events": [
+    "2026-10-16T21:58:35.985104Z fallback (claude-sonnet-5-5): 10 texts, 3.891s, $0.01336 | ok=10 invalid=0",
+    "2026-10-16T21:58:39.678920Z fallback (claude-sonnet-5-5): 10 texts, 3.69s, $0.00776 | ok=9 invalid=1",
+    "2026-10-16T21:58:41.463790Z fallback (claude-sonnet-5-5): 2 texts, 1.783s, $0.00196 | ok=2 invalid=0",
+    "2026-10-16T21:58:46.247394Z verify: 50 texts, 4.761s, $0.00093 | verified=50 invalid=0",
+    "2026-10-16T21:58:50.196083Z verify: 35 texts, 3.946s, $0.00071 | verified=35 invalid=0",
+    "2026-10-16T21:59:01.247626Z group: named 31/31 issues in 10.658s, $0.00181",
+    "2026-10-16T21:59:19.286810Z memo: attempt 1 ok in 17.907s, $0.02627"
+  ],
+  "finished_at": "2026-10-16T21:59:19.466838Z",
+  "export": {
+    "run": {
+      "version": "a5-audit-v1",
+      "analysis_count": 10000,
+      "analysis_sha256": "eaa62ca6d44d717302904a9c922e99b0b4584d174309cb45295ecbc2ba2a91b5",
+      "classification_input_fields": [
+        "review_text"
+      ],
+      "allow_multi_issue": false
+    },
+    "out": "runs/pilot10000/grading",
+    "records": {
+      "completed": 9999,
+      "quarantined": 1,
+      "pending_as_quarantined": 0,
+      "cache_aliases": 1552
+    },
+    "calls": {
+      "calls": 187,
+      "by_role": {
+        "enrich": 179,
+        "verify": 4,
+        "group": 2,
+        "memo": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "run": {
+    "version": "a5-audit-v1",
+    "analysis_count": 660622,
+    "analysis_sha256": "1fc85de68a304dd8978b537cfa58793d5f41cbaf417fa32cb53899f83a2fcef6",
+    "classification_input_fields": [
+      "review_text"
+    ],
+    "allow_multi_issue": false
+  },
+  "out": "runs/full/grading",
+  "records": {
+    "completed": 660602,
+    "quarantined": 20,
+    "pending_as_quarantined": 0,
+    "cache_aliases": 176420
+  },
+  "calls": {
+    "calls": 11997,
+    "by_role": {
+      "enrich": 10387,
+      "verify": 97,
+      "group": 1,
+      "memo": 1
+    },
+    "invalid_record_events_split_out": 1511
+  },
+  "note": "written by pipeline.export; not part of the contract's file list"
+}

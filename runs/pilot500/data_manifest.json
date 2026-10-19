@@ -1,0 +1,18 @@
+{
+  "created_at": "2026-10-16T21:20:23.083042Z",
+  "source_path": "data/raw/extracted/checkpoint_500.csv",
+  "source_bytes": 76170,
+  "source_sha256": "a94e31663ee7b7eaa77e23b7a8425b530cc0c866ed5e714953172a0afef6a12f",
+  "row_count": 500,
+  "loaded_row_count": 500,
+  "row_hash_rule": "GRADING_CONTRACT.md v1 / check_submission.py row_sha: sha256(utf8(json.dumps([review_id, review_text, review_rating, review_likes, app_version, review_timestamp], ensure_ascii=False, separators=(',',':'), sort_keys=True, allow_nan=False)))",
+  "code": {
+    "commit": "c6b3c97a0dd3572c845f8c18d540e58384dcd39f",
+    "dirty": true
+  },
+  "python": "3.13.16",
+  "outputs": {
+    "ingestion_report": "ingestion_report.json",
+    "run_db": "state.sqlite"
+  }
+}

@@ -1,0 +1,629 @@
+{
+  "generated_by": "cost/calculator.py (offline)",
+  "pilot_report": "/home/user/spotify-review-pipeline/runs/pilot100/pilot_report.json",
+  "rates_path": "/home/user/spotify-review-pipeline/cost/rates.csv",
+  "rates_retrieved_on": "2026-10-16",
+  "measured": {
+    "input": {
+      "path": "data/raw/extracted/cost_100.csv",
+      "sha256": "c884ac3b9be5066995d5063f96ad9af6e5e082975788c1684c4f6b6ea661dd0e",
+      "rows": 100,
+      "manifest_sha256_matches": true
+    },
+    "stage": {
+      "role": "enrich",
+      "provider": "anthropic",
+      "model": "claude-haiku-5-5",
+      "effort": "low",
+      "thinking": "disabled",
+      "label_config": "labels-v1|claude-haiku-5-5|68d569ab095d",
+      "prompt_sha256": "68d569ab095d88e7319142647235130475af9f198a6f656b026449bdcca6a10b",
+      "batch_size": 50,
+      "workers": 1,
+      "tier": "standard"
+    },
+    "other_stages": {
+      "verify": {
+        "model": "claude-haiku-5-5",
+        "sample_rule": "max(10, ceil(frac x completed heads)), blind, separate prompt",
+        "verified": 10,
+        "agreement": {
+          "topic": 1.0,
+          "intent": 0.9,
+          "severity": 0.9,
+          "joint": 0.8
+        },
+        "planted_errors": {
+          "planted": 5,
+          "detected": 5,
+          "detection_rate": 1.0
+        }
+      },
+      "group": {
+        "model": "claude-haiku-5-5",
+        "issues": 17,
+        "membership_rows": 51
+      },
+      "memo": {
+        "model": "claude-sonnet-5-5",
+        "status": "validated"
+      }
+    },
+    "records": {
+      "completed": 100,
+      "quarantined": 0,
+      "pending": 0,
+      "quarantine_reasons": {},
+      "distinct_nonempty_texts": 100,
+      "texts_sent": 102,
+      "rows_completed_via_exact_text_reuse": 0
+    },
+    "requests": {
+      "succeeded": 3,
+      "failed_attempts": 0,
+      "retried_texts": 2,
+      "all_stages_succeeded": 6,
+      "all_stages_failed_attempts": 1
+    },
+    "usage": {
+      "input_tokens": 3944,
+      "cache_creation_input_tokens": 2813,
+      "cache_read_input_tokens": 5626,
+      "output_tokens": 5743
+    },
+    "cost_by_unit": {
+      "input": {
+        "tokens": 3944,
+        "usd_per_mtok": 0.1,
+        "usd": 0.0003944
+      },
+      "cache_write_5m": {
+        "tokens": 2813,
+        "usd_per_mtok": 0.125,
+        "usd": 0.00035162
+      },
+      "cache_read": {
+        "tokens": 5626,
+        "usd_per_mtok": 0.01,
+        "usd": 5.626e-05
+      },
+      "output": {
+        "tokens": 5743,
+        "usd_per_mtok": 0.5,
+        "usd": 0.0028715
+      }
+    },
+    "enrich_cost_usd": 0.00367378,
+    "stages": {
+      "enrich": {
+        "calls": 3,
+        "failed_calls": 0,
+        "texts": 102,
+        "model": "claude-haiku-5-5",
+        "usage": {
+          "input_tokens": 3944,
+          "cache_creation_input_tokens": 2813,
+          "cache_read_input_tokens": 5626,
+          "output_tokens": 5743
+        },
+        "usd": 0.00367378,
+        "wall_s": 19.257,
+        "usd_per_text": 3.602e-05
+      },
+      "fallback": {
+        "calls": 0,
+        "failed_calls": 0,
+        "texts": 0,
+        "model": null,
+        "usd": 0.0,
+        "usage": {},
+        "wall_s": 0.0
+      },
+      "verify": {
+        "calls": 1,
+        "failed_calls": 0,
+        "texts": 10,
+        "model": "claude-haiku-5-5",
+        "usage": {
+          "input_tokens": 378,
+          "cache_creation_input_tokens": 1334,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 294
+        },
+        "usd": 0.00035155,
+        "wall_s": 2.171,
+        "usd_per_text": 3.515e-05
+      },
+      "group": {
+        "calls": 1,
+        "failed_calls": 0,
+        "texts": 30,
+        "model": "claude-haiku-5-5",
+        "usage": {
+          "input_tokens": 2415,
+          "cache_creation_input_tokens": 553,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 1210
+        },
+        "usd": 0.00091562,
+        "wall_s": 7.587,
+        "usd_per_text": 3.052e-05
+      },
+      "memo": {
+        "calls": 1,
+        "failed_calls": 1,
+        "texts": 13,
+        "model": "claude-sonnet-5-5",
+        "usage": {
+          "input_tokens": 2175,
+          "cache_creation_input_tokens": 1334,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 1881
+        },
+        "usd": 0.026495,
+        "wall_s": 18.091,
+        "usd_per_text": 0.00203808
+      }
+    },
+    "api_cost_usd": 0.03143595,
+    "cost_per_1000_input_rows_usd": 0.314359,
+    "cost_per_completed_record_usd": 0.00031436,
+    "cold": {
+      "wall_clock_s": 19.257,
+      "calls": 3,
+      "call_duration_s": {
+        "mean": 6.419,
+        "p50": 8.888,
+        "max": 9.157
+      },
+      "throughput_texts_per_s": 5.297,
+      "prompt_cache_read_tokens": 5626,
+      "downstream_wall_s": 27.849,
+      "end_to_end_wall_s": 47.106
+    },
+    "warm": {
+      "wall_clock_s": 0.039,
+      "enrich_wall_s": 0.023,
+      "enrichment_calls": 0,
+      "downstream_calls": 0,
+      "rows_completed_from_result_cache": 100,
+      "incremental_api_cost_usd": 0,
+      "counts": {
+        "pending": 0,
+        "completed": 100,
+        "quarantined": 0
+      }
+    },
+    "replay": null,
+    "local_compute": "unknown (not measured; one laptop/container process, no GPU)",
+    "per_text": {
+      "input_tokens": 38.667,
+      "input_tokens_per_char": 0.4062,
+      "output_tokens_per_text": 56.304,
+      "avg_chars": 80.42,
+      "system_prompt_tokens": 1963,
+      "seconds_per_call": 6.419,
+      "verify_usd_per_text": 3.515e-05,
+      "verify_seconds_per_call": 2.171,
+      "fixed_measured_usd": 0.027411
+    }
+  },
+  "refresh": [
+    {
+      "run_id": "pilot500",
+      "path": "/home/user/spotify-review-pipeline/runs/pilot500/run_report.json",
+      "usable": true,
+      "status": "ok",
+      "rows": 500,
+      "completed": 500,
+      "quarantined": 0,
+      "distinct_texts": 479,
+      "texts_sent": 490,
+      "enrich_calls": 10,
+      "failed_attempts": 0,
+      "api_cost_usd": 0.04929,
+      "cost_per_1000_input_rows_usd": 0.09858,
+      "stages": {
+        "enrich": {
+          "usd": 0.015955,
+          "calls": 10,
+          "wall_s": 87.535
+        },
+        "fallback": {
+          "usd": 0.0,
+          "calls": 0,
+          "wall_s": 0.0
+        },
+        "verify": {
+          "usd": 0.00038125,
+          "calls": 1,
+          "wall_s": 2.428
+        },
+        "group": {
+          "usd": 0.00133703,
+          "calls": 1,
+          "wall_s": 8.161
+        },
+        "memo": {
+          "usd": 0.031617,
+          "calls": 1,
+          "wall_s": 19.436
+        }
+      },
+      "verify": {
+        "topic": 0.8,
+        "intent": 0.8,
+        "severity": 0.8,
+        "joint": 0.8
+      },
+      "per_text": {
+        "input_tokens": 37.994,
+        "input_tokens_per_char": 0.3917,
+        "output_tokens_per_text": 56.376,
+        "avg_chars": 81.67,
+        "system_prompt_tokens": null,
+        "seconds_per_call": 8.753,
+        "verify_usd_per_text": 3.813e-05,
+        "verify_seconds_per_call": 2.428,
+        "fixed_measured_usd": 0.032954
+      }
+    },
+    {
+      "run_id": "pilot10000",
+      "path": "/home/user/spotify-review-pipeline/runs/pilot10000/run_report.json",
+      "usable": true,
+      "status": "ok",
+      "rows": 10000,
+      "completed": 9999,
+      "quarantined": 1,
+      "distinct_texts": 8447,
+      "texts_sent": 8746,
+      "enrich_calls": 176,
+      "failed_attempts": 0,
+      "api_cost_usd": 0.377429,
+      "cost_per_1000_input_rows_usd": 0.037743,
+      "stages": {
+        "enrich": {
+          "usd": 0.28826038,
+          "calls": 176,
+          "wall_s": 1572.015
+        },
+        "fallback": {
+          "usd": 0.0230837,
+          "calls": 3,
+          "wall_s": 9.364
+        },
+        "verify": {
+          "usd": 0.00328917,
+          "calls": 4,
+          "wall_s": 20.039
+        },
+        "group": {
+          "usd": 0.00364986,
+          "calls": 2,
+          "wall_s": 21.348
+        },
+        "memo": {
+          "usd": 0.0591458,
+          "calls": 2,
+          "wall_s": 38.143
+        }
+      },
+      "verify": {
+        "topic": 0.8588,
+        "intent": 0.9176,
+        "severity": 0.8882,
+        "joint": 0.7176
+      },
+      "per_text": {
+        "input_tokens": 39.141,
+        "input_tokens_per_char": 0.3785,
+        "output_tokens_per_text": 56.884,
+        "avg_chars": 87.57,
+        "system_prompt_tokens": null,
+        "seconds_per_call": 8.932,
+        "verify_usd_per_text": 1.935e-05,
+        "verify_seconds_per_call": 5.01,
+        "fixed_measured_usd": 0.062796
+      }
+    }
+  ],
+  "params": {
+    "input_tokens": 38.667,
+    "input_tokens_per_char": 0.4062,
+    "output_tokens_per_text": 56.304,
+    "avg_chars": 80.42,
+    "system_prompt_tokens": 1963,
+    "seconds_per_call": 6.419,
+    "verify_usd_per_text": 3.515e-05,
+    "verify_seconds_per_call": 2.171,
+    "fixed_measured_usd": 0.027411,
+    "source": "measured pilot100"
+  },
+  "population": {
+    "source": "/home/user/spotify-review-pipeline/runs/full/ingestion_report.json",
+    "rows": 660622,
+    "nonblank_rows": 660609,
+    "nonblank_chars": 49430325,
+    "distinct_texts": 484189,
+    "distinct_text_chars": 47724767
+  },
+  "controls": {
+    "budget_usd": 20.0,
+    "output_token_cap": 4000,
+    "max_workers": 4,
+    "max_fallback_frac": 0.01,
+    "verifier_frac": 0.01,
+    "fixed_usd": 0.0548,
+    "fixed_source": "2x measured group+memo",
+    "remaining_pilot_texts": 1574
+  },
+  "already_committed_usd": 10.595117,
+  "scenarios": {
+    "base/exact_text_reuse/standard": {
+      "scenario": "base",
+      "reuse": "exact_text_reuse",
+      "tier": "standard",
+      "texts": 484189,
+      "requests": 9684,
+      "assumptions": {
+        "retry_overhead": 0.02,
+        "fallback_frac": 0.005,
+        "output_factor": 1.0,
+        "cache_write_frac": 0.02
+      },
+      "main_run": {
+        "prompt_cache": 16.4149,
+        "no_prompt_cache": 18.1162
+      },
+      "verifier": 0.1736,
+      "verifier_texts": 4842,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 1.6098,
+      "fallback_texts": 2421,
+      "remaining_pilots": 0.0534,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 10.5951,
+      "total": 28.9016,
+      "headroom_vs_budget": -8.9016,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": 17.67,
+        "standard_4_workers": 4.42,
+        "batch": null
+      }
+    },
+    "base/exact_text_reuse/batch": {
+      "scenario": "base",
+      "reuse": "exact_text_reuse",
+      "tier": "batch",
+      "texts": 484189,
+      "requests": 9684,
+      "assumptions": {
+        "retry_overhead": 0.02,
+        "fallback_frac": 0.005,
+        "output_factor": 1.0,
+        "cache_write_frac": 0.02
+      },
+      "main_run": {
+        "prompt_cache": 8.2074,
+        "no_prompt_cache": 9.0581
+      },
+      "verifier": 0.0868,
+      "verifier_texts": 4842,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 1.6098,
+      "fallback_texts": 2421,
+      "remaining_pilots": 0.0267,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 10.5951,
+      "total": 20.5806,
+      "headroom_vs_budget": -0.5806,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": null,
+        "standard_4_workers": null,
+        "batch": "asynchronous, typically < 1 h, guaranteed < 24 h"
+      }
+    },
+    "base/no_reuse/standard": {
+      "scenario": "base",
+      "reuse": "no_reuse",
+      "tier": "standard",
+      "texts": 660609,
+      "requests": 13213,
+      "assumptions": {
+        "retry_overhead": 0.02,
+        "fallback_frac": 0.005,
+        "output_factor": 1.0,
+        "cache_write_frac": 0.02
+      },
+      "main_run": {
+        "prompt_cache": 21.7461,
+        "no_prompt_cache": 24.0673
+      },
+      "verifier": 0.2369,
+      "verifier_texts": 6607,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 2.1315,
+      "fallback_texts": 3304,
+      "remaining_pilots": 0.0518,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 10.5951,
+      "total": 34.8162,
+      "headroom_vs_budget": -14.8162,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": 24.11,
+        "standard_4_workers": 6.03,
+        "batch": null
+      }
+    },
+    "base/no_reuse/batch": {
+      "scenario": "base",
+      "reuse": "no_reuse",
+      "tier": "batch",
+      "texts": 660609,
+      "requests": 13213,
+      "assumptions": {
+        "retry_overhead": 0.02,
+        "fallback_frac": 0.005,
+        "output_factor": 1.0,
+        "cache_write_frac": 0.02
+      },
+      "main_run": {
+        "prompt_cache": 10.8731,
+        "no_prompt_cache": 12.0337
+      },
+      "verifier": 0.1184,
+      "verifier_texts": 6607,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 2.1315,
+      "fallback_texts": 3304,
+      "remaining_pilots": 0.0259,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 10.5951,
+      "total": 23.7988,
+      "headroom_vs_budget": -3.7988,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": null,
+        "standard_4_workers": null,
+        "batch": "asynchronous, typically < 1 h, guaranteed < 24 h"
+      }
+    },
+    "conservative/exact_text_reuse/standard": {
+      "scenario": "conservative",
+      "reuse": "exact_text_reuse",
+      "tier": "standard",
+      "texts": 484189,
+      "requests": 9684,
+      "assumptions": {
+        "retry_overhead": 0.1,
+        "fallback_frac": 0.01,
+        "output_factor": 1.2,
+        "cache_write_frac": 0.1
+      },
+      "main_run": {
+        "prompt_cache": 20.8726,
+        "no_prompt_cache": 22.5358
+      },
+      "verifier": 0.1872,
+      "verifier_texts": 4842,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 3.2146,
+      "fallback_texts": 4842,
+      "remaining_pilots": 0.0679,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 10.5951,
+      "total": 34.9922,
+      "headroom_vs_budget": -14.9922,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": 19.05,
+        "standard_4_workers": 4.76,
+        "batch": null
+      }
+    },
+    "conservative/exact_text_reuse/batch": {
+      "scenario": "conservative",
+      "reuse": "exact_text_reuse",
+      "tier": "batch",
+      "texts": 484189,
+      "requests": 9684,
+      "assumptions": {
+        "retry_overhead": 0.1,
+        "fallback_frac": 0.01,
+        "output_factor": 1.2,
+        "cache_write_frac": 0.1
+      },
+      "main_run": {
+        "prompt_cache": 10.4363,
+        "no_prompt_cache": 11.2679
+      },
+      "verifier": 0.0936,
+      "verifier_texts": 4842,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 3.2146,
+      "fallback_texts": 4842,
+      "remaining_pilots": 0.0339,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 10.5951,
+      "total": 24.4283,
+      "headroom_vs_budget": -4.4283,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": null,
+        "standard_4_workers": null,
+        "batch": "asynchronous, typically < 1 h, guaranteed < 24 h"
+      }
+    },
+    "conservative/no_reuse/standard": {
+      "scenario": "conservative",
+      "reuse": "no_reuse",
+      "tier": "standard",
+      "texts": 660609,
+      "requests": 13213,
+      "assumptions": {
+        "retry_overhead": 0.1,
+        "fallback_frac": 0.01,
+        "output_factor": 1.2,
+        "cache_write_frac": 0.1
+      },
+      "main_run": {
+        "prompt_cache": 27.777,
+        "no_prompt_cache": 30.0464
+      },
+      "verifier": 0.2555,
+      "verifier_texts": 6607,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 4.2576,
+      "fallback_texts": 6607,
+      "remaining_pilots": 0.0662,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 10.5951,
+      "total": 43.0062,
+      "headroom_vs_budget": -23.0062,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": 26.0,
+        "standard_4_workers": 6.5,
+        "batch": null
+      }
+    },
+    "conservative/no_reuse/batch": {
+      "scenario": "conservative",
+      "reuse": "no_reuse",
+      "tier": "batch",
+      "texts": 660609,
+      "requests": 13213,
+      "assumptions": {
+        "retry_overhead": 0.1,
+        "fallback_frac": 0.01,
+        "output_factor": 1.2,
+        "cache_write_frac": 0.1
+      },
+      "main_run": {
+        "prompt_cache": 13.8885,
+        "no_prompt_cache": 15.0232
+      },
+      "verifier": 0.1277,
+      "verifier_texts": 6607,
+      "verifier_basis": "measured verify cost per text x sample size",
+      "sonnet_fallback": 4.2576,
+      "fallback_texts": 6607,
+      "remaining_pilots": 0.0331,
+      "fixed_memo_grouping": 0.0548,
+      "already_committed": 10.5951,
+      "total": 28.9568,
+      "headroom_vs_budget": -8.9568,
+      "within_budget": false,
+      "wall_clock_h": {
+        "standard_1_worker": null,
+        "standard_4_workers": null,
+        "batch": "asynchronous, typically < 1 h, guaranteed < 24 h"
+      }
+    }
+  },
+  "recommended": null
+}

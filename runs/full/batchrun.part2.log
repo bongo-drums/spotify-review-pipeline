@@ -1,0 +1,329 @@
+submitted batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 (job local-3826ae050c7d45ec91306a91f80c9716): 334 requests, 9341 texts, reserved worst case $0.2775
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s
+collected batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9: 334 ok, 0 failed requests; 8437 completed, 928 quarantined, 0 to retry; $0.1755
+fallback (claude-sonnet-5-5): 10 texts, 4.104s, $0.01444 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 5.595s, $0.00728 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.667s, $0.00698 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.779s, $0.00685 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.929s, $0.00856 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.686s, $0.00806 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.037s, $0.00809 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.535s, $0.00754 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.652s, $0.00717 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.693s, $0.00722 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.509s, $0.00730 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.727s, $0.00711 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.87s, $0.00765 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.401s, $0.00758 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.769s, $0.00752 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.932s, $0.00781 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.734s, $0.00744 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.611s, $0.00656 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.71s, $0.00744 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.719s, $0.00785 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.085s, $0.00765 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.1s, $0.00882 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.819s, $0.00790 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.869s, $0.00833 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.697s, $0.00759 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.756s, $0.00845 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.735s, $0.00806 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.722s, $0.00784 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 5.539s, $0.00796 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 5.106s, $0.00840 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.202s, $0.00853 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.139s, $0.00803 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.545s, $0.00734 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.793s, $0.00793 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.757s, $0.00759 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.968s, $0.00833 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.438s, $0.00743 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.094s, $0.00811 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.157s, $0.00848 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.808s, $0.00820 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.578s, $0.00698 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.029s, $0.00778 | ok=8 invalid=2
+fallback (claude-sonnet-5-5): 10 texts, 4.117s, $0.00868 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.114s, $0.00800 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.798s, $0.00756 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.389s, $0.00702 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.551s, $0.00703 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.271s, $0.00734 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.001s, $0.00766 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.286s, $0.00814 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.743s, $0.00745 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.059s, $0.00811 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.102s, $0.00812 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.717s, $0.00788 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.374s, $0.00700 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.059s, $0.00802 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.924s, $0.00761 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.049s, $0.00883 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.917s, $0.00750 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.183s, $0.00767 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.21s, $0.00784 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.937s, $0.00796 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.005s, $0.00719 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.89s, $0.00772 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.085s, $0.00817 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.049s, $0.00820 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.0s, $0.00831 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.896s, $0.00788 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.014s, $0.00790 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.003s, $0.00841 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.826s, $0.00757 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.787s, $0.00832 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.523s, $0.00808 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.403s, $0.00910 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.076s, $0.00814 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.01s, $0.00741 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.608s, $0.00869 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.497s, $0.00829 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.742s, $0.00777 | ok=9 invalid=1
+fallback (claude-sonnet-5-5): 10 texts, 3.629s, $0.00702 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.168s, $0.00710 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.402s, $0.00670 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.907s, $0.00723 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.071s, $0.00795 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.814s, $0.00807 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.019s, $0.00787 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.905s, $0.00750 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.2s, $0.00854 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.953s, $0.00720 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 5.472s, $0.00722 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.802s, $0.00729 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.041s, $0.00776 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.421s, $0.00810 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.459s, $0.00741 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.312s, $0.00719 | ok=9 invalid=1
+fallback (claude-sonnet-5-5): 10 texts, 3.561s, $0.00717 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 5.43s, $0.00831 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.325s, $0.00676 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.182s, $0.00790 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.939s, $0.00832 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.915s, $0.00851 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.067s, $0.00776 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.451s, $0.00750 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.655s, $0.00699 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.476s, $0.00683 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.53s, $0.00747 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.286s, $0.00855 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 7.379s, $0.00826 | ok=9 invalid=1
+fallback (claude-sonnet-5-5): 10 texts, 3.519s, $0.00762 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.687s, $0.00811 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.543s, $0.00772 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.796s, $0.00675 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.583s, $0.00810 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.675s, $0.00798 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.696s, $0.00816 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.957s, $0.00755 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.024s, $0.00864 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.454s, $0.00716 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.708s, $0.00706 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.244s, $0.00688 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.963s, $0.00700 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.621s, $0.00723 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.151s, $0.00848 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.683s, $0.00812 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.592s, $0.00766 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.125s, $0.00827 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.706s, $0.00776 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.575s, $0.00780 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.525s, $0.00711 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.703s, $0.00690 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.846s, $0.00797 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.874s, $0.00763 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.031s, $0.00841 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.628s, $0.00794 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.556s, $0.00740 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.219s, $0.00796 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.836s, $0.00850 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.491s, $0.00826 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.596s, $0.00730 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.802s, $0.00840 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.843s, $0.00871 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.926s, $0.00858 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.767s, $0.00778 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.545s, $0.00776 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.882s, $0.00794 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.999s, $0.00743 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.902s, $0.00771 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.621s, $0.00768 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.739s, $0.00764 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.808s, $0.00810 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.91s, $0.00910 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.427s, $0.00738 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.77s, $0.00806 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.66s, $0.00752 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.445s, $0.00751 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.665s, $0.00770 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.453s, $0.00711 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.63s, $0.00725 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.463s, $0.00741 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.675s, $0.00775 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.317s, $0.00815 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.606s, $0.00788 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.729s, $0.00785 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.727s, $0.00824 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.605s, $0.00792 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 5.44s, $0.00839 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.844s, $0.00794 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.762s, $0.00783 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.843s, $0.00878 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.948s, $0.00818 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.81s, $0.00854 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.795s, $0.00738 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.856s, $0.00867 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.6s, $0.00786 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.669s, $0.00779 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.859s, $0.00853 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.701s, $0.00852 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.886s, $0.00861 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.084s, $0.00798 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.873s, $0.00851 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.463s, $0.00881 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 4.237s, $0.00840 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.784s, $0.00827 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.504s, $0.00752 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.911s, $0.00850 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.627s, $0.00802 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 6.184s, $0.00798 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.527s, $0.00752 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.508s, $0.00740 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.796s, $0.00769 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 10 texts, 3.455s, $0.00771 | ok=10 invalid=0
+fallback (claude-sonnet-5-5): 2 texts, 1.3s, $0.00189 | ok=2 invalid=0
+verify: 50 texts, 7.044s, $0.00110 | verified=50 invalid=0
+verify: 50 texts, 6.236s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 8.123s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.619s, $0.00091 | verified=50 invalid=0
+verify: 50 texts, 4.723s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 5.003s, $0.00101 | verified=50 invalid=0
+verify: 50 texts, 4.819s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 4.579s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.845s, $0.00091 | verified=50 invalid=0
+verify: 50 texts, 4.809s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 4.598s, $0.00099 | verified=50 invalid=0
+verify: 50 texts, 4.623s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.621s, $0.00091 | verified=50 invalid=0
+verify: 50 texts, 4.851s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 4.901s, $0.00089 | verified=50 invalid=0
+verify: 50 texts, 4.468s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.847s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 5.574s, $0.00106 | verified=50 invalid=0
+verify: 50 texts, 4.988s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.648s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.803s, $0.00091 | verified=50 invalid=0
+verify: 50 texts, 4.763s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 8.058s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.515s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.775s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 4.595s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.458s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.617s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.551s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.863s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.447s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.393s, $0.00091 | verified=50 invalid=0
+verify: 50 texts, 4.614s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.859s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 4.462s, $0.00091 | verified=50 invalid=0
+verify: 50 texts, 4.735s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.837s, $0.00095 | verified=50 invalid=0
+verify: 50 texts, 4.66s, $0.00087 | verified=50 invalid=0
+verify: 50 texts, 8.931s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.605s, $0.00095 | verified=50 invalid=0
+verify: 50 texts, 5.186s, $0.00095 | verified=50 invalid=0
+verify: 50 texts, 4.837s, $0.00101 | verified=50 invalid=0
+verify: 50 texts, 4.815s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.442s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 5.191s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 6.393s, $0.00095 | verified=50 invalid=0
+verify: 50 texts, 4.61s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.556s, $0.00098 | verified=50 invalid=0
+verify: 50 texts, 4.521s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.993s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.536s, $0.00089 | verified=50 invalid=0
+verify: 50 texts, 4.536s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 5.812s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 5.0s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 7.314s, $0.00102 | verified=50 invalid=0
+verify: 50 texts, 5.039s, $0.00087 | verified=50 invalid=0
+verify: 50 texts, 4.619s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 5.369s, $0.00095 | verified=50 invalid=0
+verify: 50 texts, 4.713s, $0.00088 | verified=50 invalid=0
+verify: 50 texts, 4.496s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.776s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.464s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.719s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.988s, $0.00095 | verified=50 invalid=0
+verify: 50 texts, 4.616s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.727s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.61s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.798s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 4.637s, $0.00095 | verified=50 invalid=0
+verify: 50 texts, 4.521s, $0.00089 | verified=50 invalid=0
+verify: 50 texts, 4.73s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.572s, $0.00090 | verified=50 invalid=0
+verify: 50 texts, 4.548s, $0.00104 | verified=50 invalid=0
+verify: 50 texts, 4.693s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.79s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.878s, $0.00099 | verified=50 invalid=0
+verify: 50 texts, 4.562s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 6.393s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.927s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 4.469s, $0.00098 | verified=50 invalid=0
+verify: 50 texts, 4.872s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.691s, $0.00092 | verified=50 invalid=0
+verify: 50 texts, 4.854s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 5.824s, $0.00091 | verified=50 invalid=0
+verify: 50 texts, 4.525s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.824s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.746s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 4.728s, $0.00098 | verified=50 invalid=0
+verify: 50 texts, 4.833s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.618s, $0.00097 | verified=50 invalid=0
+verify: 50 texts, 4.906s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 4.589s, $0.00093 | verified=50 invalid=0
+verify: 50 texts, 4.952s, $0.00095 | verified=50 invalid=0
+verify: 50 texts, 4.702s, $0.00096 | verified=50 invalid=0
+verify: 50 texts, 5.12s, $0.00094 | verified=50 invalid=0
+verify: 50 texts, 5.008s, $0.00095 | verified=50 invalid=0
+verify: 42 texts, 3.942s, $0.00081 | verified=42 invalid=0
+group: named 32/32 issues in 12.589s, $0.00197
+memo: attempt 1 ok in 18.685s, $0.03055
+{
+  "status": "ok",
+  "run_id": "full",
+  "phase": "resume",
+  "enrich": {
+    "batches": 1,
+    "requests": 334,
+    "texts": 9341,
+    "cost_usd": 0.17553490500000005,
+    "dry_run": false,
+    "reconciled": 0,
+    "wall_s": 562.1,
+    "counts": {
+      "pending": 0,
+      "completed": 658584,
+      "quarantined": 2038
+    }
+  },
+  "counts": {
+    "pending": 0,
+    "completed": 660602,
+    "quarantined": 20
+  },
+  "run_spent_usd": 10.0787,
+  "stopped_because": null
+}
+exit 0

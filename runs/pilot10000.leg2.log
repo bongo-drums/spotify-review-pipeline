@@ -1,0 +1,181 @@
+cold_resume: 50 texts, 8.5s, in=1983 cache_w=0 cache_r=2813 out=2783 $0.00162 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2055 cache_w=0 cache_r=2813 out=2883 $0.00168 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1774 cache_w=0 cache_r=2813 out=2840 $0.00163 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2041 cache_w=0 cache_r=2813 out=2884 $0.00167 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1662 cache_w=0 cache_r=2813 out=2794 $0.00159 | ok=46 invalid=4 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=2479 cache_w=0 cache_r=2813 out=2910 $0.00173 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1824 cache_w=0 cache_r=2813 out=2841 $0.00163 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1925 cache_w=0 cache_r=2813 out=2903 $0.00167 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2020 cache_w=0 cache_r=2813 out=2874 $0.00167 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 11.1s, in=2005 cache_w=0 cache_r=2813 out=2796 $0.00163 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=2096 cache_w=0 cache_r=2813 out=2818 $0.00165 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2188 cache_w=0 cache_r=2813 out=2862 $0.00168 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.5s, in=2201 cache_w=0 cache_r=2813 out=2843 $0.00167 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.4s, in=2000 cache_w=0 cache_r=2813 out=2780 $0.00162 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.3s, in=2055 cache_w=0 cache_r=2813 out=2920 $0.00169 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1676 cache_w=0 cache_r=2813 out=2830 $0.00161 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1702 cache_w=0 cache_r=2813 out=2817 $0.00161 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.7s, in=2740 cache_w=0 cache_r=2813 out=2883 $0.00174 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1334 cache_w=0 cache_r=2813 out=2787 $0.00156 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2250 cache_w=0 cache_r=2813 out=2835 $0.00167 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1771 cache_w=0 cache_r=2813 out=2849 $0.00163 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 9.3s, in=1995 cache_w=0 cache_r=2813 out=2821 $0.00164 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.3s, in=2016 cache_w=0 cache_r=2813 out=2862 $0.00166 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1779 cache_w=0 cache_r=2813 out=2771 $0.00159 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2538 cache_w=0 cache_r=2813 out=2858 $0.00171 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1791 cache_w=0 cache_r=2813 out=2812 $0.00161 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.8s, in=1756 cache_w=0 cache_r=2813 out=2819 $0.00161 | ok=42 invalid=8 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=2315 cache_w=0 cache_r=2813 out=2837 $0.00168 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1924 cache_w=0 cache_r=2813 out=2855 $0.00165 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2138 cache_w=0 cache_r=2813 out=2890 $0.00169 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1792 cache_w=0 cache_r=2813 out=2857 $0.00164 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1820 cache_w=0 cache_r=2813 out=2857 $0.00164 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.2s, in=1823 cache_w=0 cache_r=2813 out=2769 $0.00159 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.4s, in=2077 cache_w=0 cache_r=2813 out=2900 $0.00169 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=1688 cache_w=0 cache_r=2813 out=2765 $0.00158 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2047 cache_w=0 cache_r=2813 out=2775 $0.00162 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2289 cache_w=0 cache_r=2813 out=2849 $0.00168 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1668 cache_w=0 cache_r=2813 out=2783 $0.00159 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.4s, in=2409 cache_w=0 cache_r=2813 out=2955 $0.00175 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.5s, in=2367 cache_w=0 cache_r=2813 out=2923 $0.00173 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.3s, in=1876 cache_w=0 cache_r=2813 out=2838 $0.00163 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1917 cache_w=0 cache_r=2813 out=2875 $0.00166 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1710 cache_w=0 cache_r=2813 out=2849 $0.00162 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1726 cache_w=0 cache_r=2813 out=2767 $0.00158 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1589 cache_w=0 cache_r=2813 out=2807 $0.00159 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 10.4s, in=1955 cache_w=0 cache_r=2813 out=2853 $0.00165 | ok=40 invalid=10 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1843 cache_w=0 cache_r=2813 out=2872 $0.00165 | ok=44 invalid=6 stop=end_turn
+cold_resume: 50 texts, 9.3s, in=2056 cache_w=0 cache_r=2813 out=2900 $0.00168 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 9.3s, in=2375 cache_w=0 cache_r=2813 out=2852 $0.00169 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=2060 cache_w=0 cache_r=2813 out=2856 $0.00166 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2034 cache_w=0 cache_r=2813 out=2861 $0.00166 | ok=46 invalid=4 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=2297 cache_w=0 cache_r=2813 out=2845 $0.00168 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2327 cache_w=0 cache_r=2813 out=2843 $0.00168 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=1928 cache_w=0 cache_r=2813 out=2865 $0.00165 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2051 cache_w=0 cache_r=2813 out=2786 $0.00163 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2123 cache_w=0 cache_r=2813 out=2829 $0.00165 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2074 cache_w=0 cache_r=2813 out=2811 $0.00164 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=1995 cache_w=0 cache_r=2813 out=2883 $0.00167 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=1704 cache_w=0 cache_r=2813 out=2858 $0.00163 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.4s, in=2261 cache_w=0 cache_r=2813 out=2771 $0.00164 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2122 cache_w=0 cache_r=2813 out=2854 $0.00167 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=2098 cache_w=0 cache_r=2813 out=2874 $0.00167 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2045 cache_w=0 cache_r=2813 out=2825 $0.00165 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=2312 cache_w=0 cache_r=2813 out=2810 $0.00166 | ok=46 invalid=4 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=2199 cache_w=0 cache_r=2813 out=2882 $0.00169 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1843 cache_w=0 cache_r=2813 out=2852 $0.00164 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.3s, in=2191 cache_w=0 cache_r=2813 out=2826 $0.00166 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1524 cache_w=0 cache_r=2813 out=2826 $0.00159 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1946 cache_w=0 cache_r=2813 out=2841 $0.00164 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.4s, in=2031 cache_w=0 cache_r=2813 out=2933 $0.00170 | ok=45 invalid=5 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=2356 cache_w=0 cache_r=2813 out=2831 $0.00168 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.3s, in=2325 cache_w=0 cache_r=2813 out=2881 $0.00170 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2042 cache_w=0 cache_r=2813 out=2930 $0.00170 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1434 cache_w=0 cache_r=2813 out=2829 $0.00159 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.4s, in=1933 cache_w=0 cache_r=2813 out=2800 $0.00162 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2282 cache_w=0 cache_r=2813 out=2829 $0.00167 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=1904 cache_w=0 cache_r=2813 out=2884 $0.00166 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1695 cache_w=0 cache_r=2813 out=2792 $0.00159 | ok=41 invalid=9 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=1657 cache_w=0 cache_r=2813 out=2844 $0.00162 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=1861 cache_w=0 cache_r=2813 out=2829 $0.00163 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=1908 cache_w=0 cache_r=2813 out=2879 $0.00166 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.1s, in=1490 cache_w=0 cache_r=2813 out=2725 $0.00154 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2318 cache_w=0 cache_r=2813 out=2864 $0.00169 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2362 cache_w=0 cache_r=2813 out=2972 $0.00175 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.4s, in=1900 cache_w=0 cache_r=2813 out=2865 $0.00165 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.8s, in=1805 cache_w=0 cache_r=2813 out=2902 $0.00166 | ok=42 invalid=8 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=2354 cache_w=0 cache_r=2813 out=2926 $0.00173 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.5s, in=2221 cache_w=0 cache_r=2813 out=2802 $0.00165 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2121 cache_w=0 cache_r=2813 out=2853 $0.00167 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2021 cache_w=0 cache_r=2813 out=2840 $0.00165 | ok=46 invalid=4 stop=end_turn
+cold_resume: 50 texts, 8.5s, in=2038 cache_w=0 cache_r=2813 out=2760 $0.00161 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2216 cache_w=0 cache_r=2813 out=2847 $0.00167 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1636 cache_w=0 cache_r=2813 out=2768 $0.00158 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=2265 cache_w=0 cache_r=2813 out=2837 $0.00167 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1646 cache_w=0 cache_r=2813 out=2794 $0.00159 | ok=45 invalid=5 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=2257 cache_w=0 cache_r=2813 out=2939 $0.00172 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1922 cache_w=0 cache_r=2813 out=2884 $0.00166 | ok=44 invalid=6 stop=end_turn
+cold_resume: 50 texts, 8.4s, in=1383 cache_w=0 cache_r=2813 out=2772 $0.00155 | ok=46 invalid=4 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=1756 cache_w=0 cache_r=2813 out=2889 $0.00165 | ok=44 invalid=6 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=1716 cache_w=0 cache_r=2813 out=2848 $0.00162 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1822 cache_w=0 cache_r=2813 out=2872 $0.00165 | ok=44 invalid=6 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1629 cache_w=0 cache_r=2813 out=2861 $0.00162 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2085 cache_w=0 cache_r=2813 out=2815 $0.00164 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1958 cache_w=0 cache_r=2813 out=2864 $0.00166 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=1985 cache_w=0 cache_r=2813 out=2822 $0.00164 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=1701 cache_w=0 cache_r=2813 out=2840 $0.00162 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 10.5s, in=2524 cache_w=0 cache_r=2813 out=2925 $0.00174 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.0s, in=2013 cache_w=0 cache_r=2813 out=2823 $0.00164 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=1729 cache_w=0 cache_r=2813 out=2814 $0.00161 | ok=47 invalid=3 stop=end_turn
+cold_resume: 50 texts, 8.4s, in=2204 cache_w=0 cache_r=2813 out=2817 $0.00166 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.1s, in=2365 cache_w=0 cache_r=2813 out=2931 $0.00173 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 9.2s, in=2501 cache_w=0 cache_r=2813 out=2901 $0.00173 | ok=50 invalid=0 stop=end_turn
+cold_resume: 50 texts, 9.9s, in=1823 cache_w=0 cache_r=2813 out=2933 $0.00168 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1937 cache_w=0 cache_r=2813 out=2895 $0.00167 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1626 cache_w=0 cache_r=2813 out=2840 $0.00161 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.4s, in=1747 cache_w=0 cache_r=2813 out=2787 $0.00160 | ok=44 invalid=6 stop=end_turn
+cold_resume: 50 texts, 8.5s, in=1960 cache_w=0 cache_r=2813 out=2795 $0.00162 | ok=46 invalid=4 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=1762 cache_w=0 cache_r=2813 out=2894 $0.00165 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.9s, in=2013 cache_w=0 cache_r=2813 out=2870 $0.00166 | ok=49 invalid=1 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1855 cache_w=0 cache_r=2813 out=2839 $0.00163 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.5s, in=1988 cache_w=0 cache_r=2813 out=2803 $0.00163 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.7s, in=1874 cache_w=0 cache_r=2813 out=2822 $0.00163 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.6s, in=1928 cache_w=0 cache_r=2813 out=2803 $0.00162 | ok=48 invalid=2 stop=end_turn
+cold_resume: 50 texts, 8.8s, in=2063 cache_w=0 cache_r=2813 out=2857 $0.00166 | ok=49 invalid=1 stop=end_turn
+cold_resume: 45 texts, 7.9s, in=1590 cache_w=0 cache_r=2813 out=2578 $0.00148 | ok=44 invalid=1 stop=end_turn
+cold_resume: 1 texts, 0.9s, in=42 cache_w=0 cache_r=2813 out=82 $0.00007 | ok=1 invalid=0 stop=end_turn
+verify: 50 texts, 7.635s, $0.00104 | verified=50 invalid=0
+verify: 35 texts, 3.697s, $0.00060 | verified=35 invalid=0
+group: named 31/31 issues in 10.69s, $0.00184
+memo: attempt 1 ok in 20.236s, $0.03288
+{
+  "status": "ok",
+  "run_id": "pilot10000",
+  "phase": "resume",
+  "counts_after": {
+    "pending": 0,
+    "completed": 9978,
+    "quarantined": 22
+  },
+  "cost_by_stage": {
+    "enrich": 0.28826,
+    "group": 0.001838,
+    "memo": 0.032877,
+    "verify": 0.001643
+  },
+  "run_spent_usd": 0.324618,
+  "stopped_because": null,
+  "checkpoint_before": null,
+  "checkpoint_after": {
+    "created_at": "2026-10-16T21:55:21.591203Z",
+    "run_id": "pilot10000",
+    "completed_count": 9978,
+    "counts": {
+      "pending": 0,
+      "completed": 9978,
+      "quarantined": 22
+    }
+  },
+  "ledger_remaining_usd": 19.586351,
+  "downstream": {
+    "wall_s": 42.811,
+    "model_calls": 4,
+    "verify": {
+      "verified": 85,
+      "agreement": {
+        "topic": 0.8706,
+        "intent": 0.9412,
+        "severity": 0.8824,
+        "joint": 0.7294
+      },
+      "planted_errors": {
+        "planted": 43,
+        "detected": 43,
+        "detection_rate": 1.0
+      }
+    },
+    "issues": 31,
+    "memo_status": "validated"
+  }
+}
+exit 0

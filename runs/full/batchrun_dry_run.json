@@ -1,0 +1,41 @@
+{
+  "run_id": "full",
+  "started_at": "2026-10-16T21:38:01.448130Z",
+  "tier": "batch",
+  "model": "claude-haiku-5-5",
+  "label_config": "labels-v1|claude-haiku-5-5|68d569ab095d",
+  "phase": "initial",
+  "resumed": false,
+  "max_usd": 12.0,
+  "batch_requests": 1000,
+  "enrich": {
+    "batches": 10,
+    "requests": 9684,
+    "texts": 484189,
+    "cost_usd": 0.0,
+    "dry_run": true,
+    "worst_case_usd": 12.470670875000001,
+    "wall_s": 101.2,
+    "counts": {
+      "pending": 660609,
+      "completed": 0,
+      "quarantined": 13
+    }
+  },
+  "status": "ok",
+  "counts": {
+    "pending": 660609,
+    "completed": 0,
+    "quarantined": 13
+  },
+  "run_spent_usd": 0.0,
+  "ledger": {
+    "cap_usd": 20.0,
+    "committed_usd": 0.204209,
+    "outstanding_reservations_usd": 0.002515,
+    "remaining_usd": 19.793277,
+    "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
+  },
+  "events": [],
+  "finished_at": "2026-10-16T21:39:42.795904Z"
+}

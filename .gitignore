@@ -17,9 +17,22 @@ runs/*/state.sqlite
 runs/*/state.sqlite-journal
 runs/*/state.sqlite-wal
 runs/*/state.sqlite-shm
+runs/**/state.sqlite
+runs/**/state.sqlite-journal
+runs/**/state.sqlite-wal
+runs/**/state.sqlite-shm
 runs/ledger.sqlite-wal
 runs/ledger.sqlite-shm
 
 # Web / deploy
 node_modules/
 .vercel/
+
+# Dashboard build outputs
+web/node_modules/
+web/.next/
+web/next-env.d.ts
+web/.vercel/
+
+# Live log of the running full batch job (a copy is committed when the run ends)
+runs/full/batchrun.log

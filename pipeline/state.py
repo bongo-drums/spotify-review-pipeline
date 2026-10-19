@@ -91,6 +91,30 @@ CREATE TABLE IF NOT EXISTS label_cache (
     PRIMARY KEY (text_sha256, label_config)
 );
 
+CREATE TABLE IF NOT EXISTS verifications (
+    review_id        TEXT PRIMARY KEY REFERENCES records(review_id),
+    run_id           TEXT,
+    verifier_config  TEXT NOT NULL,
+    call_id          TEXT,
+    label            TEXT,
+    status           TEXT NOT NULL CHECK (status IN ('verified','invalid')),
+    error            TEXT,
+    agree_topic      INTEGER,
+    agree_intent     INTEGER,
+    agree_severity   INTEGER,
+    severity_diff    INTEGER,
+    created_at       TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS stage_cache (
+    stage        TEXT NOT NULL,
+    input_sha256 TEXT NOT NULL,
+    output       TEXT NOT NULL,
+    call_id      TEXT,
+    created_at   TEXT NOT NULL,
+    PRIMARY KEY (stage, input_sha256)
+);
+
 CREATE TABLE IF NOT EXISTS meta (
     key   TEXT PRIMARY KEY,
     value TEXT NOT NULL
@@ -289,6 +313,51 @@ class RunState:
                     c, "UPDATE records SET attempts=attempts+1, reason=?, updated_at=? WHERE +status='pending'",
                     [r.get("reason"), now], _ids(r))
         return counts
+
+    # ---- downstream stages --------------------------------------------------
+
+    def commit_verifications(self, rows: list[dict], call_row: dict | None = None) -> int:
+        """Store blind re-labels for sampled records together with their call row (one transaction)."""
+        now = utc_now()
+        with self.transaction() as c:
+            call_id = self._insert_call(call_row) if call_row is not None else None
+            for r in rows:
+                c.execute(
+                    "INSERT OR REPLACE INTO verifications(review_id,run_id,verifier_config,call_id,label,status,error,"
+                    "agree_topic,agree_intent,agree_severity,severity_diff,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (r["review_id"], r.get("run_id"), r["verifier_config"], call_id,
+                     canonical_json(r["label"]) if r.get("label") is not None else None, r["status"], r.get("error"),
+                     r.get("agree_topic"), r.get("agree_intent"), r.get("agree_severity"), r.get("severity_diff"), now))
+        return len(rows)
+
+    def stage_cache_get(self, stage: str, input_sha256: str):
+        row = self.conn.execute("SELECT output FROM stage_cache WHERE stage=? AND input_sha256=?",
+                                (stage, input_sha256)).fetchone()
+        return json.loads(row[0]) if row else None
+
+    def stage_cache_put(self, stage: str, input_sha256: str, output, call_row: dict | None = None) -> str | None:
+        """Save a downstream model output keyed by its exact inputs, with its call row (one transaction)."""
+        with self.transaction() as c:
+            call_id = self._insert_call(call_row) if call_row is not None else None
+            c.execute("INSERT OR REPLACE INTO stage_cache(stage,input_sha256,output,call_id,created_at) VALUES (?,?,?,?,?)",
+                      (stage, input_sha256, canonical_json(output), call_id, utc_now()))
+        return call_id
+
+    def copy_downstream_cache_from(self, other: "RunState") -> dict:
+        """Warm run: carry the result cache, verifications and stage cache over from a previous run DB."""
+        labels = [tuple(r) for r in other.conn.execute(
+            "SELECT text_sha256, label_config, label, source_review_id, created_at FROM label_cache")]
+        ver = [tuple(r) for r in other.conn.execute(
+            "SELECT review_id, run_id, verifier_config, call_id, label, status, error, agree_topic, agree_intent, "
+            "agree_severity, severity_diff, created_at FROM verifications")]
+        sc = [tuple(r) for r in other.conn.execute("SELECT stage, input_sha256, output, call_id, created_at FROM stage_cache")]
+        with self.transaction() as c:
+            c.executemany("INSERT OR IGNORE INTO label_cache VALUES (?,?,?,?,?)", labels)
+            known = {r[0] for r in c.execute("SELECT review_id FROM records")}
+            c.executemany("INSERT OR IGNORE INTO verifications VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                          [v for v in ver if v[0] in known])
+            c.executemany("INSERT OR IGNORE INTO stage_cache VALUES (?,?,?,?,?)", sc)
+        return {"label_cache": len(labels), "verifications": len(ver), "stage_cache": len(sc)}
 
     # ---- work queue -------------------------------------------------------
 

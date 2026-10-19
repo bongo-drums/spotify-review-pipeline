@@ -1,0 +1,135 @@
+{
+  "run_id": "golden50",
+  "started_at": "2026-10-16T21:19:38.744094Z",
+  "status": "ok",
+  "resumed": false,
+  "phase": "initial",
+  "stages": [
+    "enrich"
+  ],
+  "input": {
+    "path": "data/raw/extracted/golden_50_to_label.csv",
+    "manifest_path": "data/raw/extracted/manifest.json",
+    "found_entry": true,
+    "sha256_matches": true,
+    "input_sha256": "1a125c3e509f58b0246ba16d0ea332675a53ffadb1928be4338a0bd7053a11c7",
+    "manifest_sha256": "07afdd96dd7f97ff5fbf967961e14d6d9f48170ba3f417399e20d5b620291011",
+    "manifest_sha256_for_input": "1a125c3e509f58b0246ba16d0ea332675a53ffadb1928be4338a0bd7053a11c7",
+    "rows": 50,
+    "distinct_texts": 49,
+    "distinct_text_chars": 3770
+  },
+  "counts_before": {
+    "pending": 50,
+    "completed": 0,
+    "quarantined": 0
+  },
+  "max_usd": 0.05,
+  "limit": null,
+  "enrich": {
+    "calls": 2,
+    "texts_sent": 50,
+    "wall_s": 14.743,
+    "dry_run": []
+  },
+  "counts_after": {
+    "pending": 0,
+    "completed": 50,
+    "quarantined": 0
+  },
+  "checkpoint": {
+    "created_at": "2026-10-16T21:19:54.700630Z",
+    "run_id": "golden50",
+    "db_path": "runs/golden50/state.sqlite",
+    "counts": {
+      "pending": 0,
+      "completed": 50,
+      "quarantined": 0
+    },
+    "completed_ids_count": 50,
+    "completed_ids_sha256": "290ef62cd0f6a1bd3790205a41589d0dcacb34c2ba01c192048d91d31fdf2624",
+    "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+    "label_cache_entries": 49,
+    "calls": 2
+  },
+  "labels_csv_rows": 50,
+  "cost_by_stage": {
+    "enrich": 0.002004
+  },
+  "stage_calls": {
+    "enrich": {
+      "calls": 2,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 1812,
+        "cache_creation_input_tokens": 2813,
+        "cache_read_input_tokens": 2813,
+        "output_tokens": 2887
+      },
+      "texts": 50,
+      "cost_usd": 0.002004,
+      "wall_s_sum_of_calls": 14.734,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "verify": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    },
+    "group": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    },
+    "memo": {
+      "calls": 0,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0
+      },
+      "texts": 0,
+      "cost_usd": 0,
+      "wall_s_sum_of_calls": 0,
+      "models": []
+    }
+  },
+  "model": "claude-haiku-5-5",
+  "label_config": "labels-v1|claude-haiku-5-5|68d569ab095d",
+  "tier": "standard",
+  "run_spent_usd": 0.002004,
+  "ledger": {
+    "cap_usd": 20.0,
+    "committed_usd": 0.037828,
+    "outstanding_reservations_usd": 0.0,
+    "remaining_usd": 19.962172,
+    "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
+  },
+  "events": [
+    "2026-10-16T21:19:53.348511Z cold: 49 texts, 13.4s, in=1779 cache_w=2813 cache_r=0 out=2814 $0.00194 | ok=48 invalid=1 stop=end_turn",
+    "2026-10-16T21:19:54.700193Z cold: 1 texts, 1.4s, in=33 cache_w=0 cache_r=2813 out=73 $0.00007 | ok=1 invalid=0 stop=end_turn"
+  ],
+  "finished_at": "2026-10-16T21:19:54.703021Z"
+}

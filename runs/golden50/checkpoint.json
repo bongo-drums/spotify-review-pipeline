@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-10-16T21:19:54.700630Z",
+  "run_id": "golden50",
+  "db_path": "runs/golden50/state.sqlite",
+  "counts": {
+    "pending": 0,
+    "completed": 50,
+    "quarantined": 0
+  },
+  "completed_ids_count": 50,
+  "completed_ids_sha256": "290ef62cd0f6a1bd3790205a41589d0dcacb34c2ba01c192048d91d31fdf2624",
+  "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+  "label_cache_entries": 49,
+  "calls": 2
+}

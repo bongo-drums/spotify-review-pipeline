@@ -1,0 +1,316 @@
+{
+  "run_id": "pilot500",
+  "started_at": "2026-10-16T21:20:23.097992Z",
+  "status": "ok",
+  "resumed": false,
+  "phase": "initial",
+  "stages": [
+    "enrich",
+    "verify",
+    "group",
+    "rank",
+    "recommend"
+  ],
+  "input": {
+    "path": "data/raw/extracted/checkpoint_500.csv",
+    "manifest_path": "data/raw/extracted/manifest.json",
+    "found_entry": true,
+    "sha256_matches": true,
+    "input_sha256": "a94e31663ee7b7eaa77e23b7a8425b530cc0c866ed5e714953172a0afef6a12f",
+    "manifest_sha256": "07afdd96dd7f97ff5fbf967961e14d6d9f48170ba3f417399e20d5b620291011",
+    "manifest_sha256_for_input": "a94e31663ee7b7eaa77e23b7a8425b530cc0c866ed5e714953172a0afef6a12f",
+    "rows": 500,
+    "distinct_texts": 479,
+    "distinct_text_chars": 39122
+  },
+  "counts_before": {
+    "pending": 500,
+    "completed": 0,
+    "quarantined": 0
+  },
+  "max_usd": 0.6,
+  "limit": null,
+  "enrich": {
+    "calls": 10,
+    "texts_sent": 490,
+    "wall_s": 87.586,
+    "dry_run": []
+  },
+  "downstream": {
+    "verify": {
+      "verified": 10,
+      "agreement": {
+        "topic": 0.8,
+        "intent": 0.8,
+        "severity": 0.8,
+        "joint": 0.8
+      },
+      "severity_mae": 0.3,
+      "new_calls_this_run": 1,
+      "reused_verifications": 0,
+      "sample": 10,
+      "planted_errors": {
+        "planted": 5,
+        "detected": 5,
+        "detection_rate": 1.0
+      },
+      "calls": {
+        "calls": 1,
+        "failed_calls": 0,
+        "usage": {
+          "input_tokens": 445,
+          "cache_creation_input_tokens": 1334,
+          "cache_read_input_tokens": 0,
+          "output_tokens": 340
+        },
+        "texts": 10,
+        "cost_usd": 0.000381,
+        "wall_s_sum_of_calls": 2.428,
+        "models": [
+          "claude-haiku-5-5"
+        ]
+      },
+      "wall_s": 2.433
+    },
+    "group": {
+      "membership_rows": 238,
+      "issues": 22,
+      "naming": {
+        "model": "claude-haiku-5-5",
+        "input_sha256": "18a57a470f083f205ea6185c520bfb7bf69ceeb30a52b4d2390bb22af0c8b1be",
+        "cached": false,
+        "calls": 1,
+        "invalid_names": [],
+        "cost_usd": 0.001337025,
+        "input_tokens": 4069,
+        "output_tokens": 1722,
+        "duration_s": 8.161,
+        "unnamed": []
+      },
+      "wall_s": 8.182
+    },
+    "rank": {
+      "membership_rows": 238,
+      "issues": 22,
+      "claims": 40,
+      "top": [
+        {
+          "rank": "1",
+          "issue_id": "other.general_negative",
+          "complaint_count": "66",
+          "severity_sum": "133",
+          "mean_severity": "2.015152",
+          "priority_score": "133"
+        },
+        {
+          "rank": "2",
+          "issue_id": "billing.premium_only_controls",
+          "complaint_count": "40",
+          "severity_sum": "110",
+          "mean_severity": "2.750000",
+          "priority_score": "110"
+        },
+        {
+          "rank": "3",
+          "issue_id": "usability.ads_interruptions",
+          "complaint_count": "29",
+          "severity_sum": "74",
+          "mean_severity": "2.551724",
+          "priority_score": "74"
+        },
+        {
+          "rank": "4",
+          "issue_id": "playback.stops_skips_glitches",
+          "complaint_count": "13",
+          "severity_sum": "45",
+          "mean_severity": "3.461538",
+          "priority_score": "45"
+        },
+        {
+          "rank": "5",
+          "issue_id": "access.login_failure",
+          "complaint_count": "9",
+          "severity_sum": "34",
+          "mean_severity": "3.777778",
+          "priority_score": "34"
+        }
+      ],
+      "focus_areas": {
+        "access": {
+          "topics": [
+            "access"
+          ],
+          "complaint_count": 10,
+          "severity_sum": 39,
+          "mean_severity": "3.900000",
+          "share_of_complaints": 0.042
+        },
+        "usability": {
+          "topics": [
+            "usability"
+          ],
+          "complaint_count": 53,
+          "severity_sum": 134,
+          "mean_severity": "2.528302",
+          "share_of_complaints": 0.2227
+        },
+        "playback": {
+          "topics": [
+            "playback"
+          ],
+          "complaint_count": 30,
+          "severity_sum": 103,
+          "mean_severity": "3.433333",
+          "share_of_complaints": 0.1261
+        },
+        "billing_support": {
+          "topics": [
+            "billing",
+            "support"
+          ],
+          "complaint_count": 47,
+          "severity_sum": 132,
+          "mean_severity": "2.808511",
+          "share_of_complaints": 0.1975
+        }
+      },
+      "wall_s": 0.008
+    },
+    "recommend": {
+      "status": "validated",
+      "validation": {
+        "ok": true,
+        "errors": [],
+        "unverified_numbers": []
+      },
+      "model": "claude-sonnet-5-5",
+      "input_sha256": "54bd9813b34353abde9dcb6a6d6d1d1a30d9dd746321d72cb3653f934ea85abb",
+      "cached": false,
+      "calls": 1,
+      "cost_usd": 0.031617,
+      "wall_s": 19.439
+    },
+    "wall_s": 30.062,
+    "model_calls": 3
+  },
+  "counts_after": {
+    "pending": 0,
+    "completed": 500,
+    "quarantined": 0
+  },
+  "checkpoint": {
+    "created_at": "2026-10-16T21:22:21.930599Z",
+    "run_id": "pilot500",
+    "db_path": "runs/pilot500/state.sqlite",
+    "counts": {
+      "pending": 0,
+      "completed": 500,
+      "quarantined": 0
+    },
+    "completed_ids_count": 500,
+    "completed_ids_sha256": "19c4d84c545fb2c85118487e84486e401f829b51d7a27892181456c1ef96d5cd",
+    "completed_ids_hash_rule": "sha256('\\n'.join(sorted(completed review_ids)))",
+    "label_cache_entries": 479,
+    "calls": 13
+  },
+  "labels_csv_rows": 500,
+  "cost_by_stage": {
+    "enrich": 0.015955,
+    "group": 0.001337,
+    "memo": 0.031617,
+    "verify": 0.000381
+  },
+  "stage_calls": {
+    "enrich": {
+      "calls": 10,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 18617,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 28130,
+        "output_tokens": 27624
+      },
+      "texts": 490,
+      "cost_usd": 0.015955,
+      "wall_s_sum_of_calls": 87.535,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "verify": {
+      "calls": 1,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 445,
+        "cache_creation_input_tokens": 1334,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 340
+      },
+      "texts": 10,
+      "cost_usd": 0.000381,
+      "wall_s_sum_of_calls": 2.428,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "group": {
+      "calls": 1,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 4069,
+        "cache_creation_input_tokens": 553,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 1722
+      },
+      "texts": 55,
+      "cost_usd": 0.001337,
+      "wall_s_sum_of_calls": 8.161,
+      "models": [
+        "claude-haiku-5-5"
+      ]
+    },
+    "memo": {
+      "calls": 1,
+      "failed_calls": 0,
+      "usage": {
+        "input_tokens": 2411,
+        "cache_creation_input_tokens": 1334,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 2346
+      },
+      "texts": 15,
+      "cost_usd": 0.031617,
+      "wall_s_sum_of_calls": 19.436,
+      "models": [
+        "claude-sonnet-5-5"
+      ]
+    }
+  },
+  "model": "claude-haiku-5-5",
+  "label_config": "labels-v1|claude-haiku-5-5|68d569ab095d",
+  "tier": "standard",
+  "run_spent_usd": 0.04929,
+  "ledger": {
+    "cap_usd": 20.0,
+    "committed_usd": 0.089031,
+    "outstanding_reservations_usd": 0.0,
+    "remaining_usd": 19.910969,
+    "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
+  },
+  "events": [
+    "2026-10-16T21:20:33.084174Z cold: 50 texts, 8.8s, in=1859 cache_w=0 cache_r=2813 out=2795 $0.00161 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:20:41.966537Z cold: 50 texts, 8.9s, in=1865 cache_w=0 cache_r=2813 out=2830 $0.00163 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:20:50.860307Z cold: 50 texts, 8.9s, in=2060 cache_w=0 cache_r=2813 out=2817 $0.00164 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:20:59.342667Z cold: 50 texts, 8.5s, in=1667 cache_w=0 cache_r=2813 out=2756 $0.00157 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:21:08.326115Z cold: 50 texts, 9.0s, in=2236 cache_w=0 cache_r=2813 out=2874 $0.00169 | ok=49 invalid=1 stop=end_turn",
+    "2026-10-16T21:21:17.883116Z cold: 50 texts, 9.6s, in=1988 cache_w=0 cache_r=2813 out=2818 $0.00164 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:21:26.708585Z cold: 50 texts, 8.8s, in=1759 cache_w=0 cache_r=2813 out=2870 $0.00164 | ok=47 invalid=3 stop=end_turn",
+    "2026-10-16T21:21:35.269967Z cold: 50 texts, 8.6s, in=1804 cache_w=0 cache_r=2813 out=2850 $0.00163 | ok=48 invalid=2 stop=end_turn",
+    "2026-10-16T21:21:44.391118Z cold: 50 texts, 9.1s, in=1844 cache_w=0 cache_r=2813 out=2761 $0.00159 | ok=50 invalid=0 stop=end_turn",
+    "2026-10-16T21:21:51.867067Z cold: 40 texts, 7.5s, in=1535 cache_w=0 cache_r=2813 out=2253 $0.00131 | ok=40 invalid=0 stop=end_turn",
+    "2026-10-16T21:21:54.298035Z verify: 10 texts, 2.428s, $0.00038 | verified=10 invalid=0",
+    "2026-10-16T21:22:02.481629Z group: named 22/22 issues in 8.161s, $0.00134",
+    "2026-10-16T21:22:21.927760Z memo: attempt 1 ok in 19.436s, $0.03162"
+  ],
+  "finished_at": "2026-10-16T21:22:21.942917Z"
+}
