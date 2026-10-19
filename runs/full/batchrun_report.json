@@ -1,6 +1,6 @@
 {
   "run_id": "full",
-  "started_at": "2026-10-16T23:15:23.860464Z",
+  "started_at": "2026-10-19T21:46:01.482062Z",
   "tier": "batch",
   "model": "claude-haiku-5-5",
   "label_config": "labels-v1|claude-haiku-5-5|e4a34e06e1be",
@@ -23,5 +23,5 @@
     "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
   },
   "events": [],
-  "finished_at": "2026-10-16T23:15:27.239843Z"
+  "finished_at": "2026-10-19T21:47:18.168213Z"
 }
