@@ -39,7 +39,7 @@ DATABASE_URL="$SUPABASE_DB_URL" npm run dev      # or omit DATABASE_URL to use w
 
 ## Deploy (Vercel)
 
-Live: https://spotify-review-dashboard-lilac.vercel.app (Vercel project `spotify-review-dashboard`, root
+Live: https://spotify-review-dashboard-lilac.vercel.app (Vercel project `spotify-review-dashboard`, production branch `claude/eager-volta-dqgo6g`, root
 directory `web`, framework Next.js). The CLI links the git root, so deploy from the repository root:
 
 ```bash
