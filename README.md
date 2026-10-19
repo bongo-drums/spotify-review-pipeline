@@ -207,8 +207,8 @@ checkpoint evidence is kept as measured and the full run uses the new version.
 3. **Matt's review of the drafts**: `evals/golden/error_analysis.md`, the README *Design choices* and *One
    failure* sections (all marked as drafts), and the memo's recommendation and alternatives, which should be
    rewritten in Matt's voice once the full run's memo exists.
-4. **Dashboard data load**: the app in `web/` is deployed to Vercel at https://spotify-review-dashboard-lilac.vercel.app
-   (project `spotify-review-dashboard`, root directory `web`, `DATABASE_URL` set as a production secret). The
+4. ~~Dashboard~~ done: live at https://spotify-review-dashboard-lilac.vercel.app, serving the 10,000-review run from
+   Supabase Postgres (`docs/dashboard_live.png`); the full run is loaded the same way once finished.
    Supabase database is still empty, so `/api/overview` returns `relation "runs" does not exist` until
    `python -m pipeline.publish --run runs/pilot10000 --db "$SUPABASE_DB_URL"` is run once (it creates the
    schema and is idempotent per run); the page then serves the 10k run with `source: "postgres"`. Re-run it
