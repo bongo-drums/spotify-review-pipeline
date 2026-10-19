@@ -2,6 +2,6 @@
 const nextConfig = {
   // The file-backed data source reads web/data at request time; keep API routes dynamic.
   serverExternalPackages: ["pg"],
-  outputFileTracingIncludes: { "/api/**": ["./data/**"] },
+  outputFileTracingIncludes: { "/api/**": ["./data/**", "./db/**"] },
 };
 export default nextConfig;

@@ -35,12 +35,25 @@ export function sourceName(): "postgres" | "files" {
 // ---- Postgres --------------------------------------------------------------------
 
 let pool: import("pg").Pool | null = null;
+let seeded = false;
 async function pg() {
   if (!pool) {
     const { Pool } = await import("pg");
     pool = new Pool({ connectionString: DSN, max: 3, ssl: DSN.includes("localhost") ? undefined : { rejectUnauthorized: false } });
   }
+  if (!seeded) {
+    // First request on an empty database: create the schema and load the committed snapshot (see lib/seed.ts).
+    const { tablesExist, seedFromSnapshot } = await import("./seed");
+    const ok = await tablesExist(pool);
+    const n = ok ? (await pool.query("SELECT COUNT(*)::int AS n FROM runs")).rows[0].n : 0;
+    if (!ok || n === 0) await seedFromSnapshot(pool);
+    seeded = true;
+  }
   return pool;
+}
+
+export async function getPool() {
+  return pg();
 }
 
 async function latestRunId(): Promise<string> {
