@@ -346,9 +346,11 @@ def main(argv=None) -> int:
     ap.add_argument("--downstream", action="store_true", help="after enrichment: verify, group, rank, recommend (standard tier)")
     args = ap.parse_args(argv)
     out = Path(args.out)
-    resumed = (out / "state.sqlite").exists()
-    if not resumed:
+    if not (out / "state.sqlite").exists():
         ingest(args.input, out)
+    # "resume" means earlier enrichment calls exist, not merely that the run DB exists (a dry run creates it too)
+    with RunState(out / "state.sqlite") as probe:
+        resumed = probe.conn.execute("SELECT 1 FROM calls WHERE stage='enrich' LIMIT 1").fetchone() is not None
     runner = BatchRunner(out, max_usd=args.max_usd, batch_requests=args.batch_requests, poll_s=args.poll,
                          ledger_path=args.ledger, dry_run=args.dry_run, resumed=resumed)
     report = {"run_id": runner.run_id, "started_at": utc_now(), "tier": TIER, "model": runner.model, "label_config": runner.cfg,

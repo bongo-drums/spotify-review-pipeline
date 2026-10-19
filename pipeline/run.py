@@ -62,9 +62,11 @@ def run(input_path, out_dir, *, manifest=None, max_usd=1.0, stages=ALL_STAGES, l
     input_path, out_dir = Path(input_path), Path(out_dir)
     if not input_path.exists():
         raise FileNotFoundError(input_path)
-    resumed = (out_dir / "state.sqlite").exists()
-    if not resumed:
+    if not (out_dir / "state.sqlite").exists():
         ingest(input_path, out_dir)
+    from .state import RunState
+    with RunState(out_dir / "state.sqlite") as probe:   # resume = earlier enrichment calls exist (a dry run also creates the DB)
+        resumed = probe.conn.execute("SELECT 1 FROM calls WHERE stage='enrich' LIMIT 1").fetchone() is not None
     downstream = tuple(s for s in stages if s in DOWNSTREAM)
     pilot = Pilot(out_dir, input_path, model=MODEL, max_usd=max_usd, ledger_path=ledger_path, client=client, limit=limit,
                   resumed=resumed, stages=downstream, memo_model=memo_model, verify_frac=verify_frac, verify_min_n=verify_min_n,
