@@ -1,17 +1,23 @@
 """Load a finished run into the dashboard database (Supabase Postgres) — or write the same tables as JSON.
 
     python -m pipeline.publish --run runs/pilot10000                 # JSON snapshot into web/data/ (file-backed dev mode)
-    python -m pipeline.publish --run runs/pilot10000 --db "$SUPABASE_DB_URL"   # load Postgres (needs psycopg)
+    python -m pipeline.publish --run runs/pilot10000 --db "$SUPABASE_DB_URL"   # load Postgres directly (needs psycopg)
+    python -m pipeline.publish --run runs/pilot10000 --rest          # load over HTTPS via Supabase's REST API:
+                                                                     # reads SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
+                                                                     # from the environment; tables must already exist
+                                                                     # (paste web/db/schema.sql into the SQL editor once)
 
 Tables (schema in web/db/schema.sql): runs, aggregates, issues, membership, records, claims, memo.
-Everything comes from the run DB and runs/<id>/artifacts; nothing is recomputed and no model is called.
-The web backend (web/) reads these tables and serves them to the dashboard.
+Everything comes from the run directory; nothing is recomputed and no model is called. Records come from the run
+DB when it is present, otherwise from labels.csv plus the source CSV (run DBs are git-ignored, so a fresh clone
+can still publish a committed run). The web backend (web/) reads these tables and serves them to the dashboard.
 """
 from __future__ import annotations
 
 import argparse
 import csv
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -66,6 +72,100 @@ def records_iter(state: RunState):
                "review_rating": r["review_rating"]}
 
 
+def records_iter_files(run_dir: Path, source_csv: Path | None = None):
+    """Same rows as records_iter, from labels.csv + the source CSV (timestamp, rating) when no run DB exists."""
+    manifest = json.loads((run_dir / "data_manifest.json").read_text(encoding="utf-8"))
+    src = Path(source_csv) if source_csv else (config.REPO_ROOT / manifest["source_path"])
+    meta: dict[str, tuple[str, str]] = {}
+    with open(src, newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            meta[row["review_id"]] = (row["review_timestamp"], row["review_rating"])
+    with open(run_dir / "labels.csv", newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            ts, rating = meta.get(r["review_id"], ("", None))
+            completed = r["status"] == "completed"
+            yield {"review_id": r["review_id"], "status": r["status"], "reason": r["reason"] or None,
+                   "cache_source_id": r["cache_source_id"] if r["cache_source_id"] != r["review_id"] else None,
+                   "topic": r["topic"] or None, "subtopic": r["subtopic"] or None, "intent": r["intent"] or None,
+                   "severity": int(r["severity"]) if completed and r["severity"] else None,
+                   "sentiment": float(r["sentiment"]) if completed and r["sentiment"] else None,
+                   "needs_review": (r["needs_review"] == "True") if completed else None,
+                   "evidence_quote": r["evidence_quote"] or None, "month": ts[:7], "review_rating": rating}
+
+
+def iter_records(run_dir: Path, source_csv: Path | None = None):
+    if (run_dir / "state.sqlite").exists():
+        with RunState(run_dir / "state.sqlite") as state:
+            yield from records_iter(state)
+    else:
+        yield from records_iter_files(run_dir, source_csv)
+
+
+# ---- Supabase REST (HTTPS only; for environments without raw Postgres egress) ----------
+
+REST_TABLES_IN_DELETE_ORDER = ("memo", "claims", "membership", "records", "issues", "aggregates", "runs")
+
+
+def _request(method: str, url: str, key: str, body=None, prefer: str | None = None) -> tuple[int, str]:
+    import urllib.error
+    import urllib.request
+    data = json.dumps(body, ensure_ascii=False).encode("utf-8") if body is not None else None
+    req = urllib.request.Request(url, data=data, method=method, headers={
+        "apikey": key, "Authorization": f"Bearer {key}", "Content-Type": "application/json",
+        **({"Prefer": prefer} if prefer else {})})
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            return resp.status, resp.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as e:
+        return e.code, e.read().decode("utf-8", "replace")
+
+
+def load_rest(run_dir: Path, base_url: str, key: str, source_csv: Path | None = None, batch: int = 1000,
+              request=_request, log=None) -> dict:
+    log = log or (lambda m: print(m, file=sys.stderr, flush=True))
+    base = base_url.rstrip("/") + "/rest/v1"
+    status, text = request("GET", f"{base}/runs?select=run_id&limit=1", key)
+    if status != 200:
+        raise SystemExit(f"cannot read table runs ({status}): {text[:200]}\n"
+                         f"Create the tables once by pasting web/db/schema.sql into the Supabase SQL editor, then retry.")
+    data = load_run(run_dir)
+    run_id = data["run"]["run_id"]
+    for t in REST_TABLES_IN_DELETE_ORDER:
+        st, tx = request("DELETE", f"{base}/{t}?run_id=eq.{run_id}", key, prefer="return=minimal")
+        if st not in (200, 204):
+            raise SystemExit(f"delete from {t} failed ({st}): {tx[:200]}")
+    counts = {}
+
+    def post(table: str, rows: list[dict]):
+        for i in range(0, len(rows), batch):
+            chunk = rows[i:i + batch]
+            st, tx = request("POST", f"{base}/{table}", key, chunk, prefer="return=minimal")
+            if st not in (200, 201):
+                raise SystemExit(f"insert into {table} failed ({st}): {tx[:300]}")
+            counts[table] = counts.get(table, 0) + len(chunk)
+
+    r = data["run"]
+    post("runs", [r])
+    post("aggregates", [{"run_id": run_id, "data": data["aggregates"]}])
+    post("issues", [{"run_id": run_id, **i} for i in data["issues"]])
+    post("claims", [{"run_id": run_id, **c} for c in data["claims"]])
+    m = data["memo"]
+    post("memo", [{"run_id": run_id, "status": m["status"], "model": m["model"], "markdown": m["markdown"],
+                   "body": m["json"], "validation": m["validation"]}])
+    post("membership", [{"run_id": run_id, "issue_id": x["issue_id"], "review_id": x["review_id"]} for x in data["membership"]])
+    buf = []
+    for rec in iter_records(run_dir, source_csv):
+        buf.append({"run_id": run_id, **rec})
+        if len(buf) >= batch * 2:
+            post("records", buf)
+            buf = []
+            if counts.get("records", 0) % 50000 < batch * 2:
+                log(f"records loaded: {counts['records']:,}")
+    if buf:
+        post("records", buf)
+    return {"db": "supabase-rest", "run_id": run_id, "counts": counts}
+
+
 def write_json_snapshot(run_dir: Path, out_dir: Path, max_records: int | None = 20000) -> dict:
     """File-backed mode for local development: the web API reads these files when no DATABASE_URL is set."""
     data = load_run(run_dir)
@@ -74,8 +174,8 @@ def write_json_snapshot(run_dir: Path, out_dir: Path, max_records: int | None = 
         (out_dir / f"{name}.json").write_text(json.dumps(data[name], ensure_ascii=False) + "\n", encoding="utf-8")
     (out_dir / "membership.json").write_text(json.dumps(data["membership"], ensure_ascii=False) + "\n", encoding="utf-8")
     n = 0
-    with RunState(run_dir / "state.sqlite") as state, open(out_dir / "records.jsonl", "w", encoding="utf-8") as f:
-        for rec in records_iter(state):
+    with open(out_dir / "records.jsonl", "w", encoding="utf-8") as f:
+        for rec in iter_records(run_dir):
             if max_records is not None and n >= max_records:
                 break
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
@@ -130,11 +230,22 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Publish a run to the dashboard database or a JSON snapshot.")
     ap.add_argument("--run", required=True)
     ap.add_argument("--db", help="Postgres DSN (e.g. $SUPABASE_DB_URL); omitted -> JSON snapshot")
+    ap.add_argument("--rest", action="store_true", help="load over HTTPS using SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from the environment")
+    ap.add_argument("--source-csv", help="source CSV for timestamps/ratings when the run DB is absent (default: data_manifest source_path)")
     ap.add_argument("--out", default=str(config.REPO_ROOT / "web" / "data"), help="snapshot directory (JSON mode)")
     ap.add_argument("--max-records", type=int, default=20000, help="JSON mode: cap on records.jsonl rows")
     args = ap.parse_args(argv)
     run_dir = Path(args.run)
-    out = load_postgres(run_dir, args.db) if args.db else write_json_snapshot(run_dir, Path(args.out), args.max_records)
+    if args.rest:
+        url, key = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+        if not url or not key:
+            print("--rest needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in the environment (never on the command line)", file=sys.stderr)
+            return 1
+        out = load_rest(run_dir, url, key, Path(args.source_csv) if args.source_csv else None)
+    elif args.db:
+        out = load_postgres(run_dir, args.db)
+    else:
+        out = write_json_snapshot(run_dir, Path(args.out), args.max_records)
     print(json.dumps(out, indent=2))
     return 0
 

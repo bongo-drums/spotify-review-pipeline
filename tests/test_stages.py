@@ -190,3 +190,30 @@ def test_fallback_routes_twice_invalid_texts_to_sonnet(tmp_path):
         assert cfg.startswith("labels-v1|claude-sonnet-5-5|")
     assert rep["stage_calls"]["fallback"]["calls"] == 1 and rep["stage_calls"]["enrich"]["calls"] == 2
     assert client.messages.calls[-1]["thinking"] == {"type": "between_tools"}
+
+
+def test_publish_rest_and_file_backed_records(reviews_csv, tmp_path, monkeypatch):
+    """REST loader: checks the schema exists, deletes the run's rows, inserts every table in batches; records can
+    come from labels.csv + the source CSV when the run DB is absent (fresh clone)."""
+    from pipeline import publish
+    out, ledger = tmp_path / "pub", tmp_path / "l.sqlite"
+    rep = runner.run(reviews_csv, out, max_usd=1.0, ledger_path=ledger, client=_client())
+    assert rep["status"] == "ok"
+    calls = []
+
+    def fake_request(method, url, key, body=None, prefer=None):
+        calls.append((method, url.split("/rest/v1/")[1], len(body) if isinstance(body, list) else None))
+        return {"GET": 200, "DELETE": 204}.get(method, 201), "[]"
+    res = publish.load_rest(out, "https://x.supabase.co", "k", batch=50, request=fake_request)
+    assert res["counts"]["records"] == 120 and res["counts"]["runs"] == 1 and res["counts"]["issues"] >= 3
+    assert calls[0] == ("GET", "runs?select=run_id&limit=1", None)
+    assert [c for c in calls if c[0] == "DELETE"][0][1] == "memo?run_id=eq.pub"
+    assert sum(c[2] or 0 for c in calls if c[0] == "POST" and c[1] == "records") == 120
+    # same rows without the run DB (labels.csv + source csv)
+    from_db = list(publish.iter_records(out))
+    (out / "state.sqlite").unlink()
+    from_files = list(publish.iter_records(out, source_csv=reviews_csv))
+    assert len(from_files) == 120 and from_files[0] == from_db[0] and from_files[7]["status"] == "quarantined"
+    assert {r["review_id"]: r for r in from_files} == {r["review_id"]: r for r in from_db}
+    snap = publish.write_json_snapshot(out, tmp_path / "snap", max_records=None)
+    assert snap["records_written"] == 120

@@ -5,7 +5,18 @@ The backend is the set of API routes under `app/api/` (`/api/overview`, `/api/is
 to the single-page dashboard in `components/Dashboard.tsx`. Nothing is recomputed in the browser and no model
 is called at request time.
 
-## Data
+## Data (HTTPS-only path, works from a Claude Code cloud session)
+
+Cloud sessions cannot open raw Postgres connections, so the loader can also go through Supabase's REST API:
+
+1. Once: in the Supabase dashboard open **SQL Editor**, paste the contents of `web/db/schema.sql`, click **Run**.
+2. In the cloud environment add `SUPABASE_URL` (the project URL, `https://<ref>.supabase.co`) and
+   `SUPABASE_SERVICE_ROLE_KEY` (Project Settings, API keys, the `service_role` secret; never the publishable key,
+   never in chat or git).
+3. In a new session: `python -m pipeline.publish --run runs/pilot10000 --rest` (or `--run runs/full`). Records
+   come from the committed `labels.csv` plus the source CSV when the git-ignored run DB is absent.
+
+## Data (direct Postgres path)
 
 1. Create the tables once: `psql "$SUPABASE_DB_URL" -f db/schema.sql` (the loader also runs it).
 2. Load a finished run: `python -m pipeline.publish --run runs/full --db "$SUPABASE_DB_URL"`
