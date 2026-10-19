@@ -358,7 +358,7 @@
     "fixed_source": "2x measured group+memo",
     "remaining_pilot_texts": 1574
   },
-  "already_committed_usd": 0.46646,
+  "already_committed_usd": 10.595117,
   "scenarios": {
     "base/exact_text_reuse/standard": {
       "scenario": "base",
@@ -383,10 +383,10 @@
       "fallback_texts": 2421,
       "remaining_pilots": 0.0534,
       "fixed_memo_grouping": 0.0548,
-      "already_committed": 0.4665,
-      "total": 18.773,
-      "headroom_vs_budget": 1.227,
-      "within_budget": true,
+      "already_committed": 10.5951,
+      "total": 28.9016,
+      "headroom_vs_budget": -8.9016,
+      "within_budget": false,
       "wall_clock_h": {
         "standard_1_worker": 17.67,
         "standard_4_workers": 4.42,
@@ -416,10 +416,10 @@
       "fallback_texts": 2421,
       "remaining_pilots": 0.0267,
       "fixed_memo_grouping": 0.0548,
-      "already_committed": 0.4665,
-      "total": 10.452,
-      "headroom_vs_budget": 9.548,
-      "within_budget": true,
+      "already_committed": 10.5951,
+      "total": 20.5806,
+      "headroom_vs_budget": -0.5806,
+      "within_budget": false,
       "wall_clock_h": {
         "standard_1_worker": null,
         "standard_4_workers": null,
@@ -449,9 +449,9 @@
       "fallback_texts": 3304,
       "remaining_pilots": 0.0518,
       "fixed_memo_grouping": 0.0548,
-      "already_committed": 0.4665,
-      "total": 24.6876,
-      "headroom_vs_budget": -4.6876,
+      "already_committed": 10.5951,
+      "total": 34.8162,
+      "headroom_vs_budget": -14.8162,
       "within_budget": false,
       "wall_clock_h": {
         "standard_1_worker": 24.11,
@@ -482,10 +482,10 @@
       "fallback_texts": 3304,
       "remaining_pilots": 0.0259,
       "fixed_memo_grouping": 0.0548,
-      "already_committed": 0.4665,
-      "total": 13.6702,
-      "headroom_vs_budget": 6.3298,
-      "within_budget": true,
+      "already_committed": 10.5951,
+      "total": 23.7988,
+      "headroom_vs_budget": -3.7988,
+      "within_budget": false,
       "wall_clock_h": {
         "standard_1_worker": null,
         "standard_4_workers": null,
@@ -515,9 +515,9 @@
       "fallback_texts": 4842,
       "remaining_pilots": 0.0679,
       "fixed_memo_grouping": 0.0548,
-      "already_committed": 0.4665,
-      "total": 24.8636,
-      "headroom_vs_budget": -4.8636,
+      "already_committed": 10.5951,
+      "total": 34.9922,
+      "headroom_vs_budget": -14.9922,
       "within_budget": false,
       "wall_clock_h": {
         "standard_1_worker": 19.05,
@@ -548,10 +548,10 @@
       "fallback_texts": 4842,
       "remaining_pilots": 0.0339,
       "fixed_memo_grouping": 0.0548,
-      "already_committed": 0.4665,
-      "total": 14.2997,
-      "headroom_vs_budget": 5.7003,
-      "within_budget": true,
+      "already_committed": 10.5951,
+      "total": 24.4283,
+      "headroom_vs_budget": -4.4283,
+      "within_budget": false,
       "wall_clock_h": {
         "standard_1_worker": null,
         "standard_4_workers": null,
@@ -581,9 +581,9 @@
       "fallback_texts": 6607,
       "remaining_pilots": 0.0662,
       "fixed_memo_grouping": 0.0548,
-      "already_committed": 0.4665,
-      "total": 32.8776,
-      "headroom_vs_budget": -12.8776,
+      "already_committed": 10.5951,
+      "total": 43.0062,
+      "headroom_vs_budget": -23.0062,
       "within_budget": false,
       "wall_clock_h": {
         "standard_1_worker": 26.0,
@@ -614,10 +614,10 @@
       "fallback_texts": 6607,
       "remaining_pilots": 0.0331,
       "fixed_memo_grouping": 0.0548,
-      "already_committed": 0.4665,
-      "total": 18.8282,
-      "headroom_vs_budget": 1.1718,
-      "within_budget": true,
+      "already_committed": 10.5951,
+      "total": 28.9568,
+      "headroom_vs_budget": -8.9568,
+      "within_budget": false,
       "wall_clock_h": {
         "standard_1_worker": null,
         "standard_4_workers": null,
@@ -625,5 +625,5 @@
       }
     }
   },
-  "recommended": "base/exact_text_reuse/batch"
+  "recommended": null
 }

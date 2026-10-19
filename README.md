@@ -5,11 +5,10 @@ Course final assignment: classify the 660,622-review Spotify dataset with `claud
 decision memo whose every number is checked against saved aggregates. Plan and schedule: `docs/PLAN.md`.
 Label definitions: `labels/definitions.md`. Course spec files: `docs/course/`.
 
-**Status (2026-10-16):** the staged program is complete and measured on the 100, 500 and 10,000-review
-checkpoints; the grading export of the 10k run passes the course checker except for one unclassified text; the
-dashboard runs locally against the published 10k run (`docs/dashboard_pilot500.png` shows the 500 run) and is
-deployed at https://spotify-review-dashboard-lilac.vercel.app pending the Supabase data load. The full 660k Batch-tier
-run, the interruption/resume recording and that data load are the remaining steps (see *What is not done yet*).
+**Status (2026-10-19):** complete. The full 660,622-review run is classified (660,602 completed, 20 quarantined), verified,
+grouped, ranked and summarised for $10.08 in API spend; the grading export passes the course checker except for the 7 texts
+no model could label validly (coverage 0.99997); the dashboard is live from Supabase Postgres at
+https://spotify-review-dashboard-lilac.vercel.app. The decision memo in Matt's voice is `docs/MEMO.md`.
 
 ## Rubric map
 
@@ -18,15 +17,15 @@ run, the interruption/resume recording and that data load are the remaining step
 | **Deliverable quality** | |
 | Accessible code, setup, artifacts | this README; `pip install -r requirements.txt`; every stage is a `python -m pipeline.<stage>` command; offline commands need no key |
 | Architecture, shared schema, provenance | [Architecture](#architecture) below; `pipeline/state.py` (one run DB: `source`, `records`, `calls`, `label_cache`, `verifications`, `stage_cache`); `label_config` = label set + model + prompt/schema sha on every record and call; contract row hashes (`pipeline/hashing.py`, checked against the course checker in `tests/test_contract_hash.py`) |
-| Memo numbers linked to calculations and evidence | `pipeline/memo.py`: the model may only reference numbers as `{C7}` claim placeholders; code substitutes values from `claims.csv`, rejects unknown claims, issue IDs or review IDs, and flags any typed digits. Memos: `runs/pilot500/artifacts/memo.md`, `runs/pilot10000/artifacts/memo.md` (claims appendix at the bottom of each) |
-| Coherent recommendation, alternatives, limitations | memo sections *Recommendation*, *Alternatives*, *Limitations*; Matt's rewrite of the recommendation in his own voice is pending (see below) |
+| Memo numbers linked to calculations and evidence | `pipeline/memo.py`: the model may only reference numbers as `{C7}` claim placeholders; code substitutes values from `claims.csv`, rejects unknown claims, issue IDs or review IDs, and flags any typed digits. Full-run memo `runs/full/artifacts/memo.md` (validated first attempt, claims appendix at the bottom); Matt's decision memo `docs/MEMO.md` cites the same claim IDs |
+| Coherent recommendation, alternatives, limitations | `docs/MEMO.md` (recommendation, why not the other three areas, limitations) and the generated memo's *Recommendation*, *Alternatives*, *Limitations* sections |
 | **Testing & evaluation** | |
 | 50 human labels, per-field comparison, error analysis | `evals/golden/human_codes.csv` (Matt, by hand), scorer `pipeline/evals.py golden`, results `evals/golden/results.md` (agreement, macro F1, confusions, every disagreement listed); error analysis `evals/golden/error_analysis.md` (draft for Matt's review) |
 | Independent verification, planted-error and injection tests | blind verifier with a separate prompt: `pipeline/verifier.py`, reports in `runs/*/artifacts/verification.md`; planted-error detection in the same report; prompt-injection test `evals/injection/results.md` (48 synthetic copies, 0 followed the injected instruction) |
 | Real 100-review cold/warm pilot, offline calculator, retry/spend/recovery controls (T3) | `cost/README.md`, `cost/report.md`, `cost/estimate.json`, `cost/usage.csv`, `cost/pilot_calls.jsonl`, `cost/pilot_records.jsonl`, `runs/pilot100/pilot_report.json`; controls: `pipeline/budget.py` (shared ledger, reserve-before-send), bounded backoff and per-run cap in `pipeline/llm.py` / `pipeline/pilot.py`, resume demonstrated in `tests/test_stages.py`, on the 10,000 checkpoint (`runs/pilot10000/checkpoints/`) and in the recorded SIGINT demo `runs/resume_demo/resume_demo.cast` (`asciinema play`; plain transcript `transcript.txt`), batch reconciliation in `tests/test_batchrun.py` |
 | **Working result** | |
-| Full ingestion, record coverage, successful classification | `runs/full/ingestion_report.json` (660,622 rows, 13 empty-text quarantines, 484,189 distinct texts, parsed-rows digest identical to the checker's profile); full classification not yet run (needs the go-ahead below) |
-| Runnable staged program, bounded calls, saved handoffs, demonstrated resume | `python -m pipeline.run --input <csv> --out runs/<id>`; <=50 reviews per request; every batch committed atomically; `--limit` stop + resume on the 10k checkpoint produced `checkpoint_before.json` / `checkpoint_after.json`; `python -m pipeline.rank --run runs/<id>` regenerates the ranking offline |
+| Full ingestion, record coverage, successful classification | `runs/full/ingestion_report.json` (660,622 rows, 13 empty-text quarantines, 484,189 distinct texts, parsed-rows digest identical to the checker's profile); full run `runs/full/`: 660,602 completed, 20 quarantined, grading export `runs/full/grading/`, self-check `runs/full/self-check.json` (only finding: 7 unclassified texts) |
+| Runnable staged program, bounded calls, saved handoffs, demonstrated resume | `python -m pipeline.run --input <csv> --out runs/<id>`; <=50 reviews per request; every batch committed atomically; the full run itself was interrupted (API credit error after two batches) and resumed three days later: `runs/full/checkpoints/checkpoint_before.json` (650,147 ids) and `checkpoint_after.json` (660,602); the recorded SIGINT demo and the 10k `--limit` stop/resume show the same mechanism on the standard tier; `python -m pipeline.rank --run runs/<id>` regenerates the ranking offline |
 | Reproducible baseline ranking, deployed dashboard with grounded recommendations | `pipeline/ranking.py` (Decimal half-up means, exact checker arithmetic, `tests/test_stages.py`); grading export `python -m pipeline.export` checked by `check_submission.py` on the 10k checkpoint (`runs/pilot10000/self-check.json`: only finding = 1 unclassified text); dashboard `web/` (Next.js API routes over Supabase Postgres, or the `web/data` snapshot without a database) built and exercised locally, see `web/README.md`; deployed to Vercel at https://spotify-review-dashboard-lilac.vercel.app (API routes read Supabase Postgres via `DATABASE_URL`; `/api/overview` reports `source: "postgres"` once `pipeline.publish --db` has loaded a run, see *What is not done yet*) |
 
 ## Architecture
@@ -110,6 +109,7 @@ interruption.
 | `runs/pilot100` cold | 100 | 100 / 0 | 3 | $0.0314 (enrich $0.0037) | 19.3 s | 1.0 / 0.9 / 0.9 (n=10) | validated |
 | `runs/pilot100` warm | 100 | 100 from cache | 0 | $0 | 0.04 s end to end | reused | cached |
 | `runs/pilot500` | 500 | 500 / 0 | 10 | $0.0493 | 88 s | 0.8 / 0.8 / 0.8 (n=10) | validated |
+| `runs/full` (Batch tier) | 660,622 | 660,602 / 20 | 10,387 Haiku (2 batches + retries) + 192 Sonnet fallback (1,912 texts, 1,907 recovered) | $10.08 (enrich $8.45, fallback $1.46, verify $0.09, group+memo $0.03) | 2 batches of ~16 min each, retry batch 25 min, downstream 22 min | 0.84 / 0.91 / 0.84 (n=4,842; planted errors 2,384/2,421) | validated |
 | `runs/pilot10000` | 10,000 | 9,999 / 1 | 176 Haiku + 3 Sonnet fallback (22 texts, 21 recovered) | $0.377 (enrich $0.311, fallback $0.023, memo ×2 $0.059) | 1,572 s (26 min) | 0.86 / 0.92 / 0.89 (n=170; planted errors 83/85 flagged) | validated |
 
 The 10k run was deliberately stopped after 2,500 texts (`--limit`) and resumed: `checkpoints/checkpoint_before.json`
@@ -198,18 +198,24 @@ checkpoint evidence is kept as measured and the full run uses the new version.
 | `docs/` | plan, assignment brief, course spec files and checker |
 | `tests/` | offline tests against a fake client |
 
-## What is not done yet
+## Full run, in numbers
 
-1. **Full 660k run** on the Batch tier (`pipeline.batchrun`), then `verify/group/rank/recommend`, the grading
-   export and the self-check. Waiting on the go-ahead and the Batch-tier confirmation.
-2. **Interruption/resume on the full run**: the recorded demo above covers the mechanism on 500 reviews; a
-   screen recording of Ctrl-C on the full run is optional extra evidence Matt can make.
-3. **Matt's review of the drafts**: `evals/golden/error_analysis.md`, the README *Design choices* and *One
-   failure* sections (all marked as drafts), and the memo's recommendation and alternatives, which should be
-   rewritten in Matt's voice once the full run's memo exists.
-4. ~~Dashboard~~ done: live at https://spotify-review-dashboard-lilac.vercel.app, serving the 10,000-review run from
-   Supabase Postgres (`docs/dashboard_live.png`); the full run is loaded the same way once finished.
-   Supabase database is still empty, so `/api/overview` returns `relation "runs" does not exist` until
-   `python -m pipeline.publish --run runs/pilot10000 --db "$SUPABASE_DB_URL"` is run once (it creates the
-   schema and is idempotent per run); the page then serves the 10k run with `source: "postgres"`. Re-run it
-   with `--run runs/full` after the full run so the dashboard serves the latest published run.
+| item | value |
+|---|---|
+| rows / classified / quarantined | 660,622 / 660,602 / 20 (13 empty texts, 2 refused twice, 5 invalid under both models) |
+| distinct texts sent | 484,189; 176,420 rows completed by exact-text reuse |
+| API spend, whole run | $10.08 (calculator projection for this scenario: $10.45) |
+| verification | 4,842 blind re-labels: topic 0.841, intent 0.905, severity 0.844; severity within one level 99.6%; planted errors flagged 2,384 of 2,421 |
+| issues | 32; top three `other.general_negative`, `billing.premium_only_controls`, `usability.ads_interruptions` |
+| focus areas by complaints | usability 67,674 (22.8%), billing+support 57,894 (19.5%), playback 35,291 (11.9%), access 11,164 (3.8%) |
+| course self-check | `review_required` for exactly one reason: 7 texts not classified; every other check clean |
+
+Two corrections made during the run are logged in `runs/full/requeue_log.jsonl`: 150 texts caught in refused multi-review
+requests and 1,129 single-sentence texts rejected for an out-of-range evidence index were requeued after the code fixes
+described in *One failure*, and the first two batches' calls were relabelled `initial` (the dry run had left a run DB, so
+the first paid job had stamped them `resume`). Total ledger spend across every pilot, test and the full run: $10.60 of $20.
+
+## Remaining
+
+1. Matt's review of `docs/MEMO.md` and the two README draft sections.
+2. Make the repository public and submit its URL.

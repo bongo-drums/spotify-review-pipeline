@@ -1,6 +1,6 @@
 {
   "run_id": "full",
-  "started_at": "2026-10-19T21:46:01.482062Z",
+  "started_at": "2026-10-19T22:18:06.772794Z",
   "tier": "batch",
   "model": "claude-haiku-5-5",
   "label_config": "labels-v1|claude-haiku-5-5|e4a34e06e1be",
@@ -8,20 +8,217 @@
   "resumed": true,
   "max_usd": 13.0,
   "batch_requests": 5000,
+  "enrich": {
+    "batches": 1,
+    "requests": 334,
+    "texts": 9341,
+    "cost_usd": 0.17553490500000005,
+    "dry_run": false,
+    "reconciled": 0,
+    "wall_s": 562.1,
+    "counts": {
+      "pending": 0,
+      "completed": 658584,
+      "quarantined": 2038
+    }
+  },
+  "downstream": {
+    "fallback": {
+      "model": "claude-sonnet-5-5",
+      "label_config": "labels-v1|claude-sonnet-5-5|e4a34e06e1be",
+      "max_frac": 0.005,
+      "cap_texts": 2420,
+      "eligible": 1912,
+      "routed": 1912,
+      "skipped_over_cap": 0,
+      "completed": 2018,
+      "still_quarantined": 5,
+      "calls": 192,
+      "cost_usd": 1.502551,
+      "wall_s": 760.357
+    },
+    "verify": {
+      "verified": 4842,
+      "agreement": {
+        "topic": 0.841,
+        "intent": 0.9052,
+        "severity": 0.8437,
+        "joint": 0.6745
+      },
+      "severity_mae": 0.1609,
+      "new_calls_this_run": 97,
+      "reused_verifications": 0,
+      "sample": 4842,
+      "planted_errors": {
+        "planted": 2421,
+        "detected": 2384,
+        "detection_rate": 0.9847
+      },
+      "calls": {
+        "calls": 97,
+        "failed_calls": 0,
+        "usage": {
+          "input_tokens": 208993,
+          "cache_creation_input_tokens": 1334,
+          "cache_read_input_tokens": 128064,
+          "output_tokens": 138378
+        },
+        "texts": 4842,
+        "cost_usd": 0.091536,
+        "wall_s_sum_of_calls": 481.59,
+        "models": [
+          "claude-haiku-5-5"
+        ]
+      },
+      "wall_s": 494.486
+    },
+    "group": {
+      "membership_rows": 296512,
+      "issues": 32,
+      "naming": {
+        "model": "claude-haiku-5-5",
+        "input_sha256": "1a67f3a38aeaef5a27fa9fa73e3167b678f08846e91dd5480210387ccb6052e3",
+        "cached": false,
+        "calls": 1,
+        "invalid_names": [],
+        "cost_usd": 0.0019695249999999997,
+        "input_tokens": 6724,
+        "output_tokens": 2456,
+        "duration_s": 12.589,
+        "unnamed": []
+      },
+      "wall_s": 23.267
+    },
+    "rank": {
+      "membership_rows": 296512,
+      "issues": 32,
+      "claims": 40,
+      "top": [
+        {
+          "rank": "1",
+          "issue_id": "other.general_negative",
+          "complaint_count": "92441",
+          "severity_sum": "187128",
+          "mean_severity": "2.024297",
+          "priority_score": "187128"
+        },
+        {
+          "rank": "2",
+          "issue_id": "billing.premium_only_controls",
+          "complaint_count": "46885",
+          "severity_sum": "132463",
+          "mean_severity": "2.825275",
+          "priority_score": "132463"
+        },
+        {
+          "rank": "3",
+          "issue_id": "usability.ads_interruptions",
+          "complaint_count": "37000",
+          "severity_sum": "89475",
+          "mean_severity": "2.418243",
+          "priority_score": "89475"
+        },
+        {
+          "rank": "4",
+          "issue_id": "playback.stops_skips_glitches",
+          "complaint_count": "19189",
+          "severity_sum": "59626",
+          "mean_severity": "3.107301",
+          "priority_score": "59626"
+        },
+        {
+          "rank": "5",
+          "issue_id": "access.login_failure",
+          "complaint_count": "9651",
+          "severity_sum": "37447",
+          "mean_severity": "3.880116",
+          "priority_score": "37447"
+        }
+      ],
+      "focus_areas": {
+        "access": {
+          "topics": [
+            "access"
+          ],
+          "complaint_count": 11164,
+          "severity_sum": 43087,
+          "mean_severity": "3.859459",
+          "share_of_complaints": 0.0377
+        },
+        "usability": {
+          "topics": [
+            "usability"
+          ],
+          "complaint_count": 67674,
+          "severity_sum": 168167,
+          "mean_severity": "2.484957",
+          "share_of_complaints": 0.2282
+        },
+        "playback": {
+          "topics": [
+            "playback"
+          ],
+          "complaint_count": 35291,
+          "severity_sum": 111766,
+          "mean_severity": "3.166983",
+          "share_of_complaints": 0.119
+        },
+        "billing_support": {
+          "topics": [
+            "billing",
+            "support"
+          ],
+          "complaint_count": 57894,
+          "severity_sum": 161309,
+          "mean_severity": "2.786282",
+          "share_of_complaints": 0.1953
+        }
+      },
+      "wall_s": 11.759
+    },
+    "recommend": {
+      "status": "validated",
+      "validation": {
+        "ok": true,
+        "errors": [],
+        "unverified_numbers": []
+      },
+      "model": "claude-sonnet-5-5",
+      "input_sha256": "c61415b8bef5ea026abc792d3d26cd38dcb6235f97362fde05da87acb9babc12",
+      "cached": false,
+      "calls": 1,
+      "cost_usd": 0.030555,
+      "wall_s": 18.707
+    },
+    "wall_s": 1308.593,
+    "model_calls": 291
+  },
   "status": "ok",
   "counts": {
-    "pending": 9365,
-    "completed": 650147,
-    "quarantined": 1110
+    "pending": 0,
+    "completed": 660602,
+    "quarantined": 20
   },
-  "run_spent_usd": 8.276554,
+  "run_spent_usd": 10.0787,
   "ledger": {
     "cap_usd": 20.0,
-    "committed_usd": 8.791509,
+    "committed_usd": 10.595117,
     "outstanding_reservations_usd": 0.0,
-    "remaining_usd": 11.208491,
+    "remaining_usd": 9.404883,
     "ledger_path": "/home/user/spotify-review-pipeline/runs/ledger.sqlite"
   },
-  "events": [],
-  "finished_at": "2026-10-19T21:47:18.168213Z"
+  "events": [
+    "2026-10-19T22:18:17.027496Z submitted batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 (job local-3826ae050c7d45ec91306a91f80c9716): 334 requests, 9341 texts, reserved worst case $0.2775",
+    "2026-10-19T22:18:17.207708Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:19:17.414445Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:20:17.655984Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:21:17.875939Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:22:18.130408Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:23:18.355809Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:24:18.589336Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:25:18.813550Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:26:19.032545Z batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9 in_progress: processing=334 succeeded=0 errored=0 expired=0 canceled=0; next poll in 60s",
+    "2026-10-19T22:27:27.707129Z collected batch msgbatch_015BvcGx8DA4oAdYenHC1Uj9: 334 ok, 0 failed requests; 8437 completed, 928 quarantined, 0 to retry; $0.1755"
+  ],
+  "finished_at": "2026-10-19T22:49:17.737412Z"
 }

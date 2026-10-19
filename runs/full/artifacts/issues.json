@@ -1,0 +1,498 @@
+{
+  "issue_id_rule": "topic.subtopic (label set labels-v1)",
+  "allow_multi_issue": false,
+  "naming": {
+    "model": "claude-haiku-5-5",
+    "input_sha256": "1a67f3a38aeaef5a27fa9fa73e3167b678f08846e91dd5480210387ccb6052e3",
+    "cached": false,
+    "calls": 1,
+    "invalid_names": [],
+    "cost_usd": 0.0019695249999999997,
+    "input_tokens": 6724,
+    "output_tokens": 2456,
+    "duration_s": 12.589,
+    "unnamed": []
+  },
+  "issues": [
+    {
+      "issue_id": "other.general_negative",
+      "topic": "other",
+      "subtopic": "general_negative",
+      "complaint_count": 92441,
+      "severity_sum": 187128,
+      "example_review_ids": [
+        "7c5bf637-f2d0-4453-a0b3-c86f45203ba7",
+        "6adc8bd8-9953-4c40-a345-b935aa322b83",
+        "1c5465bb-b754-4fdc-8b51-ae9e6853981c"
+      ],
+      "name": "General complaints about Spotify's business tactics and app",
+      "summary": "Customers voice broad dissatisfaction with Spotify, calling its approach manipulative and the app poor, with some noting it uses too much data.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "billing.premium_only_controls",
+      "topic": "billing",
+      "subtopic": "premium_only_controls",
+      "complaint_count": 46885,
+      "severity_sum": 132463,
+      "example_review_ids": [
+        "34a12e69-bdf1-4890-a426-13bed973ac77",
+        "8b5826e0-569a-4f7d-9053-b95a4a2b2532",
+        "90a11b0f-aad7-45ba-bacc-088d39c0cf8a"
+      ],
+      "name": "Key features locked behind a paid premium subscription",
+      "summary": "Customers report having to pay premium to download songs or choose tracks individually, and say group sharing options are no longer available.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.ads_interruptions",
+      "topic": "usability",
+      "subtopic": "ads_interruptions",
+      "complaint_count": 37000,
+      "severity_sum": 89475,
+      "example_review_ids": [
+        "6dbe91f5-31ef-4d58-b368-89d568c91456",
+        "c71cea9c-0ba7-4cd6-bda3-03b043a6a6fb",
+        "a606e006-1a06-4fe7-8aab-52a66e6f33bc"
+      ],
+      "name": "Frequent ads interrupt listening for free users",
+      "summary": "Customers say free listening is interrupted by many ads, with ads playing after nearly every song and making the experience annoying.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.stops_skips_glitches",
+      "topic": "playback",
+      "subtopic": "stops_skips_glitches",
+      "complaint_count": 19189,
+      "severity_sum": 59626,
+      "example_review_ids": [
+        "82adc2a2-1626-4fb6-bf2b-f8396b3667ce",
+        "b3da207e-888d-40bd-bd5d-11f376f5eeda",
+        "71c3a08a-ff3a-45a5-a797-088d6649caa3"
+      ],
+      "name": "Playback gets stuck, plays wrong songs, or stutters",
+      "summary": "Customers report the app getting stuck in offline mode, playing a different song than the one selected, and stuttering on Android devices.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "access.login_failure",
+      "topic": "access",
+      "subtopic": "login_failure",
+      "complaint_count": 9651,
+      "severity_sum": 37447,
+      "example_review_ids": [
+        "470b836e-9027-4e6f-9673-c0aad1b03c0b",
+        "07a3e007-76df-45e7-98aa-72aa93781208",
+        "3d9c548f-1c89-44f2-bc65-9fbde01fa6ab"
+      ],
+      "name": "App shows errors or will not open for login",
+      "summary": "Customers report that the app shows an error when logging in and that they cannot open the app or their account.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.controls_navigation",
+      "topic": "usability",
+      "subtopic": "controls_navigation",
+      "complaint_count": 12586,
+      "severity_sum": 34296,
+      "example_review_ids": [
+        "da6377bb-76c1-4c6f-a64a-4728adbc275a",
+        "9bef414c-e533-4580-9aaf-fc495dcfff3e",
+        "06023d7a-681a-48e8-9802-74d337b4597b"
+      ],
+      "name": "Shuffle and play controls stopped working or moved",
+      "summary": "Customers say the shuffle button no longer works, the play button was moved, and they cannot figure out how to start their music after an update.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.crash_wont_open",
+      "topic": "playback",
+      "subtopic": "crash_wont_open",
+      "complaint_count": 7529,
+      "severity_sum": 25825,
+      "example_review_ids": [
+        "8311b642-460e-4ef3-b710-bc80010db7d5",
+        "7c807ff7-1ebf-47fa-92a8-19af6ec3065b",
+        "5001fddd-7fae-434e-be59-55253e1ca094"
+      ],
+      "name": "App fails to open or loads very slowly after updates",
+      "summary": "Customers report the app stopped opening after a Samsung update and takes a long time to load even on a full network connection.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.queue_playlist_mgmt",
+      "topic": "usability",
+      "subtopic": "queue_playlist_mgmt",
+      "complaint_count": 8100,
+      "severity_sum": 21908,
+      "example_review_ids": [
+        "a942db9a-97f3-4718-aba0-cce058c807f0",
+        "3ce67ac2-abcf-4190-84ba-d52d8b047b29",
+        "1f510b1d-7d81-43ab-83dc-2b6132856e94"
+      ],
+      "name": "Music switches to shuffle without user request",
+      "summary": "Customers say the app switches their music to shuffle mode on its own, playing many unrelated songs after the chosen track.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.missing_content",
+      "topic": "catalog",
+      "subtopic": "missing_content",
+      "complaint_count": 7949,
+      "severity_sum": 20790,
+      "example_review_ids": [
+        "42d734bb-61ba-4848-a964-33296e71c9b3",
+        "774d00cd-5570-4452-a559-22ebe5a5fcae",
+        "73f7e724-ff40-4ab7-85b6-c3f2ad10cbb1"
+      ],
+      "name": "Playlists appear empty or songs are missing",
+      "summary": "Customers report playlists showing as empty even though content exists on other platforms, missing new releases, and unliking one song removing another from the library.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.ui_redesign",
+      "topic": "usability",
+      "subtopic": "ui_redesign",
+      "complaint_count": 8614,
+      "severity_sum": 19129,
+      "example_review_ids": [
+        "a523372a-c6b8-4869-ab55-9224fa159e32",
+        "07c9c9ea-5573-420c-92a4-ccdbbc693602",
+        "92160a53-ac7e-4f62-8777-59dd57a9de1d"
+      ],
+      "name": "Redesigned interface removes features and is harder to use",
+      "summary": "Customers dislike full-screen pop-ups promoting songs, the removed search bar in liked songs, and losing the ability to play favorites in order after an update.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.recommendations",
+      "topic": "catalog",
+      "subtopic": "recommendations",
+      "complaint_count": 7617,
+      "severity_sum": 18346,
+      "example_review_ids": [
+        "083b7f8c-23e9-460c-b594-101d477a2c8b",
+        "adfc3a98-e589-4118-b7a4-9649d840bcf0",
+        "6515f59c-e19c-4ada-ad67-ab0f52df0f94"
+      ],
+      "name": "Random song selection and inability to pick music",
+      "summary": "Customers say the app plays random songs, does not let them choose music themselves, and that the playlists are not satisfying.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.connectivity",
+      "topic": "playback",
+      "subtopic": "connectivity",
+      "complaint_count": 4485,
+      "severity_sum": 14796,
+      "example_review_ids": [
+        "c27eb0ea-61a6-455b-810f-009de33d4874",
+        "a4602160-1498-4960-ab65-91d4e6bcec25",
+        "6344f653-1a48-44df-a9f7-d8a28bceee75"
+      ],
+      "name": "App reports offline status despite good internet connection",
+      "summary": "Customers say the app keeps showing they are offline or lack connection even with a strong internet connection, and that Spotify Connect no longer works.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.lyrics",
+      "topic": "catalog",
+      "subtopic": "lyrics",
+      "complaint_count": 4843,
+      "severity_sum": 12569,
+      "example_review_ids": [
+        "2b012035-9309-4e69-8aae-29375f52c34c",
+        "78239fb6-6cbb-4692-b1df-3444eba110dc",
+        "17f5604c-9802-47f1-9dc4-127de35ed6a1"
+      ],
+      "name": "Lyrics not appearing for songs",
+      "summary": "Customers report lyrics are unavailable on their devices or do not show for any song, including after reinstalling the app.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "billing.price",
+      "topic": "billing",
+      "subtopic": "price",
+      "complaint_count": 5952,
+      "severity_sum": 12145,
+      "example_review_ids": [
+        "cbf2906a-e3e8-4a14-b9d3-990be70279d3",
+        "c29de3c0-5882-417c-84f7-d3fe9eaffd49",
+        "59fe11da-ed13-4cc0-956a-21318a08e469"
+      ],
+      "name": "Premium subscription cost seen as too high",
+      "summary": "Customers say the subscription is very expensive, that micro transactions are requested often, and that the free listening limits make the price feel unfair.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "downloads.offline_needs_internet",
+      "topic": "downloads",
+      "subtopic": "offline_needs_internet",
+      "complaint_count": 2738,
+      "severity_sum": 9679,
+      "example_review_ids": [
+        "7dcaba75-7d01-48e8-9d32-69aebfbd5896",
+        "4feb482d-cf24-47be-952f-daae415e780f",
+        "375c1094-7693-480d-8f30-3582201e5b9a"
+      ],
+      "name": "Offline downloads require internet or repeated login",
+      "summary": "Customers report downloaded music and podcasts cannot be played offline and that offline storage only works if they log in every week.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "downloads.download_fails",
+      "topic": "downloads",
+      "subtopic": "download_fails",
+      "complaint_count": 2327,
+      "severity_sum": 7797,
+      "example_review_ids": [
+        "509f4167-79d7-4cb6-a10e-90fde38dee03",
+        "f1546902-8e6d-435b-83d0-45800de1a81e",
+        "bda73e93-db25-4eea-949b-d01dc57f7966"
+      ],
+      "name": "Downloads keep scanning or re-downloading and fail to play",
+      "summary": "Customers say downloads keep scanning without finishing, playlists repeatedly re-download, and offline music still will not play.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "billing.subscription_activation",
+      "topic": "billing",
+      "subtopic": "subscription_activation",
+      "complaint_count": 2260,
+      "severity_sum": 7172,
+      "example_review_ids": [
+        "72c5cbab-9717-4f45-89ab-85c3eee84c45",
+        "8749bfca-4884-466b-a581-7d65bfee0540",
+        "5680ff69-d9c4-46fa-b68e-7d631d4d42ff"
+      ],
+      "name": "Premium payment or activation fails with cards",
+      "summary": "Customers report payments failing when adding a debit card, being unable to buy premium with their card, and their account switching to non-premium unexpectedly.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "billing.charges_refunds",
+      "topic": "billing",
+      "subtopic": "charges_refunds",
+      "complaint_count": 1903,
+      "severity_sum": 7088,
+      "example_review_ids": [
+        "3d1802d9-a78e-4013-81cf-b3db5e73a2d4",
+        "6d9c7826-56da-4743-8b78-074f8c463625",
+        "f01c9c98-57ea-4674-8e4e-623552813f0b"
+      ],
+      "name": "Unable to cancel subscription and charged without use",
+      "summary": "Customers say they cannot cancel their subscription, were billed for a year without using the service, and that payments show as canceled.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.search",
+      "topic": "catalog",
+      "subtopic": "search",
+      "complaint_count": 2055,
+      "severity_sum": 6054,
+      "example_review_ids": [
+        "e60e79ed-df75-4dd5-8d87-28905d6a957f",
+        "b83797eb-c4e2-4906-989e-f83317f7a07d",
+        "b0c11857-b159-4637-9698-2c283087588c"
+      ],
+      "name": "Search fails and reports no connection",
+      "summary": "Customers say searches show offline or no connection errors even with data on, and that they cannot find creators or podcasts.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.background_play",
+      "topic": "playback",
+      "subtopic": "background_play",
+      "complaint_count": 1883,
+      "severity_sum": 5769,
+      "example_review_ids": [
+        "b8f44297-e4e3-4bcd-92e2-624d8d34dff8",
+        "399233c5-d40d-4404-9ecb-079d43c76770",
+        "a50c93ca-aae3-44e1-a33e-7ee30c1a7628"
+      ],
+      "name": "Music stops when the screen turns off or app is backgrounded",
+      "summary": "Customers report songs stop when the phone screen goes blank or the app is in the background, and playback does not pause or stop properly after disconnecting from a car.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "downloads.downloads_disappear",
+      "topic": "downloads",
+      "subtopic": "downloads_disappear",
+      "complaint_count": 1555,
+      "severity_sum": 5465,
+      "example_review_ids": [
+        "47edef7f-6e6b-4e2f-8e74-9b1d244d275a",
+        "9425d27e-9467-4181-b1bd-867f78cdf2e2",
+        "576b70ae-89d5-4d11-8894-3cf68895a94f"
+      ],
+      "name": "Downloaded songs disappear or stop playing after a month",
+      "summary": "Customers report large numbers of downloaded songs were deleted without reason and that downloaded music no longer plays after about a month.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.audio_quality",
+      "topic": "playback",
+      "subtopic": "audio_quality",
+      "complaint_count": 1739,
+      "severity_sum": 4419,
+      "example_review_ids": [
+        "db3680a1-81b7-4254-895c-31dcef63043e",
+        "16b4ba9f-cb3f-49e0-a921-ff7896020ea1",
+        "761e2a24-e140-450c-b728-dadeab319d9a"
+      ],
+      "name": "Audio is too quiet or poor over Bluetooth devices",
+      "summary": "Customers say audio plays softer than in other apps, even with high volume and quality settings, and sounds bad with Bluetooth on some phones.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "access.account_locked_hacked",
+      "topic": "access",
+      "subtopic": "account_locked_hacked",
+      "complaint_count": 937,
+      "severity_sum": 3588,
+      "example_review_ids": [
+        "9da09fa2-1bd0-43c8-b5c0-7a86f5570bbc",
+        "c51521da-a7b8-4b88-9a3f-304d15ba221a",
+        "9d8c492e-c450-4ec2-9a83-0127f5a29854"
+      ],
+      "name": "Logged out, crashing, or unable to access account",
+      "summary": "Customers report being logged out, unable to load or access their account, and losing money, with the app worsening over the past year.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "usability.notifications_widgets",
+      "topic": "usability",
+      "subtopic": "notifications_widgets",
+      "complaint_count": 1374,
+      "severity_sum": 3359,
+      "example_review_ids": [
+        "58bea6c5-ae4d-4fd8-852d-e193fa406757",
+        "a8fa2e2a-3557-4108-b62d-98f57a37bd5e",
+        "2cefd2d9-2a69-4f7c-a06b-1d5f195e1295"
+      ],
+      "name": "App install and update fail, and now-playing bar vanishes",
+      "summary": "Customers report the app will not update or reinstall, an annoying recurring issue after uninstalling, and the now-playing bar disappearing.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "catalog.podcasts",
+      "topic": "catalog",
+      "subtopic": "podcasts",
+      "complaint_count": 1062,
+      "severity_sum": 2840,
+      "example_review_ids": [
+        "3d216aef-5799-403d-9ad2-58ded0e30f71",
+        "ad19c5c2-4ef1-4082-9c92-6ddc4b505716",
+        "7b7b37b6-b9c6-402f-8719-7dc002ce2086"
+      ],
+      "name": "Podcasts cannot be accessed or shown",
+      "summary": "Customers say they cannot access podcasts, their podcast is not showing, and the web link reports an unsupported browser.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "other.unrelated",
+      "topic": "other",
+      "subtopic": "unrelated",
+      "complaint_count": 1384,
+      "severity_sum": 2702,
+      "example_review_ids": [
+        "7bdf2ae1-0b87-40fb-acaf-8a1d5a36b201",
+        "cf66c7fc-2820-4ec4-9600-c8c7eacdcedd",
+        "d1622c4c-0dae-4f64-a6e9-62796b71462f"
+      ],
+      "name": "Playlist and group sharing does not work",
+      "summary": "Customers report they cannot share playlists, group sessions fail even with premium, and sharing to Snapchat produces a poor result.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "access.signup",
+      "topic": "access",
+      "subtopic": "signup",
+      "complaint_count": 576,
+      "severity_sum": 2052,
+      "example_review_ids": [
+        "00bb01be-df4e-4ca6-845e-f2b7eaf2b4bd",
+        "a4345b7c-5f4b-47d0-8acd-8f9a9decb3dc",
+        "ed38d871-ab94-46f7-bfb5-39517dbc2c1b"
+      ],
+      "name": "Sign-up and login not possible in the app",
+      "summary": "Customers say the app does not let them sign up or log in to a previously used account and that the registration process is discouraging.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "support.unhelpful_response",
+      "topic": "support",
+      "subtopic": "unhelpful_response",
+      "complaint_count": 560,
+      "severity_sum": 1497,
+      "example_review_ids": [
+        "6c698955-115e-4e64-8631-40a70c5003a7",
+        "60792f6e-a48b-4017-a592-e618c26568c4",
+        "8afa9a98-9826-43de-adc8-27aacd3d0dd3"
+      ],
+      "name": "Customer service is hard to reach and unhelpful",
+      "summary": "Customers describe glitches, difficulty interacting with customer service, and a poor service experience that led some to leave premium.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "playback.battery_resource",
+      "topic": "playback",
+      "subtopic": "battery_resource",
+      "complaint_count": 466,
+      "severity_sum": 1331,
+      "example_review_ids": [
+        "b4fb0ee8-802b-4757-89df-02b49f30ef5e",
+        "70ff2276-758c-4a98-8729-cd6b4d2b2903",
+        "22a27491-ed8e-45ee-bb36-80ed3841eb3b"
+      ],
+      "name": "App keeps running in background and drains battery",
+      "summary": "Customers report the app keeps running after force stop and uses too much battery on their devices.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "other.general_positive",
+      "topic": "other",
+      "subtopic": "general_positive",
+      "complaint_count": 518,
+      "severity_sum": 1027,
+      "example_review_ids": [
+        "1f1e81cf-e480-4bc8-a93c-f62aa73e7325",
+        "6b56c24f-cb19-4f4e-92b9-a3b21808a109",
+        "01607995-410a-470a-9d76-4435680cbb66"
+      ],
+      "name": "Feature requests and mixed feedback on sharing",
+      "summary": "Customers mention wanting another feature, say two people cannot use the service together, and praise the music and podcast selection.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "support.no_response",
+      "topic": "support",
+      "subtopic": "no_response",
+      "complaint_count": 330,
+      "severity_sum": 935,
+      "example_review_ids": [
+        "cde30c0f-dd21-4e51-b464-1490de998cf0",
+        "5dd345d4-a789-4f50-ade2-ad464969e771",
+        "47d27687-25ed-4030-84cb-fe376eddce66"
+      ],
+      "name": "No response from support on billing and feature issues",
+      "summary": "Customers say they cannot contact support about money taken from their card and received no answer to help requests sent months earlier.",
+      "name_source": "model"
+    },
+    {
+      "issue_id": "support.positive_support",
+      "topic": "support",
+      "subtopic": "positive_support",
+      "complaint_count": 4,
+      "severity_sum": 9,
+      "example_review_ids": [
+        "20fdf5ce-6cfd-4f83-81b3-5ad9dd3f0be9",
+        "6e0620ee-d9df-4286-85bf-edfdfdfcdfa4",
+        "4e27eaa8-3c51-4a7d-b374-2cc0cb059dd8"
+      ],
+      "name": "Support helped but required repeated reinstalls after update",
+      "summary": "Customers say support resolved their issue and the app works better, but reinstalling after updates was needed and the interface still needs improvement.",
+      "name_source": "model"
+    }
+  ]
+}

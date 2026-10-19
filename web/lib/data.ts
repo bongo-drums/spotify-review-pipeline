@@ -55,7 +55,7 @@ async function pg() {
     const { tablesExist, seedFromSnapshot } = await import("./seed");
     const ok = await tablesExist(pool);
     const n = ok ? (await pool.query("SELECT COUNT(*)::int AS n FROM runs")).rows[0].n : 0;
-    if (!ok || n === 0) await seedFromSnapshot(pool);
+    if (!ok || n === 0) await seedFromSnapshot(pool, false, 20_000);   // the rest continues via /api/admin/seed
     seeded = true;
   }
   return pool;
@@ -80,9 +80,11 @@ function readJson<T>(name: string): T {
 
 async function fileRecords(filter: (r: RecordRow) => boolean, limit: number): Promise<RecordRow[]> {
   const out: RecordRow[] = [];
-  const file = path.join(DATA_DIR, "records.jsonl");
-  if (!fs.existsSync(file)) return out;
-  const rl = readline.createInterface({ input: fs.createReadStream(file, "utf-8") });
+  const file = ["records.jsonl.gz", "records.jsonl"].map((n) => path.join(DATA_DIR, n)).find((p) => fs.existsSync(p));
+  if (!file) return out;
+  const zlib = await import("node:zlib");
+  const raw = fs.createReadStream(file);
+  const rl = readline.createInterface({ input: file.endsWith(".gz") ? raw.pipe(zlib.createGunzip()) : raw, crlfDelay: Infinity });
   for await (const line of rl) {
     if (!line.trim()) continue;
     const r = JSON.parse(line) as RecordRow;

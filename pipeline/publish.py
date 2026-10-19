@@ -173,14 +173,21 @@ def write_json_snapshot(run_dir: Path, out_dir: Path, max_records: int | None = 
     for name in ("run", "aggregates", "issues", "claims", "memo"):
         (out_dir / f"{name}.json").write_text(json.dumps(data[name], ensure_ascii=False) + "\n", encoding="utf-8")
     (out_dir / "membership.json").write_text(json.dumps(data["membership"], ensure_ascii=False) + "\n", encoding="utf-8")
+    import gzip
     n = 0
-    with open(out_dir / "records.jsonl", "w", encoding="utf-8") as f:
+    for stale in ("records.jsonl", "records.jsonl.gz"):
+        (out_dir / stale).unlink(missing_ok=True)
+    big = max_records is None or max_records > 50_000
+    path = out_dir / ("records.jsonl.gz" if big else "records.jsonl")
+    opener = (lambda: gzip.open(path, "wt", encoding="utf-8")) if big else (lambda: open(path, "w", encoding="utf-8"))
+    with opener() as f:
         for rec in iter_records(run_dir):
             if max_records is not None and n >= max_records:
                 break
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
             n += 1
-    return {"out": str(out_dir), "issues": len(data["issues"]), "membership": len(data["membership"]), "records_written": n}
+    return {"out": str(out_dir), "issues": len(data["issues"]), "membership": len(data["membership"]), "records_written": n,
+            "records_file": path.name}
 
 
 def load_postgres(run_dir: Path, dsn: str) -> dict:
@@ -233,7 +240,7 @@ def main(argv=None) -> int:
     ap.add_argument("--rest", action="store_true", help="load over HTTPS using SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from the environment")
     ap.add_argument("--source-csv", help="source CSV for timestamps/ratings when the run DB is absent (default: data_manifest source_path)")
     ap.add_argument("--out", default=str(config.REPO_ROOT / "web" / "data"), help="snapshot directory (JSON mode)")
-    ap.add_argument("--max-records", type=int, default=20000, help="JSON mode: cap on records.jsonl rows")
+    ap.add_argument("--max-records", type=int, default=20000, help="JSON mode: cap on records rows (0 = all, gzipped)")
     args = ap.parse_args(argv)
     run_dir = Path(args.run)
     if args.rest:
@@ -245,7 +252,7 @@ def main(argv=None) -> int:
     elif args.db:
         out = load_postgres(run_dir, args.db)
     else:
-        out = write_json_snapshot(run_dir, Path(args.out), args.max_records)
+        out = write_json_snapshot(run_dir, Path(args.out), None if args.max_records == 0 else args.max_records)
     print(json.dumps(out, indent=2))
     return 0
 

@@ -50,22 +50,22 @@ Generated offline by `cost/calculator.py` from `/home/user/spotify-review-pipeli
 - parameters from: **measured pilot100**
 - per text: 0.4062 input tokens/char + 6 framing, 56.304 output tokens; system prompt 1963 tokens per request (cached after the first); 6.419 s per enrich call; verifier 3.515e-05 USD/text, 2.171 s per call
 - population: 660,622 rows → 660,609 nonempty classifications + 13 empty-text quarantines; 484,189 distinct texts with exact-text reuse
-- controls: budget $20.00, output cap 4000 tokens/request, max workers 4, max fallback fraction 0.01, verifier sample 0.01 (min 10), fixed group+memo $0.0548 (2x measured group+memo), remaining pilots 1,574 texts, already committed $0.4665
+- controls: budget $20.00, output cap 4000 tokens/request, max workers 4, max fallback fraction 0.01, verifier sample 0.01 (min 10), fixed group+memo $0.0548 (2x measured group+memo), remaining pilots 1,574 texts, already committed $10.5951
 - scenarios: {"base": {"retry_overhead": 0.02, "fallback_frac": 0.005, "output_factor": 1.0, "cache_write_frac": 0.02}, "conservative": {"retry_overhead": 0.1, "fallback_frac": 0.01, "output_factor": 1.2, "cache_write_frac": 0.1}}
 
 ## Full-run scenarios (API spend only)
 
 | scenario | reuse | tier | requests | main (cache) | main (no cache) | verifier | Sonnet fallback | pilots | fixed | committed | **total** | vs budget | std-tier hours (1 / N workers) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| base | exact_text_reuse | standard | 9,684 | $16.41 | $18.12 | $0.17 | $1.61 | $0.05 | $0.05 | $0.47 | **$18.77** | +1.23 | 17.67 / 4.42 |
-| base | exact_text_reuse | batch | 9,684 | $8.21 | $9.06 | $0.09 | $1.61 | $0.03 | $0.05 | $0.47 | **$10.45** | +9.55 | async |
-| base | no_reuse | standard | 13,213 | $21.75 | $24.07 | $0.24 | $2.13 | $0.05 | $0.05 | $0.47 | **$24.69** | -4.69 ⚠ OVER BUDGET | 24.11 / 6.03 |
-| base | no_reuse | batch | 13,213 | $10.87 | $12.03 | $0.12 | $2.13 | $0.03 | $0.05 | $0.47 | **$13.67** | +6.33 | async |
-| conservative | exact_text_reuse | standard | 9,684 | $20.87 | $22.54 | $0.19 | $3.21 | $0.07 | $0.05 | $0.47 | **$24.86** | -4.86 ⚠ OVER BUDGET | 19.05 / 4.76 |
-| conservative | exact_text_reuse | batch | 9,684 | $10.44 | $11.27 | $0.09 | $3.21 | $0.03 | $0.05 | $0.47 | **$14.30** | +5.70 | async |
-| conservative | no_reuse | standard | 13,213 | $27.78 | $30.05 | $0.26 | $4.26 | $0.07 | $0.05 | $0.47 | **$32.88** | -12.88 ⚠ OVER BUDGET | 26.0 / 6.5 |
-| conservative | no_reuse | batch | 13,213 | $13.89 | $15.02 | $0.13 | $4.26 | $0.03 | $0.05 | $0.47 | **$18.83** | +1.17 | async |
+| base | exact_text_reuse | standard | 9,684 | $16.41 | $18.12 | $0.17 | $1.61 | $0.05 | $0.05 | $10.60 | **$28.90** | -8.90 ⚠ OVER BUDGET | 17.67 / 4.42 |
+| base | exact_text_reuse | batch | 9,684 | $8.21 | $9.06 | $0.09 | $1.61 | $0.03 | $0.05 | $10.60 | **$20.58** | -0.58 ⚠ OVER BUDGET | async |
+| base | no_reuse | standard | 13,213 | $21.75 | $24.07 | $0.24 | $2.13 | $0.05 | $0.05 | $10.60 | **$34.82** | -14.82 ⚠ OVER BUDGET | 24.11 / 6.03 |
+| base | no_reuse | batch | 13,213 | $10.87 | $12.03 | $0.12 | $2.13 | $0.03 | $0.05 | $10.60 | **$23.80** | -3.80 ⚠ OVER BUDGET | async |
+| conservative | exact_text_reuse | standard | 9,684 | $20.87 | $22.54 | $0.19 | $3.21 | $0.07 | $0.05 | $10.60 | **$34.99** | -14.99 ⚠ OVER BUDGET | 19.05 / 4.76 |
+| conservative | exact_text_reuse | batch | 9,684 | $10.44 | $11.27 | $0.09 | $3.21 | $0.03 | $0.05 | $10.60 | **$24.43** | -4.43 ⚠ OVER BUDGET | async |
+| conservative | no_reuse | standard | 13,213 | $27.78 | $30.05 | $0.26 | $4.26 | $0.07 | $0.05 | $10.60 | **$43.01** | -23.01 ⚠ OVER BUDGET | 26.0 / 6.5 |
+| conservative | no_reuse | batch | 13,213 | $13.89 | $15.02 | $0.13 | $4.26 | $0.03 | $0.05 | $10.60 | **$28.96** | -8.96 ⚠ OVER BUDGET | async |
 
-Elapsed-time model: standard tier = (enrich requests + verifier requests) × seconds/call ÷ workers; Batch tier is asynchronous. Recommended: **base/exact_text_reuse/batch**.
+Elapsed-time model: standard tier = (enrich requests + verifier requests) × seconds/call ÷ workers; Batch tier is asynchronous. Recommended: **none within budget**.
 
 Formulas: item_cost = billed_tokens × (usd_per_mtok ÷ 1,000,000); categories input / cache_write_5m / cache_read / output are mutually exclusive; the tier actually used for the pilot is standard; Batch prices appear only in projections. The verifier is priced from its measured per-text cost; group and memo run once and are carried as a fixed cost with a 2x margin; the Sonnet fallback is capped by the declared fraction.

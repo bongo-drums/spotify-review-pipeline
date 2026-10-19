@@ -1,0 +1,139 @@
+{
+  "status": "validated",
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "unverified_numbers": []
+  },
+  "model": "claude-sonnet-5-5",
+  "input_sha256": "c61415b8bef5ea026abc792d3d26cd38dcb6235f97362fde05da87acb9babc12",
+  "cached": false,
+  "calls": 1,
+  "cost_usd": 0.030555,
+  "attempts": [
+    {
+      "attempt": 1,
+      "ok": true,
+      "errors": [],
+      "unverified_numbers": [],
+      "cost_usd": 0.030555,
+      "input_tokens": 2625,
+      "output_tokens": 2197,
+      "duration_s": 18.685
+    }
+  ],
+  "memo": {
+    "headline": "Put next quarter's effort into usability: it carries the heaviest complaint load of the four areas and holds the third-ranked issue, ads interruptions.",
+    "situation": [
+      "The run labelled nearly all records, with only a handful quarantined, so the aggregates cover essentially the full review set.",
+      "Usability has the largest share of complaints among the four focus areas, ahead of billing_support, then playback, then access. Access is the smallest by volume but has the highest mean severity of the four.",
+      "The baseline ranking is led by other.general_negative, a catch-all of broad dissatisfaction that does not map to any one focus area. The second-ranked issue, billing.premium_only_controls, sits in billing_support. The third-ranked issue is usability.ads_interruptions."
+    ],
+    "top_issues": [
+      {
+        "issue_id": "other.general_negative",
+        "why_it_matters": "It tops the baseline ranking on volume ({C1}) and priority score ({C4}), but mean severity is the lowest of the five ({C3}). It is broad dissatisfaction rather than a specific fault, so it gives product teams little to act on directly.",
+        "claim_ids": [
+          "C1",
+          "C3",
+          "C4"
+        ],
+        "evidence_review_ids": [
+          "7c5bf637-f2d0-4453-a0b3-c86f45203ba7",
+          "6adc8bd8-9953-4c40-a345-b935aa322b83",
+          "1c5465bb-b754-4fdc-8b51-ae9e6853981c"
+        ]
+      },
+      {
+        "issue_id": "billing.premium_only_controls",
+        "why_it_matters": "Reviewers object to features such as downloads and individual track choice sitting behind a paid tier. Complaint count is {C5} and priority score is {C8}, with higher mean severity ({C7}) than ads. It is the strongest single issue inside billing_support.",
+        "claim_ids": [
+          "C5",
+          "C7",
+          "C8"
+        ],
+        "evidence_review_ids": [
+          "34a12e69-bdf1-4890-a426-13bed973ac77",
+          "8b5826e0-569a-4f7d-9053-b95a4a2b2532",
+          "90a11b0f-aad7-45ba-bacc-088d39c0cf8a"
+        ]
+      },
+      {
+        "issue_id": "usability.ads_interruptions",
+        "why_it_matters": "Free-tier listening interrupted by ads draws {C9} complaints, for a priority score of {C12} at mean severity {C11}. Reviewers describe ads after nearly every song and call it annoying; some also say premium is good, so the friction sits in the free experience.",
+        "claim_ids": [
+          "C9",
+          "C11",
+          "C12"
+        ],
+        "evidence_review_ids": [
+          "6dbe91f5-31ef-4d58-b368-89d568c91456",
+          "c71cea9c-0ba7-4cd6-bda3-03b043a6a6fb",
+          "a606e006-1a06-4fe7-8aab-52a66e6f33bc"
+        ]
+      },
+      {
+        "issue_id": "playback.stops_skips_glitches",
+        "why_it_matters": "Stuck offline mode, wrong songs playing and Android stuttering are core-function failures. Priority score is {C16} on {C13} complaints, with mean severity ({C15}) well above ads or premium-only controls.",
+        "claim_ids": [
+          "C13",
+          "C15",
+          "C16"
+        ],
+        "evidence_review_ids": [
+          "82adc2a2-1626-4fb6-bf2b-f8396b3667ce",
+          "b3da207e-888d-40bd-bd5d-11f376f5eeda",
+          "71c3a08a-ff3a-45a5-a797-088d6649caa3"
+        ]
+      },
+      {
+        "issue_id": "access.login_failure",
+        "why_it_matters": "Login errors and an app that will not open block use entirely, and this issue has the highest mean severity of the five ({C19}). Volume is the smallest ({C17}), giving a priority score of {C20}.",
+        "claim_ids": [
+          "C17",
+          "C19",
+          "C20"
+        ],
+        "evidence_review_ids": [
+          "470b836e-9027-4e6f-9673-c0aad1b03c0b",
+          "07a3e007-76df-45e7-98aa-72aa93781208",
+          "3d9c548f-1c89-44f2-bc65-9fbde01fa6ab"
+        ]
+      }
+    ],
+    "recommendation": {
+      "focus_area": "usability",
+      "argument": "Usability has the largest share of complaints of the four areas, and its ads issue is the highest-ranked issue that belongs to a single focus area and is not a catch-all or a pricing-model question: {C9} complaints and a priority score of {C12}. Mean severity is moderate ({C11}), so the case rests on breadth, not on severity. Reviewers describe the specific friction (ads after almost every song), which gives the team a concrete surface to work on. The top-ranked issue, other.general_negative ({C4}), is too diffuse to assign.",
+      "claim_ids": [
+        "C9",
+        "C11",
+        "C12",
+        "C4"
+      ]
+    },
+    "alternatives": [
+      {
+        "focus_area": "billing_support",
+        "case_for": "It holds the second-ranked issue, billing.premium_only_controls, with a higher priority score ({C8}) than ads ({C12}) and a second-largest complaint share, so it is a close contender.",
+        "why_not_now": "The complaints are largely about which features sit behind the paid tier, which is a pricing and packaging decision rather than a defect. It is a leadership call, not a product-effort workstream, and the review text cannot show how users would respond to changes."
+      },
+      {
+        "focus_area": "playback",
+        "case_for": "Playback complaints are more severe ({C15}) than ads ({C11}) and describe failures of the core listening function.",
+        "why_not_now": "Volume is lower ({C13} complaints against {C9} for ads) and the priority score is lower ({C16} against {C12}), so a quarter of effort reaches fewer complaints."
+      },
+      {
+        "focus_area": "access",
+        "case_for": "Login failure has the highest mean severity ({C19}), and an app that will not open blocks the user completely.",
+        "why_not_now": "Access is the smallest area by complaint volume ({C17} complaints) and the lowest priority score ({C20}). It looks better suited to a targeted fix than to a quarter-long focus."
+      }
+    ],
+    "limitations": [
+      "Reviews are self-selected public text; they over-represent unhappy and highly motivated users and cannot be read as the whole user base.",
+      "Severity and topic labels come from automated classification, and a sizable fraction of records was flagged for review, so individual labels may be wrong.",
+      "The baseline ranking multiplies complaint count by mean severity and does not account for user reach, revenue, churn or engineering cost, none of which are in the data.",
+      "The top-ranked issue, other.general_negative, is a catch-all category, so its rank reflects labelling breadth more than a specific fault.",
+      "The evidence pack contains only a few quotes per issue and is illustrative, not a representative sample."
+    ]
+  }
+}
