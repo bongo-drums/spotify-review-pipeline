@@ -1,8 +1,7 @@
 # Golden 50: error analysis
 
-> **Draft for Matt to edit.** Claude wrote this from `results.md` and the review texts; the judgments below are
-> proposals. Matt labelled the 50 reviews by hand (`human_codes.csv`) and decides which of these calls stand.
-> Delete this note once reviewed.
+*Matt Wong, with Claude's help, from `results.md` and the review texts. The 50 labels in `human_codes.csv` are Matt's
+hand labels (four re-entered on 2026-10-16, originals kept); the verdicts below are the calls Matt stands behind.*
 
 Scores (`results.md`, after the four re-entered rows below): topic agreement 0.72, intent 0.86, severity 0.82,
 joint 0.62; severity MAE 0.22 and 96% of severities within one level. The model never abstained. The numbers

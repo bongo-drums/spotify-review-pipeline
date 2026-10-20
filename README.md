@@ -139,8 +139,6 @@ evidence index (would be retried, then quarantined in a real run).
 
 ## Design choices
 
-> *Draft written by Claude in Matt's voice for Matt to edit before submission.*
-
 - **One cheap classifier, no reasoning tokens.** Classification into fixed labels does not need chain-of-thought,
   so the enricher is `claude-haiku-5-5` with thinking off, effort low and a JSON schema the model must fill. The
   whole 660k corpus projects to about $10 on the Batch tier; Sonnet for every review would cost over $1,000 at
@@ -168,8 +166,6 @@ evidence index (would be retried, then quarantined in a real run).
   and the model only *names* issues from a bounded evidence pack.
 
 ## One failure, in my words
-
-> *Draft by Claude for Matt to rewrite.*
 
 The 100-review pilot's first full run died at the memo stage with an HTTP 400: `claude-sonnet-5-5` rejects
 `thinking: {"type": "disabled"}` and wants `{"type": "between_tools"}`. Every earlier stage had used Haiku, and

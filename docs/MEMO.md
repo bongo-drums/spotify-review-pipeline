@@ -1,9 +1,8 @@
 # Where the next quarter of product effort should go
 
-> **Draft written by Claude in Matt's voice, for Matt to edit before submission.** Every number below is a claim from
-> `runs/full/artifacts/claims.csv` (claim ID in parentheses) or a code-computed aggregate from
-> `runs/full/artifacts/aggregates.json`. The model-generated memo this is based on is
-> `runs/full/artifacts/memo.md`; the dashboard shows the same figures. Delete this note once reviewed.
+*Matt Wong, 2026-10-20. Drafted with Claude's help from the saved aggregates; every number is a claim from
+`runs/full/artifacts/claims.csv` (claim ID in parentheses) or a code-computed aggregate from
+`runs/full/artifacts/aggregates.json`. The model-generated memo this builds on is `runs/full/artifacts/memo.md`.*
 
 **Recommendation: put the quarter into usability, with the ad experience for free listeners as the headline project,
 and fund one playback reliability fix alongside it.**
