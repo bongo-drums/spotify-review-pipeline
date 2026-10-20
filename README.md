@@ -20,7 +20,7 @@ https://spotify-review-dashboard-lilac.vercel.app. The decision memo in Matt's v
 | Memo numbers linked to calculations and evidence | `pipeline/memo.py`: the model may only reference numbers as `{C7}` claim placeholders; code substitutes values from `claims.csv`, rejects unknown claims, issue IDs or review IDs, and flags any typed digits. Full-run memo `runs/full/artifacts/memo.md` (validated first attempt, claims appendix at the bottom); Matt's decision memo `docs/MEMO.md` cites the same claim IDs |
 | Coherent recommendation, alternatives, limitations | `docs/MEMO.md` (recommendation, why not the other three areas, limitations) and the generated memo's *Recommendation*, *Alternatives*, *Limitations* sections |
 | **Testing & evaluation** | |
-| 50 human labels, per-field comparison, error analysis | `evals/golden/human_codes.csv` (Matt, by hand), scorer `pipeline/evals.py golden`, results `evals/golden/results.md` (agreement, macro F1, confusions, every disagreement listed); error analysis `evals/golden/error_analysis.md` (draft for Matt's review) |
+| 50 human labels, per-field comparison, error analysis | `evals/golden/human_codes.csv` (Matt, by hand), scorer `pipeline/evals.py golden`, results `evals/golden/results.md` (agreement, macro F1, confusions, every disagreement listed); error analysis `evals/golden/error_analysis.md` |
 | Independent verification, planted-error and injection tests | blind verifier with a separate prompt: `pipeline/verifier.py`, reports in `runs/*/artifacts/verification.md`; planted-error detection in the same report; prompt-injection test `evals/injection/results.md` (48 synthetic copies, 0 followed the injected instruction) |
 | Real 100-review cold/warm pilot, offline calculator, retry/spend/recovery controls (T3) | `cost/README.md`, `cost/report.md`, `cost/estimate.json`, `cost/usage.csv`, `cost/pilot_calls.jsonl`, `cost/pilot_records.jsonl`, `runs/pilot100/pilot_report.json`; controls: `pipeline/budget.py` (shared ledger, reserve-before-send), bounded backoff and per-run cap in `pipeline/llm.py` / `pipeline/pilot.py`, resume demonstrated in `tests/test_stages.py`, on the 10,000 checkpoint (`runs/pilot10000/checkpoints/`) and in the recorded SIGINT demo `runs/resume_demo/resume_demo.cast` (`asciinema play`; plain transcript `transcript.txt`), batch reconciliation in `tests/test_batchrun.py` |
 | **Working result** | |
@@ -211,7 +211,7 @@ requests and 1,129 single-sentence texts rejected for an out-of-range evidence i
 described in *One failure*, and the first two batches' calls were relabelled `initial` (the dry run had left a run DB, so
 the first paid job had stamped them `resume`). Total ledger spend across every pilot, test and the full run: $10.60 of $20.
 
-## Remaining
+## Submission
 
-1. Matt's review of `docs/MEMO.md` and the two README draft sections.
-2. Make the repository public and submit its URL.
+Submitted as the public repository https://github.com/bongo-drums/spotify-review-pipeline (default branch `main`).
+Live dashboard: https://spotify-review-dashboard-lilac.vercel.app.
